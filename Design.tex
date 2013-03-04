@@ -20,16 +20,47 @@
 \maketitle
 
 \section{The Group}
-%Names and emails, etc.
+\par Project name (tentative): "Course Aggregator Tool" (CAT)
+\par Project manager: Garrett Disco
+\begin{tabbing}
+Noah Apthorpe   \= apthorpe@princeton.edu \\
+Garret Disco \> gdisco@princeton.edu \\
+Luke Paulsen \> lpaulsen@princeton.edu \\
+Jocelyn Tang \> jmtang@princeton.edu \\
+Natalie Weires \> nweires@princeton.edu \\
+\end{tabbing}
 
 \section{Overview}
+\par The Course Aggregator Tool is an online platform for viewing and querying Princeton course information available at various OIT and Registrar sites. This will help Princeton undergraduates make course selection and scheduling decisions, including long-term course planning. The site is different from other tools such as ICE and the Registrar site in that it will allow easy visualization of all available data on a course, make it easier to compare and rank courses, and provide historical data on older semesters of a course, but it is not designed to provide calendar-style scheduling the way ICE is.
+\par CAT will provide a graphical interface that will make it easy for users to get a sense of what a course is like and select what information they want to see. It will also provide a way to compare two (or possibly more) courses side-by-side. The course data being displayed will include: professors, class size, class times, ratings in each category, written course reviews, P/D/F status, and textbook costs. It will be possible to search for, rank, and filter courses by any of these categories, either over the whole university or by department or distribution requirement. We will also include a system for rating course reviews "up" or "down" for its helpfulness.
+\par CAT will be built with Python/Django and hosted on Amazon AWS. We will scrape course data periodically (e.g. once per semester) from the Registrar website and store it in a Mongo database. We are still deciding on what to use for the frontend, but it is likely to involve heavy use of Javascript/CSS and/or tools built on top of them.
 
 \section{Functionality}
 
 \section{Design}
 
 \section{Milestones}
-
+\begin{enumerate}
+\item Set up site on AWS (i.e. have "Hello World" working)
+\item Set up backend on AWS, send data back and forth
+\item Define database structure (all categories we will need)
+\item Scrape one semester worth of course data
+\item Display single semester data in bare-bones format
+\item Scrape multiple semesters and display all at once
+\item Search, filter, and rank by any category
+\item Decide on frontend design specs for course view (move earlier?)
+\item Decide on frontend design specs for search view
+\par [No particular order from here on out]
+\item Implement frontend design specs for search view
+\item Implement frontend design specs for course view
+\item Implement ranking system for course reviews
+\item Implement textual analysis of course reviews
+\item Implement future semester predictions
+\item Implement CAS login wall
+\item Deploy for alpha test
+\item Deploy for beta test
+\item Deploy for demo
+\end{enumerate}
 \section{Risks}
 
 \section{Timeline}
