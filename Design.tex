@@ -40,11 +40,10 @@ CAT has several different possible use cases, all of which involve a comparison 
 \par Use case 1: A user wants to find a class fitting a particular kind of description (e.g. "find a large LA class that is well-reviewed and offered after 11 AM"). The user goes to the CAT homepage, which has a prominent search bar in which all of these parameters can be put in (either a selection of fields, or a single text bar with smart interpretation, or both). Once the user has entered the search parameters, a results page is displayed with the best matching courses, from which the user can select one or more courses to view the full data for.
 \par Use case 2: A user is only considering a few courses (e.g. COS 333 and COS 402) and wants to compare their ratings in detail. The user opens both courses in the full-data view mode (by typing their codes into a search bar) and compares them side-by-side in terms of lecture rating, assignment rating, and overall course recommendation rating (all of these can be selected to display in the full-data view mode).
 \par Use case 3: A user is browsing courses and is considering what to take in future semesters. The user puts in very general search parameters (e.g. all COS classes) and looks at classes from the result list one at a time. When viewing courses, the user uses the "timeline" option, which brings up the current (or most recent) semester of the course as well as past semesters. Then user can then view how course ratings, class size, readings, and so on have changed over time.
-\par Core functionality that will be required:
 
+\par Core frontend functionality that will be required:
 \begin{enumerate}
-\item Obtain course data from Registrar website
-\item Search from homepage by any category, including ranking courses
+\item Search from homepage by one or more categories, including ranking courses
 \item Display one or more courses from search results in full-data view
 \item Add additional courses to view within full-data view
 \item Extend a single semester to a timeline within full-data view
@@ -52,6 +51,9 @@ CAT has several different possible use cases, all of which involve a comparison 
 \end{enumerate}
 
 \section{Design}
+\par Backend
+\par We have decided to use mongoDB for the database because a lot of the data is irregular - for example, classes have different numbers of sections, multiple professors, etc. Each class is a document with fields for each feature: professor, sections, ratings and reviews, pdf status, distribution category, sample readings, grading breakdown, class number, pre-requisites, course description.
+\par Our primary source of data is the registrar. We plan to scrape the course offerings website as well as the ratings and reviews, which come from a website called www.applyweb.com.
 
 \section{Milestones}
 \begin{enumerate}
