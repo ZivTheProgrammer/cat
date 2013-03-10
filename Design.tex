@@ -36,6 +36,20 @@ Natalie Weires \> nweires@princeton.edu \\
 \par CAT will be built with Python/Django and hosted on Amazon AWS. We will scrape course data periodically (e.g. once per semester) from the Registrar website and store it in a Mongo database. We are still deciding on what to use for the frontend, but it is likely to involve heavy use of Javascript/CSS and/or tools built on top of them.
 
 \section{Functionality}
+CAT has several different possible use cases, all of which involve a comparison of multiple courses.
+\par Use case 1: A user wants to find a class fitting a particular kind of description (e.g. "find a large LA class that is well-reviewed and offered after 11 AM"). The user goes to the CAT homepage, which has a prominent search bar in which all of these parameters can be put in (either a selection of fields, or a single text bar with smart interpretation, or both). Once the user has entered the search parameters, a results page is displayed with the best matching courses, from which the user can select one or more courses to view the full data for.
+\par Use case 2: A user is only considering a few courses (e.g. COS 333 and COS 402) and wants to compare their ratings in detail. The user opens both courses in the full-data view mode (by typing their codes into a search bar) and compares them side-by-side in terms of lecture rating, assignment rating, and overall course recommendation rating (all of these can be selected to display in the full-data view mode).
+\par Use case 3: A user is browsing courses and is considering what to take in future semesters. The user puts in very general search parameters (e.g. all COS classes) and looks at classes from the result list one at a time. When viewing courses, the user uses the "timeline" option, which brings up the current (or most recent) semester of the course as well as past semesters. Then user can then view how course ratings, class size, readings, and so on have changed over time.
+\par Core functionality that will be required:
+
+\begin{enumerate}
+\item Obtain course data from Registrar website
+\item Search from homepage by any category, including ranking courses
+\item Display one or more courses from search results in full-data view
+\item Add additional courses to view within full-data view
+\item Extend a single semester to a timeline within full-data view
+\item Choose which data to display for courses within full-data view
+\end{enumerate}
 
 \section{Design}
 
@@ -62,6 +76,7 @@ Natalie Weires \> nweires@princeton.edu \\
 \item Deploy for beta test
 \item Deploy for demo
 \end{enumerate}
+
 \section{Risks}
 
 \section{Timeline}
