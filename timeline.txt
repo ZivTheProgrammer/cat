@@ -5,8 +5,14 @@ Noah Apthorpe Garrett Disco Luke Paulsen Jocelyn Tang Natalie Weires
 
 2/19 Lunch with Prof. Kernighan. Decided on the course aggregator / timeline project.
 
-2/24 Decided on basic features of "CAT". CAT will display the history of a course, with each instance of the course as some kind of unit. Information we will display for each instance: course reviews (including ratings in each category); professor; size; book expenses. Classes will also be searchable and rankable with this data. Discussed some practical issues of doing this (scraping registrar site, maintaining course info in database dealing with writing sems / changing course numbers, etc.). Tentatively decided to use Django + Mongo on backend and host on AWS. Plan for the following week: set up Github, set up & start design doc, prepare for meeting with Kernighan, and get in contact with OIT and/or Registrar.
+2/24 Second meeting. Decided on basic features of "CAT". CAT will display the history of a course, with each instance of the course as some kind of unit. Information we will display for each instance: course reviews (including ratings in each category); professor; size; book expenses. Classes will also be searchable and rankable with this data. Discussed some practical issues of doing this (scraping registrar site, maintaining course info in database dealing with writing sems / changing course numbers, etc.). Tentatively decided to use Django + Mongo on backend and host on AWS. Plan for the following week: set up Github, set up & start design doc, prepare for meeting with Kernighan, and get in contact with OIT and/or Registrar.
 
 2/25 Github up (lpaulsen333/cat) and working. Group members added.
 
 2/28 Design document posted on Github.
+
+3/3 Third meeting. Produced Overview and Milestones sections of the design document. Determined the "core" of what the project is about (making it easy for students to search, visualize, and compare information about courses). Established basic plan for working on the project. Discussed details of backend setup.
+
+3/9 Minimal "Hello World" Django site posted on Github (can be run on localhost).
+
+3/10 Fourth meeting. Produced Functionality, Design, and Risks sections of the design document. Developed basic design for frontend: based on "boxes" each displaying course data for a particular semester. Boxes start out as search screens, then become search results, then become course data displays after clicking on a search result. Ability to tab between each mode on a box. Tentatively determined group roles: Natalie and Jocelyn to focus on backend / scraping, Luke to focus on Django framework and logic, Garrett and Noah to focus on frontend. For this week: Set up AWS, finish design document.
