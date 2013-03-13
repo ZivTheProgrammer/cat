@@ -1,0 +1,14 @@
+"CAT" (Course Aggregator Tool) Project Timeline
+Noah Apthorpe Garrett Disco Luke Paulsen Jocelyn Tang Natalie Weires
+
+2/17 First group meeting. Discussed different project ideas.
+
+2/19 Lunch with Prof. Kernighan. Decided on the course aggregator / timeline project.
+
+2/24 Decided on basic features of "CAT". CAT will display the history of a course, with each instance of the course as some kind of unit. Information we will display for each instance: course reviews (including ratings in each category); professor; size; book expenses. Classes will also be searchable and rankable with this data. Discussed some practical issues of doing this (scraping registrar site, maintaining course info in database dealing with writing sems / changing course numbers, etc.). Tentatively decided to use Django + Mongo on backend and host on AWS. Plan for the following week: set up Github, set up & start design doc, prepare for meeting with Kernighan, and get in contact with OIT and/or Registrar.
+
+2/25 Github up (lpaulsen333/cat) and working. Group members added.
+
+2/28 Design document posted on Github.
+
+3/12 Initial meeting with USG. Discovered that they've already got a plan in the works to redesign the registrar page. Discussed how their plan and our app can work together. Exchanged contact info with USG IT chairs.
