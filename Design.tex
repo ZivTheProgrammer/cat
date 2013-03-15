@@ -20,7 +20,7 @@
 
 \maketitle
 
-\section{The Group}
+\section{Identification}
 \par Project name: ``Course Aggregator Tool" (CAT)
 \par Project manager: Garrett Disco
 \begin{tabbing}
@@ -37,10 +37,10 @@ Natalie Weires \> nweires@princeton.edu
 \par CAT will be built with Python/Django and hosted on Amazon AWS. We will scrape course data periodically (e.g. once per semester) from the Registrar website and store it in a Mongo database. We are still deciding on how to set up the frontend, but it is likely to involve heavy use of Javascript-based tools and Ajax.
 
 \section{Functionality}
-CAT has several different possible use cases, all of which involve a comparison of multiple courses.
+CAT has several different possible use cases, all of which involve a comparison of multiple courses. The key user-facing object is something we're tentatively calling a ``search box," which is a small window (similar to a pop-up) that will display in sequence a search field, the results of that search, and finally specific data on whichever course is selected from the search results. These ``search boxes" will be able to be dragged around the screen and arranged to compare the results of several of them at once.
 \par Use case 1: A user wants to find a class fitting a particular kind of description (e.g. ``find a large LA class that is well-reviewed and offered after 11 AM"). The user logs in to CAT, which displays a prominent search box where all of these parameters can be entered (either a selection of fields, or a single text bar with smart interpretation, or both). Once the user has entered the search parameters, the best-matching courses are displayed, from which the user can select one or more courses to view the full data for.
 \par Use case 2: A user is only considering a few courses (e.g. COS 333 and COS 402) and wants to compare their ratings in detail. The user opens both courses (by typing the course code into the search box, then opening another search box and repeating the process) and compares them side-by-side with respect to those attributes that they find relevant (e.g. lecture ratings, overall ratings, enrollment numbers, etc.)
-\par Use case 3: A user is browsing courses and is considering what to take in future semesters. The user puts in very general search parameters (e.g. all COS classes) and looks at classes from the result list one at a time. When viewing courses, the user activates the ``timeline" option, which brings up past semesters of the course as well as the most recent semester. Then user can then view how course ratings, class size, readings, and so on have changed over time.
+\par Use case 3: A user is browsing courses and is considering what to take in future semesters. The user puts in very general search parameters (e.g. all COS classes) and looks at classes from the result list one at a time. When viewing courses, the user activates the ``timeline" option, which brings up past semesters of the course as well as the most recent semester. Accessible via a single button click from any detailed course view, the ``timeline" view will look like ordinary search results, but with past iterations of a course. By browsing these ``timeline" results as above, a user can then view how course ratings, class size, readings, and so on have changed over time.
 
 \par Core functionality that will be required:
 \begin{itemize}
@@ -138,7 +138,7 @@ CAT has several different possible use cases, all of which involve a comparison 
 
 \section{Timeline}
 \par Our timeline is posted at \\
-\url{http://www.princeton.edu/~nweires/timeline.html}.
+\url{http://www.princeton.edu/~gdisco/timeline.html}.
 \par The timeline (and the rest of our project) can also be viewed on Github at \\
 \url{https://github.com/lpaulsen333/cat}.
 
