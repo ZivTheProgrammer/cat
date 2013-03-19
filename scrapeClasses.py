@@ -8,8 +8,9 @@ from pymongo import MongoClient
 if len(sys.argv) < 2:
     print "usage: scrapeClasses [build | update | add]"
     print "\tbuild: creates the database from scratch"
-    print "\tupdate: checks for any data that has changed, and updates the database,"
-    print "\t\tbut without adding any new semesters"
+    print "\tupdate: checks for and new data or data that has changed, adding it to"
+    print "\t\tthe database, without changing anything that hasn't changed"
+    print "\t\t(even if that info is no longer posted)"
     print "\tadd: looks for any new semesters of data, and adds them to the database"
     sys.exit()
 
@@ -44,9 +45,9 @@ elif action == 'add':
 fTerm = urlopen(feed + '?term=list')
 terms = ET.parse(fTerm)
 
-
 for term in terms.iter(ns + 'term'):
     termCode = term.find(ns + 'code').text
+    # If we're just updating with a new semester, don't look at old ones
     if action == 'add' and courseCol.find_one({'term':termCode}):
         continue
     print "term code: " + termCode
@@ -87,6 +88,7 @@ for term in terms.iter(ns + 'term'):
             for i in instructors:
                 profId = i.find(ns + 'emplid').text
                 profs.append(profId)
+                # If we haven't seen this prof before, add them to the db
                 if not profCol.find_one({'id':profId}):
                     prof = {}
                     prof['id'] = profId
@@ -103,8 +105,8 @@ for term in terms.iter(ns + 'term'):
                 crossEntry['term'] = termCode
                 crossEntry['subject'] = c.find(ns + 'subject').text
                 crossEntry['course_number'] = c.find(ns + 'catalog_number').text
-                # if this listing isn't in the db, add it
                 entry['crosslistings'].append(crossEntry)
+                # if this listing isn't in the db, add it
                 if not courseCol.find_one(crossEntry):
                     crossEntry = crossEntry.copy() # don't want to change the one in entry
                     crossEntry['primary_subject'] = entry['subject']
@@ -121,3 +123,4 @@ for term in terms.iter(ns + 'term'):
 #    print c
 print "Done! Uncomment the things before this print statement to see what's in the database."
 print "Comment the break statements to get more than one semester and more than one course per subject"
+

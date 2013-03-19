@@ -19,7 +19,7 @@ class CatDB:
 
     
     # Returns a list of professors with matching id and name
-    #(name can be partial, id cannot)
+    # (name can be partial, id cannot)
     def get_professor(self, name=None, id_number=None):
         prof = {}
         if not name and not id_number:
@@ -36,9 +36,10 @@ class CatDB:
     # course can be a dict with all this info; if it's provided, everything
     # else is ignored, and it is passed to the search directly
     # If course number/term is specified, min/max values are ignored
+    # If professor id is given, professor name is ignored
     def get_course(self, course=None, subject=None, course_number=None,
             min_course_number='000', max_course_number='999', professor_id=None,
-            professor_name=None, term=None, min_term='0', max_term='9999'):
+            professor_name=None, term=None, min_term='0000', max_term='9999'):
         #TODO: make sure all of these are strings
         if course:
             return self.courseCol.find(course)
@@ -68,3 +69,4 @@ class CatDB:
             return None
         else:
             return self.courseCol.find(course)
+

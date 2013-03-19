@@ -1,5 +1,8 @@
 # This tells git which files to ignore (e.g. compiled versions of things)
 
+*.swp
+*.pyc
+
 # for latex
 *.acn
 *.acr
