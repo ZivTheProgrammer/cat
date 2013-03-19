@@ -24,13 +24,21 @@ profCol = db.instructors
 action = sys.argv[1]
 
 if action == 'build':
+    sure = raw_input("Are you sure you want to delete the old database? ")
+    if not sure.lower() in ['y', 'yes', 'yeah', 'yep']:
+        sys.exit()
     print "building the database from scratch"
     # Delete the old database- be careful!
     db.drop_collection('courses')
     db.drop_collection('instructors')
 
 elif action == 'update':
-    print "updating"
+    print 'updating'
+
+elif action == 'add':
+    print 'looking for new semesters to add'
+    # For now, this just adds any classes not in the db.
+    # It doesn't check for things that have changed
 
 # Get the list of available terms
 fTerm = urlopen(feed + '?term=list')
@@ -39,6 +47,8 @@ terms = ET.parse(fTerm)
 
 for term in terms.iter(ns + 'term'):
     termCode = term.find(ns + 'code').text
+    if action == 'add' and courseCol.find_one({'term':termCode}):
+        continue
     print "term code: " + termCode
     # Get the data from each term, starting with list of subjects:
     fSub = urlopen(feed + '?term=' + termCode + "&subject=list")
@@ -105,8 +115,9 @@ for term in terms.iter(ns + 'term'):
             break
         
     break
-for p in profCol.find():
-    print p
-for c in courseCol.find():
-    print c
-
+#for p in profCol.find():
+#    print p
+#for c in courseCol.find():
+#    print c
+print "Done! Uncomment the things before this print statement to see what's in the database."
+print "Comment the break statements to get more than one semester and more than one course per subject"
