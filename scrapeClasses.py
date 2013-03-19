@@ -16,11 +16,19 @@ if len(sys.argv) < 2:
 feed = 'http://etcweb.princeton.edu/webfeeds/courseofferings/'
 ns = '{http://as.oit.princeton.edu/xml/courseofferings-1_3}'
 
+connection = MongoClient()
+db = connection.cat_database
+courseCol = db.courses
+profCol = db.instructors
 
 action = sys.argv[1]
 
 if action == 'build':
     print "building the database from scratch"
+    # Delete the old database- be careful!
+    db.drop_collection('courses')
+    db.drop_collection('instructors')
+
 elif action == 'update':
     print "updating"
 
@@ -38,27 +46,67 @@ for term in terms.iter(ns + 'term'):
     # Get data for each subject
     for sub in subjects.iter(ns + 'subject'):
         subCode = sub.find(ns + 'code').text
-        print subCode
         # Get all the courses for each subject
         sleep(.5)
         fCourse = urlopen(feed + "?term=" + termCode + "&subject=" + subCode)
         courses = ET.parse(fCourse)
         for course in courses.iter(ns + 'course'):
+            entry = {}
+            entry['term'] = termCode
+            # Find the subject code used for the primary listing (not necessarily
+            # the subject we searched by
+            entry['subject'] = courses.find('.//' + ns + 'subjects/' + ns
+                    + 'subject/' + ns + 'code').text
+            entry['subject']
             catNum = course.findall(ns + 'catalog_number')
             if len(catNum) > 1:
                 print "ERROR: course has more than one number"
-            print catNum[0].text
+            entry['course_number'] = catNum[0].text
+            # Check whether we already added this class (e.g. if it was crosslisted)
+            # Presumably the term, dept and number uniquely identify it
+            print entry
+            if courseCol.find_one(entry):
+                # continue TODO: put this back
+                break
+            
+            entry['course_id'] = course.find(ns + 'course_id').text
             title = course.find(ns + 'title').text
-            print title
             description = course.find(ns + 'detail').find(ns + 'description').text
-            print description
             profs = []
             instructors = course.iter(ns + 'instructor')
             for i in instructors:
-                profs.append((i.find(ns + 'emplid').text, i.find(ns + 'first_name').text,
-                    i.find(ns + 'last_name').text))
-            print profs
+                profId = i.find(ns + 'emplid').text
+                profs.append(profId)
+                if not profCol.find_one({'id':profId}):
+                    prof = {}
+                    prof['id'] = profId
+                    prof['first_name'] = i.find(ns + 'first_name').text
+                    prof['last_name'] = i.find(ns + 'last_name').text
+                    prof['name'] = prof['first_name'] + ' ' + prof['last_name']
+                    profCol.insert(prof)
+            entry['instructors'] = profs
+            crosslistings = course.iter(ns + 'crosslisting')
+            if crosslistings:
+                entry['crosslistings'] = []
+            for c in crosslistings:
+                crossEntry = {}
+                crossEntry['term'] = termCode
+                crossEntry['subject'] = c.find(ns + 'subject').text
+                crossEntry['course_number'] = c.find(ns + 'catalog_number').text
+                # if this listing isn't in the db, add it
+                entry['crosslistings'].append(crossEntry)
+                if not courseCol.find_one(crossEntry):
+                    crossEntry = crossEntry.copy() # don't want to change the one in entry
+                    crossEntry['primary_subject'] = entry['subject']
+                    crossEntry['primary_course_number'] = entry['course_number']
+                    courseCol.insert(crossEntry)
+
+            courseCol.insert(entry)
             break
-        break
+        
     break
+for p in profCol.find():
+    print p
+for c in courseCol.find():
+    print c
 
