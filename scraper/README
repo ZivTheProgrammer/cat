@@ -1,0 +1,4 @@
+The scraper code comes from Alex Ogier '13, to whom many thanks.
+I have not updated BeautifulSoup.py for a long time, so it might
+be worthwhile to do so.  You will have to update various fields
+in scraper.py to get more recent registrar data.

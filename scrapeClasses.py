@@ -4,8 +4,9 @@ from time import sleep
 from urllib import urlopen
 import xml.etree.ElementTree as ET
 from pymongo import MongoClient
+from scraper import scraper
 
-if len(sys.argv) < 2:
+if len(sys.argv) != 2:
     print "usage: scrapeClasses [build | update | add]"
     print "\tbuild: creates the database from scratch"
     print "\tupdate: checks for and new data or data that has changed, adding it to"
@@ -68,7 +69,7 @@ for term in terms.iter(ns + 'term'):
             # the subject we searched by
             entry['subject'] = courses.find('.//' + ns + 'subjects/' + ns
                     + 'subject/' + ns + 'code').text
-            entry['subject']
+            #entry['subject']
             catNum = course.findall(ns + 'catalog_number')
             if len(catNum) > 1:
                 print "ERROR: course has more than one number"
@@ -81,8 +82,8 @@ for term in terms.iter(ns + 'term'):
                 break
             
             entry['course_id'] = course.find(ns + 'course_id').text
-            title = course.find(ns + 'title').text
-            description = course.find(ns + 'detail').find(ns + 'description').text
+            entry['title'] = course.find(ns + 'title').text
+            entry['description'] = course.find(ns + 'detail').find(ns + 'description').text
             profs = []
             instructors = course.iter(ns + 'instructor')
             for i in instructors:
@@ -98,8 +99,7 @@ for term in terms.iter(ns + 'term'):
                     profCol.insert(prof)
             entry['instructors'] = profs
             crosslistings = course.iter(ns + 'crosslisting')
-            if crosslistings:
-                entry['crosslistings'] = []
+            entry['crosslistings'] = []
             for c in crosslistings:
                 crossEntry = {}
                 crossEntry['term'] = termCode
@@ -112,6 +112,23 @@ for term in terms.iter(ns + 'term'):
                     crossEntry['primary_subject'] = entry['subject']
                     crossEntry['primary_course_number'] = entry['course_number']
                     courseCol.insert(crossEntry)
+            if not entry['crosslistings']:
+                del entry['crosslistings']
+            # Now get data from the registrar site
+            regData = scraper.scrape_id_term(entry['course_id'], entry['term'])
+            #print regData
+            if regData.get('prereqs', None):
+                entry['prereqs'] = regData['prereqs']
+            if regData.get('area', None):
+                entry['distribution'] = regData['area']
+            if regData.get('readings', None):
+                entry['readings'] = regData['readings']
+            if regData.get('grading', None):
+                entry['grading'] = regData['grading']
+            if regData.get('classes', None):
+                entry['classes'] = regData['classes']
+
+            print entry
 
             courseCol.insert(entry)
             break
