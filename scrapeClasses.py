@@ -127,8 +127,10 @@ for term in terms.iter(ns + 'term'):
                 entry['grading'] = regData['grading']
             if regData.get('classes', None):
                 entry['classes'] = regData['classes']
+            if regData.get('pdf', None):
+                entry['pdf'] = regData['pdf']
 
-            print entry
+            #print entry
 
             courseCol.insert(entry)
             break

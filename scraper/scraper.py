@@ -46,6 +46,20 @@ def clean(str):
 def get_course_details(soup):
     "Returns a dict of {courseid, area, title, descrip, prereqs}."
     area = clean(soup('strong')[1].findAllNext(text=True)[1])  # balanced on a pinhead
+    pdf = clean(soup('strong')[1].findAllNext(text=True)[2])
+    pdf_options = []
+    if re.search("no audit|na", pdf, re.I):
+        pdf_options.append("na")
+    if re.search("npdf|(no pass/d/fail)", pdf, re.I):
+        pdf_options.append("npdf")
+    if re.search("p/d/f only", pdf, re.I):
+        pdf_options.append("pdfonly")
+    print pdf_options
+    if pdf and not pdf_options:
+        print "**** another pdf option: ", pdf
+        print "\tPlease tell Natalie, so she can fix it!"
+        print "\t(Or just do it yourself, if you want.)"
+
     if re.match(r'^\((LA|SA|HA|EM|EC|QR|ST|STN|STL)\)$', area):
         area = area[1:-1]
     else:
@@ -98,8 +112,8 @@ def get_course_details(soup):
             'descrip': clean(descrdiv.contents[0] if descrdiv else ''),
             'prereqs': clean(pretitle.parent.findNextSibling(text=True)) if pretitle != None else '',
             'grading': grades,
-            'readings': readings_list
-
+            'readings': readings_list,
+            'pdf': pdf_options
             }
 
 def get_course_listings(soup):

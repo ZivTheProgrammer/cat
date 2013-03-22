@@ -27,7 +27,6 @@ class CatDB:
         if id_number:
             prof['id'] = id_number
         if name: # regex to search for parts of names
-            print 'searching for name: ' + name
             nameRegex = '.*' + string.join(name.split(), '.*') + '.*'
             prof['name'] = re.compile(nameRegex, re.IGNORECASE)
         return self.profCol.find(prof)
@@ -75,14 +74,12 @@ class CatDB:
                 allProfs = self.get_professor(name=n)
                 for p in allProfs:
                     profIDs.append(p['id'])
-                    print p['name']
         if profIDs:
             course['instructors'] = {'$in': profIDs}
         if distribution:
             course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
 
         
-        print 'searching for', course
         if not course:
             return None
         else:
