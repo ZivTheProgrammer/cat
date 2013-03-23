@@ -2,31 +2,12 @@
 <html>
 <head>
 <title>Sandbox</title>
-<link rel="stylesheet" type="text/css" href="jQueryDemo.css">
-<script src="jquery-1.9.1.min.js"></script>
-</script>
-<script>
-$(document).ready(function(){
-	var detailOn = false;
-	$("#searchForm").submit(function(){
-		if (!detailOn) {
-			$("#resultsDiv").slideDown();
-		}
-		return false;
-	});
-	$("#button1").click(function(){
-		$("#resultsDiv").slideUp();
-		$("#detailView").slideUp();
-		detailOn = false;
-	});
-	$(".course").click(function(){
-		$("#resultsDiv").slideUp(function(){
-			$("#detailView").slideDown();
-			detailOn = true;
-		});
-	});
-});
-</script>
+<link rel="stylesheet" type="text/css" href="css/jQueryDemo.css">
+<link rel="stylesheet" type="text/css" href="css/themes/cupertino/jquery.ui.theme.css">
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/jquery-ui-1.10.2.custom.min.js"></script>
+<script src="js/search.js"></script>
+<script src="js/ui-tests.js"></script>
 </head>
 
 <body>
@@ -36,7 +17,6 @@ $(document).ready(function(){
 	<input type="text" name="search" id="searchButtonField" value="Show me teh coursez">
 	<input type="submit" value="Search">
 	</form>
-</div>
 <div id="resultsDiv"><ul id="results">
 	<li class="course" id="course1"><p class="courseText">COS109</p></li>
 	<li class="course" id="course1"><p class="courseText">COS109</p></li>
@@ -55,6 +35,7 @@ $(document).ready(function(){
 		   <li>Take this course!</li>
 		</ul>
 	</p>
+</div>
 </div>
 </body>
 </html>
