@@ -1,0 +1,30 @@
+div {
+	padding:5px;
+	width:50%;
+	position:relative;
+	left:25%;
+}
+#searchButtonField {
+	position:relative;
+	width:40%;
+}
+#searchFormDiv {
+	background-color:red;
+}
+#resultsDiv {
+	display:none;
+	background-color:lightblue;
+}
+.course {
+	border-style:solid;
+	border-width:1px;
+	padding:10px;
+}
+.courseText {
+	color:blue;
+}
+
+#detailView {
+	background-color:orange;
+	display:none;
+}
