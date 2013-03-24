@@ -23,3 +23,6 @@ def course_search(request):
     else:
         form = CourseNumberForm()
     return render(request, "course_search.html", {'form': form, 'output': output})
+    
+def jquery(request):
+    return render(request, "jQueryDemo.html")

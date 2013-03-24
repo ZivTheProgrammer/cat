@@ -7,7 +7,8 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('djangosite.views',
     url(r'^$', 'home', name='home'),
     url(r'^login/$', 'login', name='login'),
-    url(r'^search/$', 'course_search', name='course_search')
+    url(r'^search/$', 'course_search', name='course_search'),
+    url(r'^jquery/$', 'jquery', name='jquery')
     
     # Examples:
     # url(r'^djangosite/', include('djangosite.foo.urls')),
