@@ -38,6 +38,7 @@ class CatDB:
         If professor id and name are given, finds classes that match either
         Anything that takes a single value can also take a list. The function
         returns courses that match any of them
+        pdf can be 'na', 'pdfonly', 'npdf' (not pdf-able)
 
         For example:
         get_course(course_number='201', subject=['MAT', 'COS', 'ELE'])
@@ -48,13 +49,14 @@ class CatDB:
     def get_course(self, course=None, subject=None, course_number=None,
             min_course_number='000', max_course_number='999', professor_id=None,
             professor_name=None, term=None, min_term='0000', max_term='9999',
-            distribution=None):
+            distribution=None, pdf=None):
         #TODO: make sure all of these are strings
         if course:
             return self.courseCol.find(course)
         else:
             course = {}
         if subject:
+            # TODO: Make all capital letters
             course['subject'] = { '$in':subject if isinstance(subject, list) else [subject]}
         if course_number:
             course['course_number'] = {'$in':course_number if isinstance(course_number, list) else [course_number]}
@@ -78,6 +80,8 @@ class CatDB:
             course['instructors'] = {'$in': profIDs}
         if distribution:
             course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
+        if pdf:
+            course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
 
         
         if not course:
