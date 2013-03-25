@@ -4,6 +4,24 @@
         <title> CatDB test </title>
         <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
         <script src="{{STATIC_URL}}js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script> 
+            $(document).ready(function() {
+               $("#searchFormDiv").draggable();
+	       /* attach a submit handler to the form */
+               $("#searchForm").submit(function(event) {
+                  /* stop form from submitting normally */
+                  event.preventDefault();
+                  /* send the data using post */
+                  var posting = $.post("/results/", $("#searchForm").serialize(), 
+                     function( data ) {
+                        /* put the data in the result div */
+                        $("#result").empty().append( $( data ) );
+                        /* make the fields sortable */
+                        $("#fields").sortable();
+                  });
+               });
+            });
+        </script>
     </head>
     <body>
         <div id="searchFormDiv" style="background-color:orange; width: 500px; margin-left: 100px;">
@@ -13,23 +31,5 @@
             </form>
             <div id="result"> </div>
         </div>
-        <script> 
-            /* attach a submit handler to the form */
-            $("#searchForm").submit(function(event) {
-                /* stop form from submitting normally */
-                event.preventDefault();
-                /* send the data using post */
-                var posting = $.post("/results/", $("#searchForm").serialize(), 
-                    function( data ) {
-                    /* put the data in the result div */
-                    $("#result").empty().append( $( data ) );
-                    /* make the fields sortable */
-                    $("#fields").sortable();
-                });
-            });
-            $(document).ready(function() {
-                $("#searchFormDiv").draggable();
-            });
-        </script>
     </body>
 </html>
