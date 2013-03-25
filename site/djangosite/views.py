@@ -21,7 +21,7 @@ def search_results(request):
     form = CourseNumberForm(request.POST)
     if form.is_valid():
         db = CatDB()
-        #output = db.get_course(subject = form.cleaned_data['subject'], 
-        #    course_number = form.cleaned_data['course_number'])
-        output = db.get_course(subject = form.cleaned_data['subject'])
+        output = db.get_course(subject = form.cleaned_data['subject'], 
+            course_number = form.cleaned_data['course_number'])
+        #output = db.get_course(subject = form.cleaned_data['subject'])
     return render(request, "search_results.html", {'output': output})
