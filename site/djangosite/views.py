@@ -13,16 +13,14 @@ def login(request):
     return HttpResponse(netid)
     
 def course_search(request):
+    form = CourseNumberForm()
+    return render(request, "course_search.html", {'form': form})
+
+def search_results(request):
     output = None
-    if request.method == 'POST':
-        form = CourseNumberForm(request.POST)
-        if form.is_valid():
-            db = CatDB()
-            output = db.get_course(subject = form.cleaned_data['subject'], 
-                course_number = form.cleaned_data['course_number'])
-    else:
-        form = CourseNumberForm()
-    return render(request, "course_search.html", {'form': form, 'output': output})
-    
-def jquery(request):
-    return render(request, "jQueryDemo.html")
+    form = CourseNumberForm(request.POST)
+    if form.is_valid():
+        db = CatDB()
+        output = db.get_course(subject = form.cleaned_data['subject'], 
+            course_number = form.cleaned_data['course_number'])
+    return render(request, "search_results.html", {'output': output})
