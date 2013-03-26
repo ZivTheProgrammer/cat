@@ -48,37 +48,87 @@ class CatDB:
     def get_course(self, course=None, subject=None, course_number=None,
             min_course_number='000', max_course_number='999', professor_id=None,
             professor_name=None, term=None, min_term='0000', max_term='9999',
-            distribution=None):
+            distribution=None, description=None):
         #TODO: make sure all of these are strings
         if course:
-            return self.courseCol.find(course)
+            course = course.split(', ');
+            if isinstance(course,list):
+                for c in course:
+                    c = str(c)
+            else:
+                return self.courseCol.find(course)
         else:
             course = {}
+
         if subject:
-            course['subject'] = { '$in':subject if isinstance(subject, list) else [subject]}
+            subject = subject.split(', ');
+            if isinstance(subject,list):
+                for c in subject:
+                    c =str(c)
+            else:
+                course['subject'] = { '$in':subject if isinstance(subject, list) else [subject]}
+
         if course_number:
-            course['course_number'] = {'$in':course_number if isinstance(course_number, list) else [course_number]}
+            course_number = course_number.split(', ');
+            if isinstance(course_number,list):
+                for c in course_number:
+                    c =str(c)
+            else:
+                course['course_number'] = {'$in':course_number if isinstance(course_number, list) else [course_number]}
         else:
             course['course_number'] = {'$gt':min_course_number, '$lt':max_course_number}
+
         if term:
-            course['term'] = term
+            term = term.split(', ');
+            if isinstance(term, list):
+                for c in term:
+                    c = str(c)
+            else:
+                course['term'] = term
         else:
             course['term'] = {'$gt':min_term, '$lt':max_term}
         profIDs = []
+
         if professor_id:
-            profIDs = professor_id if isinstance(professor_id, list) else [professor_id]
+            professor_id = professor_id.split(', ')
+            if isinstance(professor_id, list):
+                for c in professor_id:
+                    c = str(c)
+            else:
+                profIDs = professor_id if isinstance(professor_id, list) else [professor_id]
+
         if professor_name:
+            professor_name = professor_name.split(', ');
             if not isinstance(professor_name, list):
                 professor_name = [professor_name]
             for n in professor_name:
                 allProfs = self.get_professor(name=n)
                 for p in allProfs:
                     profIDs.append(p['id'])
-        if profIDs:
-            course['instructors'] = {'$in': profIDs}
-        if distribution:
-            course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
 
+        if profIDs:
+            profIDs = profIDs.split(', ')
+            if isinstance(profIDs, list):
+                for c in profIDs:
+                    c = str(c)
+            else:
+                course['instructors'] = {'$in': profIDs}
+
+        if distribution:
+            distribution = distribution.split(', ')
+            if isinstance(distribution, list):
+                for c in distribution:
+                    c = str(c)
+            else:
+                course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
+
+        if description: #keyword search
+            keywords = description.split()
+            descRegex = '.*'
+            for kw in keywords:
+                descRegex = descRegex + kw + '|'
+            descRegex = descRegex + '.*'
+            course['description'] = re.compile(descRegex, re.IGNORECASE)
         
         if not course:
             return None
