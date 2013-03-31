@@ -24,18 +24,29 @@ def search_results(request):
     output = None
     form = CourseNumberForm(request.POST)
     if form.is_valid():
-        text = form.cleaned_data['text']
-        
+        query = parse(form.cleaned_data['text'])
+        print query
         db = CatDB()
-        output = db.get_course(subject = form.cleaned_data['subject'], 
-            course_number = form.cleaned_data['course_number'])
+        output = db.get_course(**query)
     return render(request, "search_results.html", {'output': output})
     
 # Helper function to interpret the OMNIBAR(tm).
 def parse(text):
-    tokens = text.split()
+    tokens = text.lower().split()
     output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': []}
     previous = {}
     for token in tokens:
-        if token.match
-        
+        print token
+        # Match subject codes
+        if re.match('^[a-z]{3}$', token):
+            output['subject'].append(token)
+        # Match distribution requirement codes
+        elif re.match('^[a-z]{2}$', token):
+            output['distribution'].append(token)
+        # Match course numbers
+        elif re.match('^[0-9]{3}$', token):
+            output['course_number'].append(token)
+        # Match professor names
+        elif re.match('^[a-z]+$', token):
+            output['professor_name'].append(token)
+    return output
