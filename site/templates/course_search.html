@@ -2,16 +2,34 @@
 <html>
     <head>
         <title> CatDB test </title>
+        <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
+        <script src="{{STATIC_URL}}js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script> 
+            $(document).ready(function() {
+               $("#searchFormDiv").draggable();
+	       /* attach a submit handler to the form */
+               $("#searchForm").submit(function(event) {
+                  /* stop form from submitting normally */
+                  event.preventDefault();
+                  /* send the data using post */
+                  var posting = $.post("/results/", $("#searchForm").serialize(), 
+                     function( data ) {
+                        /* put the data in the result div */
+                        $("#result").empty().append( $( data ) );
+                        /* make the fields sortable */
+                        $("#fields").sortable();
+                  });
+               });
+            });
+        </script>
     </head>
     <body>
-        <form action = "" method = "post">{% csrf_token %}
-            {{ form.as_table }}
-            <input type="submit" name = "OK" value="Go">
-        </form>
-        {% for result in output %}
-        <p> {{ result }} </p>
-        {% empty %}
-        <p> Please enter a 3-letter subject code and a course number. </p>
-        {% endfor %}
+        <div id="searchFormDiv" style="background-color:orange; width: 500px; margin-left: 100px;">
+            <form id ="searchForm" action = "" method = "post">{% csrf_token %}
+                {{ form.as_table }}
+                <input type="submit" name = "OK" value="Go">
+            </form>
+            <div id="result"> </div>
+        </div>
     </body>
 </html>
