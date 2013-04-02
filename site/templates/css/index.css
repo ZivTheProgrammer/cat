@@ -1,0 +1,47 @@
+div{
+    display:block;
+    margin:0px;
+    padding:0px;
+}
+    
+.coursecart{
+display:inline;
+}
+
+#omnibar_div  {
+    position:absolute;
+    height:50px;
+    width: 100%;
+    background-color:red;
+    top:0
+   
+}
+
+#cart_div {
+    background-color:green;
+    position:absolute;
+    top:500px;
+    }
+    
+#results_div{
+background-color:blue;
+width:100%;
+position:absolute;
+top:30px;
+height:500px;
+z-index:-2;
+
+}
+
+#results_left_div{
+background-color:orange;
+position:absolute;
+width:400px;
+}
+
+#results_right_div {
+background-color:yellow;
+position:absolute;
+left:400px;
+width:100;
+}    

@@ -13,8 +13,30 @@
 
 <body>
 <div id = "omnibar_div">
-    <form id = "omnibar_form" action = "" method = "post"> {% csrf_token %}
+    <form id="omnibar_form" action="" method="post">
+        <input id="omnibar_input" type="search"></input>
+        <input id="omnibar_submit" value="search" type="submit"></input>
     </form>
+</div>
+
+<div id="results_div">
+    <div id="results_left_div">
+        <ul>
+            <li class="course">COS 340: Reasoning About Computation </br> <span class="sub_span">Spring 2013: Mark Braverman</span></li>
+            <li class="course">COS 333: Advanced Programming Techniques </br> <span class="sub_span"> Spring 2013: Brian Kernighan</span></li>
+        </ul>
+    </div>
+
+    <div id="results_right_div">
+        <p> Here are some results </p>
+    </div>
+</div>
+
+<div id="cart_div">
+    <ul>
+        <li class="coursecart">COS 226 </li>
+        <li class="coursecart">COS 217 </li>
+    </ul>
 </div>
 
 </body>
