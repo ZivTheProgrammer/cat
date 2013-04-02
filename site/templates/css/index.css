@@ -8,6 +8,15 @@ div{
 display:inline;
 }
 
+#outside_div {
+    width:1000px;
+    position:absolute;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    }
+
 #omnibar_div  {
     position:absolute;
     height:50px;
@@ -45,6 +54,23 @@ width:400px;
 background-color:yellow;
 position:absolute;
 left:400px;
-width:400px;
-width:100;
+width:600px;
 }    
+
+#omnibar_form {
+background-color:green;
+margin-left:auto;
+margin-right:auto;
+left:0;
+right:0;
+height:50px;
+position:absolute;
+text-align:center;
+}
+
+#omnibar_input {
+width:400px;
+margin-top:5px;
+font-size:1.2em;
+height:40px;
+}
