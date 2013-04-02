@@ -13,21 +13,22 @@ display:inline;
     height:50px;
     width: 100%;
     background-color:red;
-    top:0
-   
+    top:0  
 }
 
 #cart_div {
     background-color:green;
     position:absolute;
-    top:500px;
+    top:550px;
+    width:100%;
+    
     }
     
 #results_div{
 background-color:blue;
 width:100%;
 position:absolute;
-top:30px;
+top:50px;
 height:500px;
 z-index:-2;
 
@@ -37,11 +38,13 @@ z-index:-2;
 background-color:orange;
 position:absolute;
 width:400px;
+
 }
 
 #results_right_div {
 background-color:yellow;
 position:absolute;
 left:400px;
+width:400px;
 width:100;
 }    
