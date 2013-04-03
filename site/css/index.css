@@ -69,6 +69,7 @@ text-align:center;
 }
 
 #omnibar_input {
+-webkit-appearance: none; /* Chrome hack */
 width:400px;
 margin-top:5px;
 font-size:1.2em;
