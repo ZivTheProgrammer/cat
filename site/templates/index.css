@@ -78,6 +78,7 @@ text-align:center;
 }
 
 #omnibar_input {
+-webkit-appearance:none;
 width:400px;
 margin-top:5px;
 font-size:1.2em;
