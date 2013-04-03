@@ -1,3 +1,13 @@
+.course:hover{
+background-color:grey;
+cursor:pointer;
+}
+
+.course_shown{
+background-color:white;
+cursor:default;
+}
+
 .detail {
     display:none;
 }
@@ -49,14 +59,14 @@ position:absolute;
 top:50px;
 height:500px;
 z-index:-2;
-
 }
 
 #results_left_div{
 background-color:orange;
 position:absolute;
 width:400px;
-
+height:100%;
+overflow:auto;
 }
 
 #results_right_div {

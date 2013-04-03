@@ -29,6 +29,7 @@ def search_results(request):
     db = CatDB()
     output = db.get_course(**query)
     list = [result for result in output]
+    print list
     return render(request, "search_results.html", {'output': list})
     
 # Helper function to interpret the OMNIBAR(tm).
