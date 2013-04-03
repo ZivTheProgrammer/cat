@@ -1,0 +1,85 @@
+.detail {
+    display:none;
+}
+
+.detail_shown {
+    display:block;
+    background-color:chartreuse;
+}
+
+div{
+    display:block;
+    margin:0px;
+    padding:0px;
+}
+    
+.coursecart{
+display:inline;
+}
+
+#outside_div {
+    width:1000px;
+    position:absolute;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    }
+
+#omnibar_div  {
+    position:absolute;
+    height:50px;
+    width: 100%;
+    background-color:red;
+    top:0  
+}
+
+#cart_div {
+    background-color:green;
+    position:absolute;
+    top:550px;
+    width:100%;
+    
+    }
+    
+#results_div{
+background-color:blue;
+width:100%;
+position:absolute;
+top:50px;
+height:500px;
+z-index:-2;
+
+}
+
+#results_left_div{
+background-color:orange;
+position:absolute;
+width:400px;
+
+}
+
+#results_right_div {
+background-color:yellow;
+position:absolute;
+left:400px;
+width:600px;
+}    
+
+#omnibar_form {
+background-color:green;
+margin-left:auto;
+margin-right:auto;
+left:0;
+right:0;
+height:50px;
+position:absolute;
+text-align:center;
+}
+
+#omnibar_input {
+width:400px;
+margin-top:5px;
+font-size:1.2em;
+height:40px;
+}

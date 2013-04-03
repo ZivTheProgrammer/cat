@@ -14,6 +14,9 @@ def login(request):
     netid = C.Authenticate()
     return HttpResponse(netid)
 
+def index(request):
+    return render(request, "index.html")
+    
 # Display the main search page.
 def course_search(request):
     form = CourseNumberForm()
@@ -22,13 +25,11 @@ def course_search(request):
 # Get search results and pass them back to the search page.
 def search_results(request):
     output = None
-    form = CourseNumberForm(request.POST)
-    if form.is_valid():
-        query = parse(form.cleaned_data['text'])
-        print query
-        db = CatDB()
-        output = db.get_course(**query)
-    return render(request, "search_results.html", {'output': output})
+    query = parse(request.POST['text'])
+    db = CatDB()
+    output = db.get_course(**query)
+    list = [result for result in output]
+    return render(request, "search_results.html", {'output': list})
     
 # Helper function to interpret the OMNIBAR(tm).
 def parse(text):
