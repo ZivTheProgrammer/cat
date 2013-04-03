@@ -5,18 +5,39 @@
 <meta charset="UTF-8">
 <meta name="author" content="Noah Apthorpe, Garrett Disco, Luke Paulsen, Jocelyn Tang, Natalie Weires">
 <meta name="description" content="A website to allow easy and informative comparisons of courses offered at Princeton University">
-<link rel="stylesheet" type="text/css" href="css/index.css">
-<link rel="stylesheet" type="text/css" href="css/themes/cupertino/jquery.ui.theme.css">
-<script src="js/jquery-1.9.1.min.js"></script>
-<script src="js/jquery-ui-1.10.2.custom.min.js"></script>
+<style type="text/css"> {% include "index.css" %} </style>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/themes/cupertino/jquery.ui.theme.css">
+<script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
+<script src="{{STATIC_URL}}js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script> 
+        $(document).ready(function() {
+        /* attach a submit handler to the form */
+           $("#omnibar_form").submit(function(event) {
+              /* stop form from submitting normally */
+              event.preventDefault();
+              /* send the data using post */
+              var posting = $.post("/results/", $("#omnibar_form").serialize(), 
+                 function( data ) {
+                    /* put the data in the result div */
+                    $("#results_div").empty().append( $( data ) );
+                    $(".course").click(function() {
+                        var course_id = $(this).attr('id').split('_')[2];
+                        $(".detail_shown").switchClass("detail_shown", "detail");                        
+                        var detail_id = "#detail_num_"+course_id;
+                        $(detail_id).switchClass("detail", "detail_shown");
+                    });
+              });
+           });
+        });
+    </script>
 </head>
 
 <body>
 <div id="outside_div">
 
 <div id = "omnibar_div">
-    <form id="omnibar_form" action="" method="post">
-        <input id="omnibar_input" type="search"></input>
+    <form id="omnibar_form" action="" method="post"> {% csrf_token %}
+        <input id="omnibar_input" type="search" name="text"></input>
         <input id="omnibar_submit" value="search" type="submit"></input>
     </form>
 </div>

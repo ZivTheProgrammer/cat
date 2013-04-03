@@ -1,11 +1,17 @@
-<div id="content">
-{% for result in output %}
-<ul id="fields">
-    {% for key, value in result.items %}
-    <li style="border-style:solid; border-width:1px;"> <p>{{ key }}: {{ value }}</p> </li>
-    {% endfor %}
-</ul>
-{% empty %}
-<p> Please enter a 3-letter subject code and a course number. </p>
-{% endfor %}
+<div>
+    <div id="results_left_div">
+        <ul>
+            {% for result in output %}
+            <li class="course" id="result_num_{{result.course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}} </br> <span class="sub_span">Spring 2013: Mark Braverman</span></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div id="results_right_div">
+        {% for result in output %}
+        <div class = "detail" id="detail_num_{{result.course_id}}">
+            <p> {{result.title}} </p>
+        </div>
+        {% endfor %}
+    </div>
 </div>

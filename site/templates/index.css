@@ -1,3 +1,12 @@
+.detail {
+    display:none;
+}
+
+.detail_shown {
+    display:block;
+    background-color:chartreuse;
+}
+
 div{
     display:block;
     margin:0px;
