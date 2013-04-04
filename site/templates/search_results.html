@@ -2,7 +2,7 @@
     <div id="results_left_div">
         <ul>
             {% for result in output %}
-            <li class="course" id="result_num_{{result.course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}} </br> <span class="sub_span">Spring 2013: Mark Braverman</span></li>
+            <li class="course" id="result_num_{{result.course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}} </br> <span class="sub_span"> {% include "prof_snippet.html" %}</span></li>
             {% endfor %}
         </ul>
     </div>
@@ -11,6 +11,7 @@
         {% for result in output %}
         <div class = "detail" id="detail_num_{{result.course_id}}">
             <p> {{result.title}} </p>
+            <p> {% include "prof_snippet.html" %} </p>
             <p> {{result.description}} </p>
             <p> Classes: <p>
             <ul>

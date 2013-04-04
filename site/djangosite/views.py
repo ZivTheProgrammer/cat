@@ -29,7 +29,12 @@ def search_results(request):
     db = CatDB()
     output = db.get_course(**query)
     list = [result for result in output]
-    print list
+    # Get instructor information
+    for result in list:
+        if 'instructors' in result:
+            result['profs'] = []
+            for instructor in result['instructors']:
+                result['profs'].append(db.get_professor(id_number=instructor)[0])
     return render(request, "search_results.html", {'output': list})
     
 # Helper function to interpret the OMNIBAR(tm).
@@ -41,7 +46,7 @@ def parse(text):
         print token
         # Match subject codes
         if re.match('^[a-z]{3}$', token):
-            output['subject'].append(token)
+            output['subject'].append(token.upper())
         # Match distribution requirement codes
         elif re.match('^[a-z]{2}$', token):
             output['distribution'].append(token)
