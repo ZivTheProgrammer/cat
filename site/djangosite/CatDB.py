@@ -44,12 +44,26 @@ class CatDB:
         would return whichever of MAT201, COS201 and ELE201 that exist,
         from every semester
     """
-    # TODO: Add keyword search in descriptions, etc.
+    def rank(list_courses, query):
+        keywords = query['description']
+        totalscore = 0;
+        numMatch = 0;
+        # check how many keywords the course description contains
+        for course in list_courses:
+            courseDesc = course['stuff'];
+            totalcount = 0;
+            for q in keywords:
+                if (re.match(q, courseDesc) is not null):
+                    numMatch = numMatch + 1
+                    totalcount = totalcount + courseDesc.count(q)
+            # sleazy
+            totalscore = numMatch*1000 + totalcount
+            list_scores[course] = totalscore;
+
     def get_course(self, course=None, subject=None, course_number=None,
             min_course_number='000', max_course_number='999', professor_id=None,
             professor_name=None, term=None, min_term='0000', max_term='9999',
             distribution=None, description=None):
-        #TODO: make sure all of these are strings
         if course:
             course = course.split(', ');
             if isinstance(course,list):
