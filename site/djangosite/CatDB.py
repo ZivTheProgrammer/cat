@@ -16,8 +16,52 @@ class CatDB:
         self.db = self.connection.cat_database
         self.courseCol = self.db.courses
         self.profCol = self.db.instructors
+	self.studentCol = self.db.students
 
-    
+    def get_student(self, netID):
+        return self.studentCol.find_one({'netID': netID});
+
+    def add_course(self, netID, courseList):
+        if (self.studentCol.find_one({'netID': netID}) is None):
+            entry = {};
+            entry['netID'] = netID;
+            if isinstance(courseList, list):
+                entry['courseList'] = courseList;
+            else:
+                entry['courseList'] = [courseList];
+            self.studentCol.insert(entry);
+        else:
+            entry = self.studentCol.find_one({'netID': netID});
+            if isinstance(courseList, list):
+                for course in courseList:
+                    if course not in entry['courseList']:
+                        entry['courseList'].append(course);
+            else:
+                entry['courseList'].append(courseList);
+            # put updated things back
+            self.studentCol.update({'netID': netID},
+                                   {
+                    '$set': {'courseList': entry['courseList']},
+                    })
+
+    def remove_course(self, netID, courseList):
+        # check for if course is not there then you can't remove it
+        if (self.studentCol.find_one({'netID': netID}) is None):
+            sys.stderr.write('you tried to remove a course when the student has no courses!');
+        else:
+            entry = self.studentCol.find_one({'netID': netID});
+            if isinstance(courseList, list):
+                for course in courseList:
+                    if course in entry['courseList']:
+                        entry['courseList'].remove(course);
+            else:
+                entry['courseList'].remove(courseList);
+            # put updated things back
+            self.studentCol.update({'netID': netID},
+                                   {
+                    '$set': {'courseList': entry['courseList']},
+                    })
+
     # Returns a list of professors with matching id and name
     # (name can be partial, id cannot)
     def get_professor(self, name=None, id_number=None):
