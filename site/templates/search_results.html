@@ -2,7 +2,9 @@
     <div id="results_left_div">
         <ul>
             {% for result in output %}
-            <li class="course" id="result_num_{{result.course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}} </br> <span class="sub_span"> {% include "prof_snippet.html" %}</span></li>
+            <li class="course" id="result_num_{{result.course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}} </br> 
+            <span class="sub_span"> {% include "prof_snippet.html" %}</span>
+            <button class="savecourse_button" id="save_{{result.course_id}}">Save</button></li>
             {% endfor %}
         </ul>
     </div>
