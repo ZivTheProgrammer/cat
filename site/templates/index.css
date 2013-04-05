@@ -24,8 +24,18 @@ div{
 }
     
 .coursecart{
-display:inline;
+    display:inline;
+    background-color:blue;
 }
+
+.coursecart:hover {
+    cursor:pointer;
+    background-color:grey;
+}
+
+#cart_detail {
+    display:none;
+    }
 
 #outside_div {
     width:1000px;

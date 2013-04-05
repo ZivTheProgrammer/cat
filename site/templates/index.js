@@ -10,7 +10,7 @@ $(document).ready(function() {
                 $("#results_div").empty().append( $( data ) );
                 
                 /* make the course's data show up when it is clicked */
-                $(".course").click(function() {
+                $(".course").click(function(e) {
                     var course_id = $(this).attr('id').split('_')[2];
                     if ($("#detail_num_"+course_id).attr('class') != "detail_shown") {
                         $(".detail_shown").switchClass("detail_shown", "detail");                        
@@ -29,12 +29,50 @@ $(document).ready(function() {
                     if ($("#cart_num_"+course_id).length == 0) {
                         $("#cart_list").append(
                             "<li class='coursecart' id=cart_num_"+course_id+">"+
-                            $("#result_num_"+course_id).clone().children().remove().end().text().split(':')[0]+"</li>"
+                            $("#result_num_"+course_id).clone().children().remove().end().text().split(':')[0]+
+                            "<button class='removecourse_button'>Remove</button></li>"
                         );
+                        
+                        /* save the information to an invisible div */
+                        $("#detail_num_"+course_id).clone().removeClass().attr('id','cart_detail_'+course_id).appendTo($("#cart_detail"));
                        
                         /* add code to send post request to save that the user has added this course to their cart */
-                        
-                        /* add code to redisplay course information when user selects it in his/her cart */
+                      
+                        /* redisplay course information when user selects it in his/her cart */
+                        $(".coursecart").click(function(e) {
+                            if (e.target != this) return;
+                            var course_id = this.id.split('_')[2];
+                            /* if the info is not there from the original search
+                             *, bring the saved course info back to the right place */
+                            if($("detail_num_"+course_id).length == 0)
+                            {
+                                $("#cart_detail_"+course_id).clone().attr('id','detail_num_'+course_id).addClass("detail").appendTo("#results_right_div");
+                            }
+                            
+                            /* re-highlight the course if it's still there from the search */
+                            if ($("#result_num_"+course_id).hasClass('course')) {
+                                $("#result_num_"+course_id).switchClass('course','course_shown');
+                            } 
+                            else $(".course_shown").switchClass("course_shown","course");
+                            
+                            /* show the info */
+                            if ($("#detail_num_"+course_id).attr('class') != "detail_shown") {
+                            $(".detail_shown").switchClass("detail_shown", "detail");                        
+                            var detail_id = "#detail_num_"+course_id;
+                            $(detail_id).switchClass("detail", "detail_shown");
+                            }
+                        });
+
+                        /*set behavior of remove from cart button */
+                        $(".removecourse_button").click(function() {
+                            var course_id = $(this).parent().attr('id').split('_')[2];
+                            
+                            /* add code to send post request to save that the user has edited his/her cart */
+                            
+                            /* remove the course from the cart list and remove any hidden info about the course */
+                            $("#cart_num_"+course_id).remove();
+                            $("#cart_detail_"+course_id).remove();
+                        });                      
                     } 
                 });
             });
