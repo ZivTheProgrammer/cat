@@ -50,10 +50,11 @@ $(document).ready(function() {
                             }
                             
                             /* re-highlight the course if it's still there from the search */
+                            $(".course_shown").switchClass("course_shown","course");
                             if ($("#result_num_"+course_id).hasClass('course')) {
                                 $("#result_num_"+course_id).switchClass('course','course_shown');
                             } 
-                            else $(".course_shown").switchClass("course_shown","course");
+                            
                             
                             /* show the info */
                             if ($("#detail_num_"+course_id).attr('class') != "detail_shown") {
@@ -67,7 +68,7 @@ $(document).ready(function() {
                         $(".removecourse_button").click(function() {
                             var course_id = $(this).parent().attr('id').split('_')[2];
                             
-                            /* add code to send post request to save that the user has edited his/her cart */
+                            /* add code to send post request to save that the user has removed the course from his/her cart */
                             
                             /* remove the course from the cart list and remove any hidden info about the course */
                             $("#cart_num_"+course_id).remove();
