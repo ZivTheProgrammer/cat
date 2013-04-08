@@ -14,7 +14,16 @@ cursor:default;
 
 .detail_shown {
     display:block;
+    height: 100%;
     background-color:chartreuse;
+}
+
+.semester_menu{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100px;
+    background-color: red;
 }
 
 div{
@@ -84,6 +93,7 @@ background-color:yellow;
 position:absolute;
 left:400px;
 width:600px;
+height:100%;
 }    
 
 #omnibar_form {
