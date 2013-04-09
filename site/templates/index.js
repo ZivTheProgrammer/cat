@@ -28,6 +28,7 @@ $(document).ready(function() {
 					if ($(detail_id).length == 0) {
 						$.get("/semester/", {course_id: params[1], semester: params[2]}, function( data ) {
                         $(".detail_shown");
+                        });
 					}
 					else {
 						if ($(detail_id).attr("class") != "course_shown") {
@@ -35,7 +36,6 @@ $(document).ready(function() {
 							$(detail_id).switchClass("course", "course_shown");
 						}
 					}        
-                        });
                 });
                 
                 /* set the behavior of the "save course to cart button" */
