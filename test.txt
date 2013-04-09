@@ -7,3 +7,7 @@ Then, if you want it to remember your credentials, type
 git authcache
 
 And you will only have to enter your credentials the next time you push, subsequent times will remember your credentials. As written above it expires after 1 hour, if you want it to be longer, change the "3600" to however long you want it to remember, in seconds.
+
+--------------------
+
+This is a change I made to see if it works!!
