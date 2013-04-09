@@ -23,7 +23,15 @@ $(document).ready(function() {
                 
                 /* set the behavior of the "load semester button" */
                 $(".semester_menu>button").click(function() {
-                    alert("Hola!");
+                    var params = $(this).attr('class').split('_');
+                    $.get("/semester/", {course_id: params[1], semester: params[2]}, function( data ) {
+                        alert(data);
+                        
+                        
+                        
+                        
+                        
+                        });
                 });
                 
                 /* set the behavior of the "save course to cart button" */

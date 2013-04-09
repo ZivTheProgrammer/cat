@@ -39,7 +39,9 @@ def search_results(request):
     
 # Get a new semester and pass it back to the search page.
 def get_semester(request):
-    return HttpResponse("Hello World!")
+    db = CatDB()
+    output = db.get_course({"course_id": request.GET['course_id']})
+    return HttpResponse(output)
 #    return render(request, "get_semester.html")
     
 # Helper function to interpret the OMNIBAR(tm).
