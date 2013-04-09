@@ -24,13 +24,17 @@ $(document).ready(function() {
                 /* set the behavior of the "load semester button" */
                 $(".semester_menu>button").click(function() {
                     var params = $(this).attr('class').split('_');
-                    $.get("/semester/", {course_id: params[1], semester: params[2]}, function( data ) {
-                        alert(data);
-                        
-                        
-                        
-                        
-                        
+					var detail_id = "#detail_sem_"+params[2];
+					if ($(detail_id).length == 0) {
+						$.get("/semester/", {course_id: params[1], semester: params[2]}, function( data ) {
+                        $(".detail_shown");
+					}
+					else {
+						if ($(detail_id).attr("class") != "course_shown") {
+							$(".course_shown").switchClass("course_shown", "course");
+							$(detail_id).switchClass("course", "course_shown");
+						}
+					}        
                         });
                 });
                 
