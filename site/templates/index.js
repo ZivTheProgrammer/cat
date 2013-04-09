@@ -21,6 +21,11 @@ $(document).ready(function() {
                     }
                 });
                 
+                /* set the behavior of the "load semester button" */
+                $(".semester_menu>button").click(function() {
+                    alert("Hola!");
+                });
+                
                 /* set the behavior of the "save course to cart button" */
                 $(".savecourse_button").click(function() {
                     var course_id = this.id.split('_')[1];

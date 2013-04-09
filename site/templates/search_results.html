@@ -13,8 +13,8 @@
         {% for result in output %}
         <div class = "detail" id="detail_num_{{result.course_id}}">
             <div class = "semester_menu"> 
-                <div class="semester_{{result.course_id}}_1134"> Spring 2013 </div>
-                <div class="semester_{{result.course_id}}_1132"> Fall 2012 </div>
+                <button class="semester_{{result.course_id}}_1134" disabled> Spring 2013 </button>
+                <button class="semester_{{result.course_id}}_1132"> Fall 2012 </button>
             </div>
             
             <div class = "detail_title"> {{result.title}} </div>

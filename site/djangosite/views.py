@@ -37,6 +37,11 @@ def search_results(request):
                 result['profs'].append(db.get_professor(id_number=instructor)[0])
     return render(request, "search_results.html", {'output': list})
     
+# Get a new semester and pass it back to the search page.
+def get_semester(request):
+    return HttpResponse("Hello World!")
+#    return render(request, "get_semester.html")
+    
 # Helper function to interpret the OMNIBAR(tm).
 def parse(text):
     tokens = text.lower().split()

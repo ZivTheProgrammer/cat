@@ -9,6 +9,7 @@ urlpatterns = patterns('djangosite.views',
     url(r'^login/$', 'login', name='login'),
     url(r'^search/$', 'course_search', name='course_search'),
     url(r'^results/$', 'search_results', name='search_results'),
+    url(r'^semester/$', 'get_semester', name='get_semester'),
     url(r'^index/$', 'index', name='index'),
     
     # Examples:
