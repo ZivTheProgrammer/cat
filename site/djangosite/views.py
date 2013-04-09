@@ -29,12 +29,19 @@ def search_results(request):
     db = CatDB()
     output = db.get_course(**query)
     list = [result for result in output]
-    # Get instructor information
     for result in list:
+        # Add instructor information
         if 'instructors' in result:
             result['profs'] = []
             for instructor in result['instructors']:
                 result['profs'].append(db.get_professor(id_number=instructor)[0])
+        # Add nice semester name
+        if 'term' in result:
+            term_no = int(result['term'])
+            if term_no % 10 == 4:
+                result['term_name'] = "Spring {:d}".format(1900 + term_no / 10)
+            elif term_no % 10 == 2:
+                result['term_name'] = "Fall {:d}".format(1899 + term_no / 10)
     return render(request, "search_results.html", {'output': list})
     
 # Get a new semester and pass it back to the search page.
@@ -55,11 +62,18 @@ def parse(text):
             output['subject'].append(token.upper())
         # Match distribution requirement codes
         elif re.match('^[a-z]{2}$', token):
-            output['distribution'].append(token)
+            output['distribution'].append(token.upper())
         # Match course numbers
         elif re.match('^[0-9]{3}$', token):
             output['course_number'].append(token)
         # Match professor names
         elif re.match('^[a-z]+$', token):
             output['professor_name'].append(token)
+        # Match PDF criteria
+        elif re.match('^no-audit$', token):
+            output['pdf'] = 'na'
+        elif re.match('^no-pdf$', token):
+            output['pdf'] = 'npdf'
+        elif re.match('^pdf-only$', token):
+            output['pdf'] = 'pdfonly'
     return output
