@@ -26,17 +26,17 @@ $(document).ready(function() {
                     var params = $(this).attr('class').split('_');
 					var detail_id = "#detail_num_"+params[1];
 					/* Hide / show selected semester */
-					if ($(detail_id+">.detail_sem_"+params[2]).length == 0) {
+                    if ($(detail_id+">.detail_sem_"+params[2]).length == 0) {
 						$.get("/semester/", {course_id: params[1], semester: params[2]}, function( data ) {
                         	$(detail_id).append(data);
-							$(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
-							$(detail_id+">.detail_sem_"+params[2]).switchClass("semester", "semester_shown");
+                            $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
+                            $(detail_id+">.detail_sem_"+params[2]).switchClass("semester", "semester_shown");
                         });
 					}
-					else {
-						$(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
-						$(detail_id+">.detail_sem_"+params[2]).switchClass("semester", "semester_shown");
-					}
+                    else {
+                        $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
+                        $(detail_id+">.detail_sem_"+params[2]).switchClass("semester", "semester_shown");
+                    }
 					/* Enable / disable course history selection buttons */ 
 					$(detail_id+">.semester_menu>button").removeAttr("disabled");
 					$(detail_id+">.semester_menu>.semester_"+params[1]+"_"+params[2]).attr("disabled", "disabled");

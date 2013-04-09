@@ -30,26 +30,33 @@ def search_results(request):
     output = db.get_course(**query)
     list = [result for result in output]
     for result in list:
-        # Add instructor information
-        if 'instructors' in result:
-            result['profs'] = []
-            for instructor in result['instructors']:
-                result['profs'].append(db.get_professor(id_number=instructor)[0])
-        # Add nice semester name
-        if 'term' in result:
-            term_no = int(result['term'])
-            if term_no % 10 == 4:
-                result['term_name'] = "Spring {:d}".format(1900 + term_no / 10)
-            elif term_no % 10 == 2:
-                result['term_name'] = "Fall {:d}".format(1899 + term_no / 10)
+        result = annotate(db, result)
     return render(request, "search_results.html", {'output': list})
     
 # Get a new semester and pass it back to the search page.
 def get_semester(request):
     db = CatDB()
-    output = db.get_course({"course_id": request.GET['course_id']})
-    return render(request, "get_semester.html", {'result': output[0]})
-    
+    result = db.get_course({"course_id": request.GET['course_id']})[0]
+    result['term'] = u'1132' # For testing!
+    result = annotate(db, result)
+    return render(request, "get_semester.html", {'result': result})
+
+# Helper function to add information to a semester of a course.
+def annotate(db, semester):
+    # Add instructor information
+    if 'instructors' in semester:
+        semester['profs'] = []
+        for instructor in semester['instructors']:
+            semester['profs'].append(db.get_professor(id_number=instructor)[0])
+    # Add nice semester name
+    if 'term' in semester:
+        term_no = int(semester['term'])
+        if term_no % 10 == 4:
+            semester['term_name'] = "Spring {:d}".format(1900 + term_no / 10)
+        elif term_no % 10 == 2:
+            semester['term_name'] = "Fall {:d}".format(1899 + term_no / 10)
+    return semester
+
 # Helper function to interpret the OMNIBAR(tm).
 def parse(text):
     tokens = text.lower().split()
