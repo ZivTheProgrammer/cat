@@ -17,17 +17,19 @@
                 <button class="semester_{{result.course_id}}_1132"> Fall 2012 </button>
             </div>
             
-            <div class = "detail_title"> {{result.title}} </div>
-            <div class = "detail_term"> {{result.term}} </div>
-            <div class = "detail_distribution"> {{result.distribution}} </div>
-            <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
-            <div class = "detail_description"> {{result.description}} </div>
-            <div class = "detail_classes"> Classes:
-                <ul>
-                    {% for class in result.classes %}
-                    <li> {{ class.days}} {{ class.starttime }} - {{ class.endtime }} in {{ class.bldg }} {{class.roomnum}} </li>
-                    {% endfor %}
-                </ul> 
+            <div class = "detail_sem_{{result.term}}">
+                <div class = "detail_title"> {{result.title}} </div>
+                <div class = "detail_term"> {{result.term}} </div>
+                <div class = "detail_distribution"> {{result.distribution}} </div>
+                <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
+                <div class = "detail_description"> {{result.description}} </div>
+                <div class = "detail_classes"> Classes:
+                    <ul>
+                        {% for class in result.classes %}
+                        <li> {{ class.days}} {{ class.starttime }} - {{ class.endtime }} in {{ class.bldg }} {{class.roomnum}} </li>
+                        {% endfor %}
+                    </ul> 
+                </div>
             </div>
         </div>
         {% endfor %}

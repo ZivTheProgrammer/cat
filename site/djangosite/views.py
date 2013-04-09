@@ -41,8 +41,7 @@ def search_results(request):
 def get_semester(request):
     db = CatDB()
     output = db.get_course({"course_id": request.GET['course_id']})
-    return HttpResponse(output)
-#    return render(request, "get_semester.html")
+    return render(request, "get_semester.html", {'result': output[0]})
     
 # Helper function to interpret the OMNIBAR(tm).
 def parse(text):
