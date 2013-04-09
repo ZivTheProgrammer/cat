@@ -18,6 +18,14 @@ cursor:default;
     background-color:chartreuse;
 }
 
+.semester {
+	display:none;
+}
+
+.semester_shown {
+	display:block;
+}
+
 .semester_menu{
     position: absolute;
     top: 0px;
