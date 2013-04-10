@@ -20,7 +20,8 @@ ns = '{http://as.oit.princeton.edu/xml/courseofferings-1_3}'
 
 connection = MongoClient()
 db = connection.cat_database
-courseCol = db.courses
+courseCol = db.courses # All course instances
+uniqueCourseCol = db.unique
 profCol = db.instructors
 
 action = sys.argv[1]
@@ -33,6 +34,7 @@ if action == 'build':
     # Delete the old database- be careful!
     db.drop_collection('courses')
     db.drop_collection('instructors')
+    db.drop_collection('unique')
 
 elif action == 'update':
     print 'updating'
@@ -130,9 +132,14 @@ for term in terms.iter(ns + 'term'):
             if regData.get('pdf', None):
                 entry['pdf'] = regData['pdf']
 
-            #print entry
-
-            courseCol.insert(entry)
+            # TODO: check for courses that have changed number, etc.
+            entry['unique_course'] = entry['subject'] + entry['course_number']
+            newId = courseCol.insert(entry)
+            # Find in / add to the list of unique courses
+            print entry
+            print "New ID: ", newId
+            uniqueCourseCol.update({'course':entry['unique_course']}, {'$push' : {'years': {'id': newId, 'term':entry['term'], 'instructors':entry['instructors']}}}, upsert=True)
+            print uniqueCourseCol.find_one({'course' : entry['unique_course']})
             break
         
     break

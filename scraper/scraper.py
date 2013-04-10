@@ -54,7 +54,6 @@ def get_course_details(soup):
         pdf_options.append("npdf")
     if re.search("p/d/f only", pdf, re.I):
         pdf_options.append("pdfonly")
-    print pdf_options
     if pdf and not pdf_options:
         print "**** another pdf option: ", pdf
         print "\tPlease tell Natalie, so she can fix it!"
