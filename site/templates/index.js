@@ -1,4 +1,24 @@
 $(document).ready(function() {
+    /* Show and hide the advanced search dialog */
+    $("#show_advanced").click(function(event){
+        event.preventDefault();
+        $(".advanced_search_off").switchClass("advanced_search_off", "advanced_search_on");
+    });
+    
+    $("#hide_advanced").click(function(event){
+        event.preventDefault();
+        $(".advanced_search_on").switchClass("advanced_search_on", "advanced_search_off");
+    });
+    
+    /* 'Submit' the advanced search form */
+    $("#advanced_form").submit(function(event) {
+        event.preventDefault();
+        var input = $("input.fake_omnibar").val();
+        $("input#omnibar_input").val(input);
+        $("input#omnibar_input").submit();
+        $(".advanced_search_on").switchClass("advanced_search_on", "advanced_search_off");
+    });
+
     /* attach a submit handler to the form */
     $("#omnibar_form").submit(function(event) {
         /* stop form from submitting normally */
