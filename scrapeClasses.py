@@ -113,6 +113,7 @@ for term in terms.iter(ns + 'term'):
                     crossEntry = crossEntry.copy() # don't want to change the one in entry
                     crossEntry['primary_subject'] = entry['subject']
                     crossEntry['primary_course_number'] = entry['course_number']
+                    crossEntry['unique_course'] = entry['subject'] + entry['course_number']
                     courseCol.insert(crossEntry)
             if not entry['crosslistings']:
                 del entry['crosslistings']

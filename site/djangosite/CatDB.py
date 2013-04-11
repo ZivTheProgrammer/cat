@@ -133,16 +133,29 @@ class CatDB:
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
 
-        
         if not course:
             return None
         results = self.courseCol.find(course)
-        if not unique:
-            return results
 
+        # Replace crosslistings with primary listings
+        results_list = []
+        crosslistings = []
+        for c in results:
+            if 'primary_subject' in c:
+                crosslistings.append({'subject': c['primary_subject'], 'course_number': c['primary_course_number'], 'term': c['term']})
+            else:
+                results_list.append(c)
+
+        new_results = self.courseCol.find({'$or': crosslistings});
+        for c in new_results:
+            results_list.append(c)
+
+        if not unique:
+            return results_list
+        
         # Get the most recent semester of each course
         unique_courses = set()
-        for c in results:
+        for c in results_list:
             i = c.get('unique_course', None)
             if i:
                 unique_courses.add(i)
@@ -167,11 +180,8 @@ class CatDB:
             for d in uniqueCourses:
                 if d['course'] == i:
                     c['all_terms'] = [x['term'] for x in d['years']]
-            print c['unique_course'], c['all_terms']
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
-        for c in results_list:
-            print c['unique_course'], c['all_terms']
 
         return results_list
         
