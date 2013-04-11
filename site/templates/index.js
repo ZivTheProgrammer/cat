@@ -1,24 +1,46 @@
 $(document).ready(function() {
     /* Show and hide the advanced search dialog */
-    $("#show_advanced").click(function(event){
-        event.preventDefault();
+    $("#show_advanced").click(function(){
         $(".advanced_search_off").switchClass("advanced_search_off", "advanced_search_on");
     });
     
-    $("#hide_advanced").click(function(event){
-        event.preventDefault();
+    $("#hide_advanced").click(function(){
         $(".advanced_search_on").switchClass("advanced_search_on", "advanced_search_off");
     });
+    
+    /* Set up the advanced search form */
+    $( "#advanced_num_slider" ).slider({
+      range: true,
+      min: 100,
+      max: 600,
+      values: [ 100, 600 ],
+      slide: function( event, ui ) {
+        $( "#advanced_num_range" ).val(ui.values[ 0 ] + "-" + ui.values[ 1 ] );
+      }
+    });
+    $( "#advanced_num_range" ).val($( "#advanced_num_slider" ).slider( "values", 0 ) +
+      "-" + $( "#advanced_num_slider" ).slider( "values", 1 ) );
     
     /* 'Submit' the advanced search form */
     $("#advanced_form").submit(function(event) {
         event.preventDefault();
-        var input = $("input.fake_omnibar").val();
-        $("input#omnibar_input").val(input);
-        $("input#omnibar_input").submit();
+        var input = $("input#advanced_keyword").val();
+        input += " " + $("select#advanced_distribution").val();
+        var nums = $("input#advanced_num_range").val().split("-");
+        if (nums[1] - nums[0] < 500) {
+            input += " >" + nums[0] + " <" +  nums[1];
+        }
+        $("#omnibar_input").val(input);
+        $("#omnibar_input").submit();
         $(".advanced_search_on").switchClass("advanced_search_on", "advanced_search_off");
     });
 
+    /* Attach a handler to the preset search button */
+    $("#preset_search_1").click(function() {
+        $("#omnibar_input").val("pdf-only");
+        $("#omnibar_input").submit();
+    });
+    
     /* attach a submit handler to the form */
     $("#omnibar_form").submit(function(event) {
         /* stop form from submitting normally */

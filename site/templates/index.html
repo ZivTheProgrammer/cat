@@ -18,7 +18,15 @@
     <div id = "advanced_search">
         <button id = "hide_advanced"> Close </button>
         <form id = "advanced_form" action="" method="post">
-            <input class = "fake_omnibar" type="search" name="text"></input>
+            <input id = "advanced_keyword" type="search" name="text"></input>
+            <select id = "advanced_distribution">
+                <option value=''></option>
+                {% for d in distrib %} <option value='{{ d }}'>{{ d }}</option> {% endfor %}
+            </select>    
+            <div style="display:block;">
+                <input type="text" id="advanced_num_range" style="border: 0; font-weight: bold;" readonly/>
+                <div id="advanced_num_slider"></div>
+            </div>
             <input value="search" type="submit"></input>
         </form>
     </div>
@@ -44,6 +52,7 @@
 
     <div id="results_right_div">
         <p> Welcome to CAT! </p>
+        <button id="preset_search_1"> Find PDF-only classes </button>
     </div>
 </div>
 
