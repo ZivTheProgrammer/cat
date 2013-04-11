@@ -39,7 +39,7 @@ def search_results(request):
 def get_semester(request):
     db = CatDB()
     result = db.get_course({"course_id": request.GET['course_id']})[0]
-    result['term'] = u'1132' # For testing!
+    result['term'] = request.GET['semester'] # For testing!
     result = annotate(db, result)
     return render(request, "get_semester.html", {'result': result})
 
