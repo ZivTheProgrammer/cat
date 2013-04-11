@@ -146,9 +146,10 @@ class CatDB:
             else:
                 results_list.append(c)
 
-        new_results = self.courseCol.find({'$or': crosslistings});
-        for c in new_results:
-            results_list.append(c)
+        if crosslistings:
+            new_results = self.courseCol.find({'$or': crosslistings});
+            for c in new_results:
+                results_list.append(c)
 
         if not unique:
             return results_list
