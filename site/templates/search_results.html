@@ -13,8 +13,9 @@
         {% for result in output %}
         <div class = "detail" id="detail_num_{{result.course_id}}">
             <div class = "semester_menu"> 
-                <button class="semester_{{result.course_id}}_1134" disabled> Spring 2013 </button>
-                <button class="semester_{{result.course_id}}_1132"> Fall 2012 </button>
+                {% for term in result.all_terms %}
+                    <button class="semester_{{result.course_id}}_{{term}}" {%if term == result.term%}disabled{%endif%}> {{term}} </button>
+                {% endfor %}                
             </div>
             
             <div class = "semester_shown detail_sem_{{result.term}}">

@@ -30,10 +30,10 @@ def search_results(request):
     query = parse(request.POST['text'])
     db = CatDB()
     output = db.get_course(**query)
-    list = [result for result in output]
-    for result in list:
+    for result in output:
         result = annotate(db, result)
-    return render(request, "search_results.html", {'output': list})
+    print output
+    return render(request, "search_results.html", {'output': output})
     
 # Get a new semester and pass it back to the search page.
 def get_semester(request):

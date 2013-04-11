@@ -27,9 +27,8 @@ $(document).ready(function() {
         var input = $("input#advanced_keyword").val();
         input += " " + $("select#advanced_distribution").val();
         var nums = $("input#advanced_num_range").val().split("-");
-        if (nums[1] - nums[0] < 500) {
-            input += " >" + nums[0] + " <" +  nums[1];
-        }
+        if (nums[0] > 100) input += " >" + nums[0];
+        if (nums[1] < 600) input += " <" + nums[1];
         $("#omnibar_input").val(input);
         $("#omnibar_input").submit();
         $(".advanced_search_on").switchClass("advanced_search_on", "advanced_search_off");
