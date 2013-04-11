@@ -13,12 +13,24 @@
 </head>
 
 <body>
+
+<div class = "advanced_search_off">
+    <div id = "advanced_search">
+        <button id = "hide_advanced"> Close </button>
+        <form id = "advanced_form" action="" method="post">
+            <input class = "fake_omnibar" type="search" name="text"></input>
+            <input value="search" type="submit"></input>
+        </form>
+    </div>
+</div>
+
 <div id="outside_div">
 
 <div id = "omnibar_div">
+    <button id="show_advanced"> Advanced Search </button>
     <form id="omnibar_form" action="" method="post"> {% csrf_token %}
         <input id="omnibar_input" type="search" name="text"></input>
-        <input id="omnibar_submit" value="search" type="submit"></input>
+        <input id="omnibar_submit" value="Search" type="submit"></input>
     </form>
 </div>
 
