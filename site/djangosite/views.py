@@ -55,6 +55,8 @@ def annotate(db, semester):
             semester['term_name'] = "Spring {:d}".format(1900 + term_no / 10)
         elif term_no % 10 == 2:
             semester['term_name'] = "Fall {:d}".format(1899 + term_no / 10)
+        elif term_no % 10 == 1:
+            semester['term_name'] = "Summer {:d}".format(1899 + term_no / 10)
     return semester
 
 # Helper function to interpret the OMNIBAR(tm).
