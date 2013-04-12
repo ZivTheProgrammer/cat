@@ -140,6 +140,7 @@ for term in terms.iter(ns + 'term'):
             print entry
             print "New ID: ", newId
             uniqueCourseCol.update({'course':entry['unique_course']}, {'$push' : {'years': {'id': newId, 'term':entry['term'], 'instructors':entry['instructors']}}}, upsert=True)
+            uniqueCourseCol.update({'course':entry['unique_course']}, {'reviews': 123})
             print uniqueCourseCol.find_one({'course' : entry['unique_course']})
 #            break
         
