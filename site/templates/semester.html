@@ -1,6 +1,6 @@
 <div class = "detail_title"> {{result.title}} </div>
 <div class = "detail_term"> {{result.term_name}} ({{result.term}}) </div>
-<div class = "detail_distribution"> {{result.distribution}} {% for s in result.pdf %} {{ s }} {% endfor %} </div>
+<div class = "detail_distribution"> {{result.distribution}} {% for s in result.pdf %} {{ s.upper }} {% endfor %} </div>
 <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
 <div class = "detail_description"> {{result.description}} </div>
 <div class = "detail_classes"> Classes:

@@ -5,6 +5,8 @@ import CASClient
 import re
 from CatDB import CatDB
 
+DISTRIBUTION_AREAS = ['EM', 'EC', 'HA', 'LA', 'QR', 'SA', 'STN', 'STL']
+
 def home(request):
     return render(request, "hello_world.html")
 
@@ -15,7 +17,7 @@ def login(request):
     return HttpResponse(netid)
 
 def index(request):
-    return render(request, "index.html")
+    return render(request, "index.html", {'distrib': DISTRIBUTION_AREAS})
     
 # Display the main search page.
 def course_search(request):
@@ -28,16 +30,16 @@ def search_results(request):
     query = parse(request.POST['text'])
     db = CatDB()
     output = db.get_course(**query)
-    list = [result for result in output]
-    for result in list:
+    for result in output:
         result = annotate(db, result)
-    return render(request, "search_results.html", {'output': list})
+    print output
+    return render(request, "search_results.html", {'output': output})
     
 # Get a new semester and pass it back to the search page.
 def get_semester(request):
     db = CatDB()
     result = db.get_course({"course_id": request.GET['course_id']})[0]
-    result['term'] = u'1132' # For testing!
+    result['term'] = request.GET['semester'] # For testing!
     result = annotate(db, result)
     return render(request, "get_semester.html", {'result': result})
 
@@ -61,28 +63,32 @@ def annotate(db, semester):
 
 # Helper function to interpret the OMNIBAR(tm).
 def parse(text):
-    tokens = text.lower().split()
-    output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': []}
+    tokens = text.upper().split()
+    output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': []}
     previous = {}
     for token in tokens:
-        print token
-        # Match subject codes
-        if re.match('^[a-z]{3}$', token):
-            output['subject'].append(token.upper())
+        print token #For testing... remember to remove this eventually!
         # Match distribution requirement codes
-        elif re.match('^[a-z]{2}$', token):
-            output['distribution'].append(token.upper())
+        if token in DISTRIBUTION_AREAS:
+            output['distribution'].append(token)
+        # Match subject codes
+        elif re.match('^[A-Z]{3}$', token):
+            output['subject'].append(token)
         # Match course numbers
         elif re.match('^[0-9]{3}$', token):
             output['course_number'].append(token)
+        elif re.match('^>[0-9]{3}$', token):
+            output['min_course_number'] = token[1:]
+        elif re.match('^<[0-9]{3}$', token):
+            output['max_course_number'] = token[1:]
         # Match professor names
-        elif re.match('^[a-z]+$', token):
+        elif re.match('^[A-Z]+$', token):
             output['professor_name'].append(token)
         # Match PDF criteria
-        elif re.match('^no-audit$', token):
-            output['pdf'] = 'na'
-        elif re.match('^no-pdf$', token):
-            output['pdf'] = 'npdf'
-        elif re.match('^pdf-only$', token):
-            output['pdf'] = 'pdfonly'
+        elif re.match('^NO-AUDIT$', token):
+            output['pdf'].append('na')
+        elif re.match('^NO-PDF$', token):
+            output['pdf'].append('npdf')
+        elif re.match('^PDF-ONLY$', token):
+            output['pdf'].append('pdfonly')
     return output
