@@ -67,6 +67,7 @@ class Parser:
             return True
         except IOError:
             print "Failed loading data; file %s not readable" % Parser.SAVE_FILE
+            print "searching for... ", course
             return False
 
     def save(self):
@@ -88,13 +89,16 @@ class Parser:
                 else:
                     self.worddict[word] += 1;
 
-    def parse_advice(self, filename):
-        coursenum = coursenum_from_filename(filename);
-        soup = soupfile(filename)
+    def parse_advice(self, text, coursenum = None, term=None):
+        if not coursenum:
+            coursenum = coursenum_from_filename(text);
+        #soup = soupfile(filename)
+        soup = BeautifulSoup(text)
         tag = soup.find(name="ul")
         if tag == None:
             print "Couldn't find advice list for ", coursenum
             return False
+        reviews = []
         for item in tag.children:
             if isinstance(item, Tag) and item.name == "li":
                 # Save the data in the Parser object
@@ -106,15 +110,20 @@ class Parser:
                 # self.parse_words(item.string.strip()); 
 
                 # Print the string if in verbose mode
+                v(coursenum)
                 v(item.string.strip())
 
                 # INSERT YOUR CODE HERE,
                 # use item.string.strip() as a single student's advice
+                reviews.append(item.string.strip())
+        # Add reviews to the database
         return True
 
-    def parse_numbers(self, filename):
-        soup = soupfile(filename)
-        coursenum = coursenum_from_filename(filename);
+    def parse_numbers(self, text, coursenum=None, term=None):
+        #soup = soupfile(filename)
+        soup = BeautifulSoup(text)
+        if not coursenum:
+            coursenum = coursenum_from_filename(text);
         table = soup.find(name="table")
         table = table.find_next("table")
         table = table.find_next("table")
@@ -146,34 +155,47 @@ class Parser:
         v("Advice files:")
         for file in itertools.ifilter(isadvicefile, files):
             v(file)
-            #self.parse_advice(file)
+            
+            html = readfile(filename)
+            self.parse_advice(file)
         v("Data files:")
         for file in itertools.ifilter(isdatafile, files):
             v(file)
-            self.parse_numbers(file)
+            
+            html = readfile(filename)
+            self.parse_numbers(html)
         v(self.data)
+
+    def parse_files(self, numerical, text, coursenum, term):
+        print "parsing files!"
+        self.parse_advice(text, coursenum, term)
+        self.parse_numbers(numerical, coursenum, term)
 
     def print_words(self):
         list = sorted(self.worddict.iteritems(), key=operator.itemgetter(1))
         for tuple in list:
             print "%s: %d" % tuple
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
-args = parser.parse_args()
-Parser.VERBOSE = args.verbose
+if __name__ == "__main__":
 
-p = Parser();
-try:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
+    args = parser.parse_args()
+    Parser.VERBOSE = args.verbose
+
+    p = Parser();
+    try:
     # Loading and saving don't do anything unless you store stuff in the parser's data field, 
     # and the parsing function ignores the loaded data, so there's no use in saving/loading here.
     # p.load();
 
-    p.parse_dir();
+        p.parse_dir();
 
     # Only if you've saved words in the parser's worddict...
     # p.print_words();
     # p.save();
-except Exception, e: 
-    z = e
-    print z
+    except Exception, e: 
+        z = e
+        print z
+else:
+    Parser.VERBOSE = True
