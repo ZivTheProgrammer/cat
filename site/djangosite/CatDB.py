@@ -153,7 +153,6 @@ class CatDB:
 
         if not unique:
             return results_list
-        
         # Get the most recent semester of each course
         unique_courses = set()
         for c in results_list:
@@ -162,7 +161,7 @@ class CatDB:
                 unique_courses.add(i)
         courseIDs = []
         uniqueCourses = []
-        for c in self.uniqueCourseCol.find({'course':{'$in': list(unique_courses)}}):
+        for c in self.uniqueCourseCol.find({'course':{'$in' : list(unique_courses)}}):
             uniqueCourses.append(c)
             years = c.get('years', [])
             bestYear = {}
@@ -198,7 +197,6 @@ class CatDB:
             terms = course.get('years', [])
         else:
             terms = []
-        print "terms: ", terms
         term_ids = [t['_id'] for t in terms]
         offerings = self.courseCol.find({'_id' : {'$in' : term_ids}})
         reviews = []

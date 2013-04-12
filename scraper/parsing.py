@@ -241,26 +241,25 @@ if __name__ == "__main__":
     args = parser.parse_args()
     Parser.VERBOSE = args.verbose
 else:
-    Parse.VERBOSE = True
+    Parser.VERBOSE = True
 
 connection = MongoClient()
 db = connection.cat_database
 courseCol = db.courses # All course instances
 uniqueCourseCol = db.unique
 #profCol = db.instructors
-    p = Parser();
-    try:
+
+p = Parser();
+try:
     # Loading and saving don't do anything unless you store stuff in the parser's data field, 
     # and the parsing function ignores the loaded data, so there's no use in saving/loading here.
     # p.load();
 
-        p.parse_dir();
+    p.parse_dir();
 
     # Only if you've saved words in the parser's worddict...
     # p.print_words();
     # p.save();
-    except Exception, e: 
-        z = e
-        print z
-else:
-    Parser.VERBOSE = True
+except Exception, e: 
+    z = e
+    print z

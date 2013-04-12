@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 from pymongo import MongoClient
 from scraper import scraper
 
-if len(sys.argv) != 2:
+if len(sys.argv) != 2 or sys.argv[1] not in ['build', 'update', 'add']:
     print "usage: scrapeClasses [build | update | add]"
     print "\tbuild: creates the database from scratch"
     print "\tupdate: checks for and new data or data that has changed, adding it to"
@@ -43,6 +43,7 @@ elif action == 'add':
     print 'looking for new semesters to add'
     # For now, this just adds any classes not in the db.
     # It doesn't check for things that have changed
+
 
 # Get the list of available terms
 fTerm = urlopen(feed + '?term=list')
