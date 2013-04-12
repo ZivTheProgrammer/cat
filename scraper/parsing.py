@@ -118,6 +118,7 @@ class Parser:
                 # use item.string.strip() as a single student's advice
                 reviews.append(item.string.strip())
         # Add reviews to the database
+        courseCol.update({'term': term, 'course_number': courseNumber, 'subject': courseDept}, {'$set': {'review_text': reviews}})
         return True
 
     def parse_numbers(self, text, coursenum=None, term=None):
@@ -198,14 +199,14 @@ find_next("td")
 #            print c
 #        entry['review_Nums'] = entry.['review_Nums'].append(ratings); # FIX
 #        entry['text_reviews'] = entry.['text_reviews'].append(text_ratings);
-        courseCol.update({'course_number': courseNumber, 'subject': courseDept}, {'$set': {'review_Nums': ratings}})
-        print ratings
-        entry = courseCol.find_one({'subject': courseDept, 'course_number': courseNumber}); # FIX??
+        courseCol.update({'term': term, 'course_number': courseNumber, 'subject': courseDept}, {'$set': {'review_Nums': ratings}})
+#        print ratings
+#        entry = courseCol.find_one({'subject': courseDept, 'course_number': courseNumber}); # FIX??
         
         if (entry is None):
             print 'Course whose reviews you were trying to update is not found!'
-        else:
-            print entry;
+#        else:
+#            print entry;
 
     def parse_dir(self):
         # "." means the current directory
