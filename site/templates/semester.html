@@ -1,0 +1,12 @@
+<div class = "detail_title"> {{result.title}} </div>
+<div class = "detail_term"> {{result.term_name}} ({{result.term}}) </div>
+<div class = "detail_distribution"> {{result.distribution}} {% for s in result.pdf %} {{ s.upper }} {% endfor %} </div>
+<div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
+<div class = "detail_description"> {{result.description}} </div>
+<div class = "detail_classes"> Classes:
+    <ul>
+        {% for class in result.classes %}
+        <li> {{ class.classnum}} : {{ class.days}} {{ class.starttime }} - {{ class.endtime }} in {{ class.bldg }} {{class.roomnum}} </li>
+        {% endfor %}
+    </ul> 
+</div>

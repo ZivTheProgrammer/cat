@@ -1,11 +1,27 @@
-<div id="content">
-{% for result in output %}
-<ul id="fields">
-    {% for key, value in result.items %}
-    <li style="border-style:solid; border-width:1px;"> <p>{{ key }}: {{ value }}</p> </li>
-    {% endfor %}
-<ul>
-{% empty %}
-<p> Please enter a 3-letter subject code and a course number. </p>
-{% endfor %}
+<div>
+    <div id="results_left_div">
+        <ul>
+            {% for result in output %}
+            <li class="course" id="result_num_{{result.course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}} </br> 
+            <span class="sub_span"> {% include "prof_snippet.html" %}</span>
+            <button class="savecourse_button" id="save_{{result.course_id}}">Save</button></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div id="results_right_div">
+        {% for result in output %}
+        <div class = "detail" id="detail_num_{{result.course_id}}">
+            <div class = "semester_menu"> 
+                {% for term in result.all_terms %}
+                    <button class="semester_{{result.course_id}}_{{term}}" {%if term == result.term%}disabled{%endif%}> {{term}} </button>
+                {% endfor %}                
+            </div>
+            
+            <div class = "semester_shown detail_sem_{{result.term}}">
+                {% include "semester.html" %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>

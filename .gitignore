@@ -3,6 +3,9 @@
 *.swp
 *.pyc
 
+# for emacs
+*~
+
 # for latex
 *.acn
 *.acr

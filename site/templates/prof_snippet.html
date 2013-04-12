@@ -1,0 +1,1 @@
+{% for prof in result.profs %}{{ prof.first_name }} {{ prof.last_name }}{% if not forloop.last %},{% endif %} {% endfor %}
