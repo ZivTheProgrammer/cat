@@ -1,3 +1,4 @@
+from pymongo import MongoClient
 import argparse
 from bs4 import BeautifulSoup
 from bs4 import Tag
@@ -123,12 +124,15 @@ class Parser:
         print "We found a table!"
         #print type(table), table
 
+        courseNumber = coursenum[3:]
+        courseDept = coursenum[:3]
+
         ratings = {}
         lectures_row = table.find_next("tr").find_next("tr").find_next("tr")
-        print lectures_row
+#        print lectures_row
         cell = lectures_row.find_next("td").find_next("td").find_next("td").find_next("td")
         ratings["lectures"] = []
-        print cell.string
+#        print cell.string
         for i in range(5):
             ratings["lectures"].append(cell.string)
             cell = cell.find_next_sibling("td")
@@ -137,8 +141,62 @@ class Parser:
         # TODO: take out % signs
         # TODO: get the rest of the rows
         # TODO: put in the database
+        written_row = lectures_row.find_next("tr").find_next("tr")
+#        print written_row
+        cell = written_row.find_next("td").find_next("td").find_next("td").\
+find_next("td")
+        ratings["written"] = []
+        for i in range(5):
+            ratings["written"].append(cell.string)
+            cell = cell.find_next_sibling("td")
+        cell = cell.find_next_sibling("td")
+        ratings["written_mean"] = cell.string.strip()
+
+        readings_row = written_row.find_next("tr").find_next("tr")
+#        print readings_row
+        cell = readings_row.find_next("td").find_next("td").find_next("td").\
+find_next("td")
+        ratings["readings"] = []
+        for i in range(5):
+            ratings["readings"].append(cell.string)
+            cell = cell.find_next_sibling("td")
+        cell = cell.find_next_sibling("td")
+        ratings["readings_mean"] = cell.string.strip()
+
+        precepts_row = readings_row.find_next("tr").find_next("tr")
+#        print precepts_row
+        cell = precepts_row.find_next("td").find_next("td").find_next("td").\
+find_next("td")
+        ratings["precepts"] = []
+        for i in range(5):
+            ratings["precepts"].append(cell.string)
+            cell = cell.find_next_sibling("td")
+        cell = cell.find_next_sibling("td")
+        ratings["precepts_mean"] = cell.string.strip()
+
+        overall_row = precepts_row.find_next("tr").find_next("tr")
+#        print overall_row
+        cell = overall_row.find_next("td").find_next("td").find_next("td").\
+find_next("td")
+        ratings["overall"] = []
+        for i in range(5):
+            ratings["overall"].append(cell.string)
+            cell = cell.find_next_sibling("td")
+        cell = cell.find_next_sibling("td")
+        ratings["overall_mean"] = cell.string.strip()
+
+#        for c in courseCol.find({'subject': courseDept}):
+#            print c
+#        entry['review_Nums'] = entry.['review_Nums'].append(ratings); # FIX
+#        entry['text_reviews'] = entry.['text_reviews'].append(text_ratings);
+        courseCol.update({'course_number': courseNumber, 'subject': courseDept}, {'$set': {'review_Nums': ratings}})
         print ratings
+        entry = courseCol.find_one({'subject': courseDept, 'course_number': courseNumber}); # FIX??
         
+        if (entry is None):
+            print 'Course whose reviews you were trying to update is not found!'
+        else:
+            print entry;
 
     def parse_dir(self):
         # "." means the current directory
@@ -157,6 +215,12 @@ class Parser:
         list = sorted(self.worddict.iteritems(), key=operator.itemgetter(1))
         for tuple in list:
             print "%s: %d" % tuple
+
+connection = MongoClient()
+db = connection.cat_database
+courseCol = db.courses # All course instances
+uniqueCourseCol = db.unique
+#profCol = db.instructors
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
