@@ -45,22 +45,40 @@
 <div id="results_div">
     <div id="results_left_div">
         <ul>
-            <!--<li class="course">COS 340: Reasoning About Computation </br> <span class="sub_span">Spring 2013: Mark Braverman</span></li>
-            <li class="course">COS 333: Advanced Programming Techniques </br> <span class="sub_span"> Spring 2013: Brian Kernighan</span></li>-->
+
         </ul>
     </div>
 
     <div id="results_right_div">
-        <p> Welcome to CAT! </p>
-        <button id="preset_search_1"> Find PDF-only classes </button>
+        <!--<p> Welcome to CAT! </p>
+        <button id="preset_search_1"> Find PDF-only classes </button>-->
+        
+    
+        {% for result in courses %}
+        <div class = "detail" id="detail_num_{{result.course_id}}">
+            <div class = "semester_menu"> 
+                {% for term in result.all_terms %}
+                    <button class="semester_{{result.course_id}}_{{term}}" {%if term == result.term%}disabled{%endif%}> {{term}} </button>
+                {% endfor %}                
+            </div>
+            
+            <div class = "semester_shown detail_sem_{{result.term}}">
+                {% include "semester.html" %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 
 <div id="cart_detail">
+           
 </div>
 
 <div id="cart_div">
     <ul id="cart_list">
+        {% for course in courses %}
+            {% include "cart_course.html" with course_id=course.course_id%}
+        {% endfor %}
     </ul>
 </div>
 

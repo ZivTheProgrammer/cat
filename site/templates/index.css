@@ -98,7 +98,7 @@ div{
 }
 
 #cart_div {
-    background-color:green;
+    background-color:#333333;
     position:absolute;
     top:550px;
     width:100%;
@@ -140,7 +140,7 @@ z-index: 1;
 }
 
 #omnibar_form {
-background-color:green;
+background-color:#333333;
 margin-left:auto;
 margin-right:auto;
 left:0;
