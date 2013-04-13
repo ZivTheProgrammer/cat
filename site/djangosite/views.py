@@ -19,8 +19,9 @@ def login(request):
 def index(request):
     db = CatDB()
     student = db.get_student("bbaggins")
-    list = student['courseList']
-    courses = db.get_course(course_id= list)
+    courses = student.get('courseList', [])
+    print "student's courses...", courses
+    courses = db.get_course(course_id = courses)
     for result in courses:
         result = annotate(db, result)
     return render(request, "index.html", {'distrib': DISTRIBUTION_AREAS, 'courses': courses})
@@ -39,7 +40,7 @@ def search_results(request):
         classified[result['course_id']] = result
     # Load courses in cart
     student = db.get_student("bbaggins")
-    list = student['courseList']
+    list = student.get('courseList', [])
     courses = db.get_course(course_id= list)
     for result in courses:
         result = annotate(db, result)

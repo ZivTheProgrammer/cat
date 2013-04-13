@@ -20,7 +20,10 @@ class CatDB:
         self.uniqueCourseCol = self.db.unique
 
     def get_student(self, netID):
-        return self.studentCol.find_one({'netID': netID});
+        course_list = self.studentCol.find_one({'netID': netID});
+        if not course_list:
+            course_list = {}
+        return course_list
         
     def add_course(self, netID, courseList):
         if (self.studentCol.find_one({'netID': netID}) is None):
@@ -97,8 +100,8 @@ class CatDB:
     """
     # TODO: Add keyword search in descriptions, etc.
     def get_course(self, course=None, subject=None, course_number=None,
-            min_course_number='000', max_course_number='999', professor_id=None,
-            professor_name=None, term=None, min_term='0000', max_term='9999',
+            min_course_number=None, max_course_number=None, professor_id=None,
+            professor_name=None, term=None, min_term=None, max_term=None,
             distribution=None, pdf=None, course_id=None, unique=True):
         #TODO: make sure all of these are strings
         if course:
@@ -110,11 +113,15 @@ class CatDB:
             course['subject'] = { '$in':subject if isinstance(subject, list) else [subject]}
         if course_number:
             course['course_number'] = {'$in':course_number if isinstance(course_number, list) else [course_number]}
-        else:
+        elif min_course_number or max_course_number:
+            if not max_course_number: max_course_number = '9999'
+            if not min_course_number: min_course_number = '0000'
             course['course_number'] = {'$gt':min_course_number, '$lt':max_course_number}
         if term:
             course['term'] = term
-        else:
+        elif min_term or max_term:
+            if not max_term: max_term = '9999'
+            if not min_term: min_term = '0000'
             course['term'] = {'$gt':min_term, '$lt':max_term}
         profIDs = []
         if professor_id:
@@ -135,8 +142,9 @@ class CatDB:
         if course_id:
             course['course_id'] = {'$in': course_id if isinstance(course_id, list) else [course_id]}
             
+        print "search query: ",  course
         if not course:
-            return None
+            return []
         results = self.courseCol.find(course)
 
         # Replace crosslistings with primary listings
