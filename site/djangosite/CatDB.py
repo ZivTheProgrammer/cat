@@ -159,9 +159,11 @@ class CatDB:
             i = c.get('unique_course', None)
             if i:
                 unique_courses.add(i)
+        print unique_courses
         courseIDs = []
         uniqueCourses = []
         for c in self.uniqueCourseCol.find({'course':{'$in' : list(unique_courses)}}):
+            print c
             uniqueCourses.append(c)
             years = c.get('years', [])
             bestYear = {}
@@ -171,7 +173,7 @@ class CatDB:
             i = bestYear.get('id', None)
             if i:
                 courseIDs.append(i)
-
+        print courseIDs
         # Add a list of terms to each course
         results = self.courseCol.find({'_id': {'$in':courseIDs}})
         results_list = []

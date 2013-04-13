@@ -111,8 +111,8 @@ class Parser:
                 # self.parse_words(item.string.strip()); 
 
                 # Print the string if in verbose mode
-                v(coursenum)
-                v(item.string.strip())
+                #v(coursenum)
+                #v(item.string.strip())
 
                 # INSERT YOUR CODE HERE,
                 # use item.string.strip() as a single student's advice
@@ -130,10 +130,8 @@ class Parser:
         table = table.find_next("table")
         # TODO: fill out the rest of the BeautifulSoup parsing to get the data here
         # INSERT YOUR CODE HERE
-        print "We found a table!"
-        #print type(table), table
 
-        courseNumber = coursenum[3:]
+        courseNumber = coursenum[4:]
         courseDept = coursenum[:3]
 
         ratings = {}
@@ -183,7 +181,7 @@ find_next("td")
         cell = cell.find_next_sibling("td")
         ratings["precepts_mean"] = cell.string.strip()
 
-        overall_row = precepts_row.find_next("tr").find_next("tr")
+        """overall_row = precepts_row.find_next("tr").find_next("tr")
 #        print overall_row
         cell = overall_row.find_next("td").find_next("td").find_next("td").\
 find_next("td")
@@ -192,12 +190,13 @@ find_next("td")
             ratings["overall"].append(cell.string)
             cell = cell.find_next_sibling("td")
         cell = cell.find_next_sibling("td")
-        ratings["overall_mean"] = cell.string.strip()
+        ratings["overall_mean"] = cell.string.strip()"""
 
 #        for c in courseCol.find({'subject': courseDept}):
 #            print c
 #        entry['review_Nums'] = entry.['review_Nums'].append(ratings); # FIX
 #        entry['text_reviews'] = entry.['text_reviews'].append(text_ratings);
+        print "searching for: ", courseNumber, courseDept
         courseCol.update({'course_number': courseNumber, 'subject': courseDept}, {'$set': {'review_Nums': ratings}})
         print ratings
         entry = courseCol.find_one({'subject': courseDept, 'course_number': courseNumber}); # FIX??
@@ -205,6 +204,7 @@ find_next("td")
         if (entry is None):
             print 'Course whose reviews you were trying to update is not found!'
         else:
+            print 'Added reviews to the database!!!'
             print entry;
 
     def parse_dir(self):
@@ -234,32 +234,32 @@ find_next("td")
         for tuple in list:
             print "%s: %d" % tuple
 
-if __name__ == "__main__":
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
-    args = parser.parse_args()
-    Parser.VERBOSE = args.verbose
-else:
-    Parser.VERBOSE = True
-
 connection = MongoClient()
 db = connection.cat_database
 courseCol = db.courses # All course instances
 uniqueCourseCol = db.unique
 #profCol = db.instructors
 
-p = Parser();
-try:
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
+    args = parser.parse_args()
+    Parser.VERBOSE = args.verbose
+    try:
     # Loading and saving don't do anything unless you store stuff in the parser's data field, 
     # and the parsing function ignores the loaded data, so there's no use in saving/loading here.
     # p.load();
 
-    p.parse_dir();
+        p.parse_dir();
 
     # Only if you've saved words in the parser's worddict...
     # p.print_words();
     # p.save();
-except Exception, e: 
-    z = e
-    print z
+    except Exception, e: 
+        z = e
+        print z
+else:
+    Parser.VERBOSE = True
+
+p = Parser();
