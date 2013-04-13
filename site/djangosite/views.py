@@ -16,6 +16,7 @@ def login(request):
     netid = C.Authenticate()
     return HttpResponse(netid)
 
+# Base view for the site
 def index(request):
     db = CatDB()
     student = db.get_student("bbaggins")

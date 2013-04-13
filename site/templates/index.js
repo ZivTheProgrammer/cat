@@ -49,7 +49,7 @@ $(document).ready(function() {
         load_semester(params);
     });
 
-    /*set behavior of remove from cart button */
+    /*set behavior of remove from cart button. Also under search results */
     $(".removecourse_form").submit(function(e) {
         e.preventDefault();
         var course_id = $(this).parent().attr('id').split('_')[2];
@@ -57,6 +57,7 @@ $(document).ready(function() {
         var posting = $.post("/course/remove/", $(this).serialize());
         /* remove the course from the cart list and remove any hidden info about the course */
         $("#cart_num_"+course_id).remove();
+        $("#save_"+course_id+">input[type=submit]").removeAttr("disabled");
     });
                         
     /* Show and hide the advanced search dialog */
@@ -131,9 +132,12 @@ $(document).ready(function() {
                 /* set the behavior of the "save course to cart button" */
                 $(".savecourse_form").submit(function(ev) {
                     ev.preventDefault();
+                    /* Disable the submit button */
+                    $("input[type=submit]", this).attr("disabled", "disabled");
+                    
                     var posting = $.post("/course/add/", $(this).serialize(), function( data ) {
                         $("#cart_list").append(data);
-
+                        
                         /* redisplay course information when user selects it in his/her cart */
                         $(".coursecart").click(function(){
                             var course_id = this.id.split('_')[2];
@@ -146,8 +150,16 @@ $(document).ready(function() {
                             var course_id = $(this).parent().attr('id').split('_')[2];
                             /* send post request to save that the user has removed the course from his/her cart */
                             var posting = $.post("/course/remove/", $(this).serialize());
-                            /* remove the course from the cart list and remove any hidden info about the course */
+                            /* remove the course from the cart list */
                             $("#cart_num_"+course_id).remove();
+                            /* if in result list activate save button */
+                            if ($("#result_num_"+course_id).length > 0) {
+                                $("#save_"+course_id+">input[type=submit]").removeAttr("disabled");
+                            }
+                            /* Otherwise delete course result */
+                            else {
+                                $("#detail_num_"+course_id).remove();
+                            }
                         });
                     });
                 }); 
