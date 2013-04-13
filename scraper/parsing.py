@@ -1,3 +1,4 @@
+from pymongo import MongoClient
 import argparse
 from bs4 import BeautifulSoup
 from bs4 import Tag
@@ -67,6 +68,7 @@ class Parser:
             return True
         except IOError:
             print "Failed loading data; file %s not readable" % Parser.SAVE_FILE
+            print "searching for... ", course
             return False
 
     def save(self):
@@ -88,13 +90,16 @@ class Parser:
                 else:
                     self.worddict[word] += 1;
 
-    def parse_advice(self, filename):
-        coursenum = coursenum_from_filename(filename);
-        soup = soupfile(filename)
+    def parse_advice(self, text, coursenum = None, term=None):
+        if not coursenum:
+            coursenum = coursenum_from_filename(text);
+        #soup = soupfile(filename)
+        soup = BeautifulSoup(text)
         tag = soup.find(name="ul")
         if tag == None:
             print "Couldn't find advice list for ", coursenum
             return False
+        reviews = []
         for item in tag.children:
             if isinstance(item, Tag) and item.name == "li":
                 # Save the data in the Parser object
@@ -106,15 +111,20 @@ class Parser:
                 # self.parse_words(item.string.strip()); 
 
                 # Print the string if in verbose mode
+                v(coursenum)
                 v(item.string.strip())
 
                 # INSERT YOUR CODE HERE,
                 # use item.string.strip() as a single student's advice
+                reviews.append(item.string.strip())
+        # Add reviews to the database
         return True
 
-    def parse_numbers(self, filename):
-        soup = soupfile(filename)
-        coursenum = coursenum_from_filename(filename);
+    def parse_numbers(self, text, coursenum=None, term=None):
+        #soup = soupfile(filename)
+        soup = BeautifulSoup(text)
+        if not coursenum:
+            coursenum = coursenum_from_filename(text);
         table = soup.find(name="table")
         table = table.find_next("table")
         table = table.find_next("table")
@@ -123,12 +133,15 @@ class Parser:
         print "We found a table!"
         #print type(table), table
 
+        courseNumber = coursenum[3:]
+        courseDept = coursenum[:3]
+
         ratings = {}
         lectures_row = table.find_next("tr").find_next("tr").find_next("tr")
-        print lectures_row
+#        print lectures_row
         cell = lectures_row.find_next("td").find_next("td").find_next("td").find_next("td")
         ratings["lectures"] = []
-        print cell.string
+#        print cell.string
         for i in range(5):
             ratings["lectures"].append(cell.string)
             cell = cell.find_next_sibling("td")
@@ -137,8 +150,62 @@ class Parser:
         # TODO: take out % signs
         # TODO: get the rest of the rows
         # TODO: put in the database
+        written_row = lectures_row.find_next("tr").find_next("tr")
+#        print written_row
+        cell = written_row.find_next("td").find_next("td").find_next("td").\
+find_next("td")
+        ratings["written"] = []
+        for i in range(5):
+            ratings["written"].append(cell.string)
+            cell = cell.find_next_sibling("td")
+        cell = cell.find_next_sibling("td")
+        ratings["written_mean"] = cell.string.strip()
+
+        readings_row = written_row.find_next("tr").find_next("tr")
+#        print readings_row
+        cell = readings_row.find_next("td").find_next("td").find_next("td").\
+find_next("td")
+        ratings["readings"] = []
+        for i in range(5):
+            ratings["readings"].append(cell.string)
+            cell = cell.find_next_sibling("td")
+        cell = cell.find_next_sibling("td")
+        ratings["readings_mean"] = cell.string.strip()
+
+        precepts_row = readings_row.find_next("tr").find_next("tr")
+#        print precepts_row
+        cell = precepts_row.find_next("td").find_next("td").find_next("td").\
+find_next("td")
+        ratings["precepts"] = []
+        for i in range(5):
+            ratings["precepts"].append(cell.string)
+            cell = cell.find_next_sibling("td")
+        cell = cell.find_next_sibling("td")
+        ratings["precepts_mean"] = cell.string.strip()
+
+        overall_row = precepts_row.find_next("tr").find_next("tr")
+#        print overall_row
+        cell = overall_row.find_next("td").find_next("td").find_next("td").\
+find_next("td")
+        ratings["overall"] = []
+        for i in range(5):
+            ratings["overall"].append(cell.string)
+            cell = cell.find_next_sibling("td")
+        cell = cell.find_next_sibling("td")
+        ratings["overall_mean"] = cell.string.strip()
+
+#        for c in courseCol.find({'subject': courseDept}):
+#            print c
+#        entry['review_Nums'] = entry.['review_Nums'].append(ratings); # FIX
+#        entry['text_reviews'] = entry.['text_reviews'].append(text_ratings);
+        courseCol.update({'course_number': courseNumber, 'subject': courseDept}, {'$set': {'review_Nums': ratings}})
         print ratings
+        entry = courseCol.find_one({'subject': courseDept, 'course_number': courseNumber}); # FIX??
         
+        if (entry is None):
+            print 'Course whose reviews you were trying to update is not found!'
+        else:
+            print entry;
 
     def parse_dir(self):
         # "." means the current directory
@@ -146,34 +213,54 @@ class Parser:
         v("Advice files:")
         for file in itertools.ifilter(isadvicefile, files):
             v(file)
-            #self.parse_advice(file)
+            
+            html = readfile(filename)
+            self.parse_advice(file)
         v("Data files:")
         for file in itertools.ifilter(isdatafile, files):
             v(file)
-            self.parse_numbers(file)
+            
+            html = readfile(filename)
+            self.parse_numbers(html)
         v(self.data)
+
+    def parse_files(self, numerical, text, coursenum, term):
+        print "parsing files!"
+        self.parse_advice(text, coursenum, term)
+        self.parse_numbers(numerical, coursenum, term)
 
     def print_words(self):
         list = sorted(self.worddict.iteritems(), key=operator.itemgetter(1))
         for tuple in list:
             print "%s: %d" % tuple
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
-args = parser.parse_args()
-Parser.VERBOSE = args.verbose
+if __name__ == "__main__":
 
-p = Parser();
-try:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
+    args = parser.parse_args()
+    Parser.VERBOSE = args.verbose
+else:
+    Parse.VERBOSE = True
+
+connection = MongoClient()
+db = connection.cat_database
+courseCol = db.courses # All course instances
+uniqueCourseCol = db.unique
+#profCol = db.instructors
+    p = Parser();
+    try:
     # Loading and saving don't do anything unless you store stuff in the parser's data field, 
     # and the parsing function ignores the loaded data, so there's no use in saving/loading here.
     # p.load();
 
-    p.parse_dir();
+        p.parse_dir();
 
     # Only if you've saved words in the parser's worddict...
     # p.print_words();
     # p.save();
-except Exception, e: 
-    z = e
-    print z
+    except Exception, e: 
+        z = e
+        print z
+else:
+    Parser.VERBOSE = True

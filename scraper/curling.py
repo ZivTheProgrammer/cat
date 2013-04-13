@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 #from BeautifulSoup import Tag
 from bs4 import Tag
 from collections import OrderedDict
+from parsing import Parser
 import getpass
 import json
 import pycurl
@@ -54,6 +55,12 @@ class Curler:
     MAX_DELAY = 1
     SAVE_FILE = "state_of_curler.json"
     VERBOSE = False
+    # because the review site is dumb and uses different semester numbers...
+    term_dict = {
+            '140773':'1132',
+            '140772':'1131'
+            } #TODO: fill this thing in...
+    p = Parser()
 
     def __init__(self):
         self.formvals = None
@@ -309,8 +316,10 @@ class Curler:
                 # We've already saved this one (last run), so continue from there!
                 return True;
             # Do stuff with the full form!
-            coursenum = "%s%s" % (self.formvals['subjectSelect'], self.formvals['numberSelect'])
-            term = self.formvals['termSelect'];
+            coursenum = "%s_%s" % (self.formvals['subjectSelect'], self.formvals['numberSelect'])
+            term = self.formvals['termSelect']
+            #term = term_dict.get(term, term)
+            
             return self.saveData(response, coursenum, term);
         elif index == len(self.selects) - 1:
             formtyperound = True;
@@ -400,18 +409,24 @@ class Curler:
                 advicehtml = self.gowait(c, False, True);
                 v( "Saving advice data")
                 self.writefile(advicehtml, "%s_%s_a" % (coursenum, term))
+                print "Sending data to be parsed!"
+                self.p.parse_files(html, advicehtml, coursenum, term)
 
         # Save the good set of form values to start from if we crash
         self.saveformvals()
 
         return True;
 
-parser = argparse.ArgumentParser()
-parser.add_argument("maxdelay", help="the maximum number of seconds we will sleep between requests", type=int);
-parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
-args = parser.parse_args()
-Curler.VERBOSE = args.verbose
-Curler.MAX_DELAY = args.maxdelay
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("maxdelay", help="the maximum number of seconds we will sleep between requests", type=int);
+    parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
+    args = parser.parse_args()
+    Curler.VERBOSE = args.verbose
+    Curler.MAX_DELAY = args.maxdelay
+else:
+    Curler.VERBOSE = True
+    Curler.MAX_DELAY = 5
 
 cu = Curler();
 cu.loadformvals();
