@@ -10,17 +10,34 @@ html, body {
     background-image: linear-gradient(top, #AEC4DE, #FFFFFF);
 }
 
-.advanced_search_on{
+#advanced_search_wrapper{
+    display:none;
     position:fixed;
-    display:block;
     width: 100%;
     height: 100%;
     background-color:rgba(100,100,100,0.5);
     z-index: 10;
 }
 
-.advanced_search_off{
+#analytics_wrapper{
     display:none;
+    position:fixed;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(100,100,100,0.5);
+    z-index: 10;
+}
+
+#analytics{
+width: 60%;
+height: 400px;
+top: 80px;
+position: absolute;
+left: 20%;
+background-color: red;
+border-radius: 20px;
+padding: 10px;
+overflow:auto;
 }
 
 .course:hover{
@@ -130,7 +147,7 @@ div{
     position:absolute;
     top:550px;
     width:100%;
-    height: 50px;
+    min-height: 50px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     }
@@ -158,6 +175,7 @@ position:absolute;
 left:400px;
 width:600px;
 height:100%;
+overflow:auto;
 }    
 
 #show_advanced{

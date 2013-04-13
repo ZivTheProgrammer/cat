@@ -1,10 +1,10 @@
 // Helper function: displays a course in the detail view, no matter how it was clicked
 function display(course_id) {
     /* highlight the course if it's in the search results */
-    $(".course_shown").switchClass("course_shown","course");
-    if ($("#result_num_"+course_id).hasClass('course')) {
+    if ($("#result_num_"+course_id).attr('class') !=('course_shown')) {
+        $(".course_shown").switchClass("course_shown","course");
         $("#result_num_"+course_id).switchClass('course','course_shown');
-    } 
+    }
     
     /* show the info */
     if ($("#detail_num_"+course_id).attr('class') != "detail_shown") {
@@ -62,11 +62,32 @@ $(document).ready(function() {
                         
     /* Show and hide the advanced search dialog */
     $("#show_advanced").click(function(){
-        $(".advanced_search_off").switchClass("advanced_search_off", "advanced_search_on");
+        $("#advanced_search_wrapper").fadeIn(function(){
+            $("#advanced_search_wrapper").click(function(ev) {
+                if (ev.target != this) return;
+                $("#advanced_search_wrapper").fadeOut();
+                $("#advanced_search_wrapper").unbind('click');
+            });  
+        });
     });
     
     $("#hide_advanced").click(function(){
-        $(".advanced_search_on").switchClass("advanced_search_on", "advanced_search_off");
+        $("#advanced_search_wrapper").fadeOut();
+    });
+    
+    /* Show and hide the analytics */
+     $("#show_analytics").click(function(){
+        $("#analytics_wrapper").fadeIn(function(){
+            $("#analytics_wrapper").click(function(ev) {
+                if (ev.target != this) return;
+                $("#analytics_wrapper").fadeOut();
+                $("#analytics_wrapper").unbind('click');
+            });  
+        });
+    });
+    
+    $("#hide_analytics").click(function(){
+        $("#analytics_wrapper").fadeOut();
     });
     
     /* Set up the advanced search form */
@@ -112,7 +133,7 @@ $(document).ready(function() {
                 $("#results_div").empty().append( $( data ) );
                 
                 /* Enable showing cart courses */
-                $(".coursecart").click(function(){
+                $(".coursecart").click(function(ev){
                     var course_id = this.id.split('_')[2];
                     display(course_id);
                 });
@@ -120,7 +141,7 @@ $(document).ready(function() {
                 /* make the course's data show up when it is clicked */
                 $(".course").click(function() {
                     var course_id = $(this).attr('id').split('_')[2];
-                    display(course_id);
+                    display(course_id);  
                 });
                 
                 /* set the behavior of the "load semester button" */

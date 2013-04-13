@@ -14,7 +14,7 @@
 
 <body>
 
-<div class = "advanced_search_off">
+<div id = "advanced_search_wrapper">
     <div id = "advanced_search">
         <button id = "hide_advanced"> Close </button>
         <form id = "advanced_form" action="" method="post">
@@ -29,6 +29,13 @@
             </div>
             <input value="search" type="submit"></input>
         </form>
+    </div>
+</div>
+
+
+<div id = "analytics_wrapper">
+    <div id = "analytics">
+        <button id = "hide_analytics"> Close </button>
     </div>
 </div>
 
@@ -75,6 +82,7 @@
             {% include "cart_course.html" with course_id=course.course_id%}
         {% endfor %}
     </ul>
+    <button id="show_analytics"> Analyze! </button>
 </div>
 
 </div>
