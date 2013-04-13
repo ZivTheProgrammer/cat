@@ -21,7 +21,7 @@ class CatDB:
 
     def get_student(self, netID):
         return self.studentCol.find_one({'netID': netID});
-
+        
     def add_course(self, netID, courseList):
         if (self.studentCol.find_one({'netID': netID}) is None):
             entry = {};
@@ -99,7 +99,7 @@ class CatDB:
     def get_course(self, course=None, subject=None, course_number=None,
             min_course_number='000', max_course_number='999', professor_id=None,
             professor_name=None, term=None, min_term='0000', max_term='9999',
-            distribution=None, pdf=None, unique=True):
+            distribution=None, pdf=None, course_id=None, unique=True):
         #TODO: make sure all of these are strings
         if course:
             return self.courseCol.find(course)
@@ -132,7 +132,9 @@ class CatDB:
             course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
-
+        if course_id:
+            course['course_id'] = {'$in': course_id if isinstance(course_id, list) else [course_id]}
+            
         if not course:
             return None
         results = self.courseCol.find(course)
@@ -184,8 +186,10 @@ class CatDB:
                     c['all_terms'] = [x['term'] for x in d['years']]
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
-
-        return results_list
+        if len(results_list) < 100: # Luke's hack to prevent returning every course in the DB. Need to improve.
+            return results_list
+        else:
+            return []
         
 
 

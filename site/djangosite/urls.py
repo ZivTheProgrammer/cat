@@ -7,10 +7,11 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('djangosite.views',
     url(r'^$', 'home', name='home'),
     url(r'^login/$', 'login', name='login'),
-    url(r'^search/$', 'course_search', name='course_search'),
     url(r'^results/$', 'search_results', name='search_results'),
     url(r'^semester/$', 'get_semester', name='get_semester'),
     url(r'^index/$', 'index', name='index'),
+    url(r'^course/add/$', 'add_course_cart', name='add_course_cart'),
+    url(r'^course/remove/$', 'remove_course_cart', name='remove_course_cart'),
     
     # Examples:
     # url(r'^djangosite/', include('djangosite.foo.urls')),

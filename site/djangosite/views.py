@@ -17,23 +17,38 @@ def login(request):
     return HttpResponse(netid)
 
 def index(request):
-    return render(request, "index.html", {'distrib': DISTRIBUTION_AREAS})
-    
-# Display the main search page.
-def course_search(request):
-    form = CourseNumberForm()
-    return render(request, "course_search.html", {'form': form})
+    db = CatDB()
+    student = db.get_student("bbaggins")
+    list = student['courseList']
+    courses = db.get_course(course_id= list)
+    for result in courses:
+        result = annotate(db, result)
+    return render(request, "index.html", {'distrib': DISTRIBUTION_AREAS, 'courses': courses})
 
 # Get search results and pass them back to the search page.
 def search_results(request):
-    output = None
+    # Used to keep track of result versus cart courses
+    classified = {}
+    # Load courses in search results
     query = parse(request.POST['text'])
     db = CatDB()
     output = db.get_course(**query)
     for result in output:
         result = annotate(db, result)
-    print output
-    return render(request, "search_results.html", {'output': output})
+        result['source'] = 'results'
+        classified[result['course_id']] = result
+    # Load courses in cart
+    student = db.get_student("bbaggins")
+    list = student['courseList']
+    courses = db.get_course(course_id= list)
+    for result in courses:
+        result = annotate(db, result)
+        if result['course_id'] in classified:
+            classified[result['course_id']]['source'] = 'both'
+        else:
+            result['source'] = 'cart'
+            classified[result['course_id']] = result
+    return render(request, "search_results.html", {'results': classified})
     
 # Get a new semester and pass it back to the search page.
 def get_semester(request):
@@ -43,6 +58,19 @@ def get_semester(request):
     result = annotate(db, result)
     return render(request, "get_semester.html", {'result': result})
 
+# Add a course to the user's course cart.
+def add_course_cart(request):
+    db = CatDB()
+    print request.POST
+    db.add_course("bbaggins", request.POST['course_id'])
+    return render(request, "cart_course.html", {'course_id': request.POST['course_id']})
+    
+# Remove a course from the user's course cart.  
+def remove_course_cart(request):
+    db = CatDB()
+    db.remove_course("bbaggins", request.POST['course_id'])
+    return HttpResponse("Success") #Shouldn't need to return anything
+    
 # Helper function to add information to a semester of a course.
 def annotate(db, semester):
     # Add instructor information
