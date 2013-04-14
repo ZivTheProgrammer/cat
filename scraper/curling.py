@@ -317,7 +317,8 @@ class Curler:
             # Do stuff with the full form!
             coursenum = "%s_%s" % (self.formvals['subjectSelect'], self.formvals['numberSelect'])
             term = self.formvals['termSelect']
-            #term = term_dict.get(term, term)
+            if term in self.term_dict:
+                term = self.term_dict.get(term, term)
             
             return self.saveData(response, coursenum, term);
         elif index == len(self.selects) - 1:
