@@ -98,25 +98,49 @@ class CatDB:
         would return whichever of MAT201, COS201 and ELE201 that exist,
         from every semester
     """
-    # TODO: Add keyword search in descriptions, etc.
+    def rank(list_courses, query):
+        keywords = query['description']
+        totalscore = 0;
+        numMatch = 0;
+        # check how many keywords the course description contains
+        for course in list_courses:
+            courseDesc = course['stuff'];
+            totalcount = 0;
+            for q in keywords:
+                if (re.match(q, courseDesc) is not null):
+                    numMatch = numMatch + 1
+                    totalcount = totalcount + courseDesc.count(q)
+            # sleazy
+            totalscore = numMatch*1000 + totalcount
+            list_scores[course] = totalscore;
+
     def get_course(self, course=None, subject=None, course_number=None,
             min_course_number=None, max_course_number=None, professor_id=None,
             professor_name=None, term=None, min_term=None, max_term=None,
-            distribution=None, pdf=None, course_id=None, unique=True):
+            distribution=None, pdf=None, course_id=None, unique_course=None,
+            keywords=None, unique=True):
         #TODO: make sure all of these are strings
         if course:
-            return self.courseCol.find(course)
+            course = course.split(', ');
+            if isinstance(course,list):
+                for c in course:
+                    c = str(c)
+            else:
+                return self.courseCol.find(course)
         else:
             course = {}
+
         if subject:
             # TODO: Make all capital letters
             course['subject'] = { '$in':subject if isinstance(subject, list) else [subject]}
+
         if course_number:
             course['course_number'] = {'$in':course_number if isinstance(course_number, list) else [course_number]}
         elif min_course_number or max_course_number:
             if not max_course_number: max_course_number = '9999'
             if not min_course_number: min_course_number = '0000'
             course['course_number'] = {'$gt':min_course_number, '$lt':max_course_number}
+
         if term:
             course['term'] = term
         elif min_term or max_term:
@@ -124,23 +148,49 @@ class CatDB:
             if not min_term: min_term = '0000'
             course['term'] = {'$gt':min_term, '$lt':max_term}
         profIDs = []
+
         if professor_id:
-            profIDs = professor_id if isinstance(professor_id, list) else [professor_id]
+            professor_id = professor_id.split(', ')
+            if isinstance(professor_id, list):
+                for c in professor_id:
+                    c = str(c)
+            else:
+                profIDs = professor_id if isinstance(professor_id, list) else [professor_id]
+
         if professor_name:
+            professor_name = professor_name.split(', ');
             if not isinstance(professor_name, list):
                 professor_name = [professor_name]
             for n in professor_name:
                 allProfs = self.get_professor(name=n)
                 for p in allProfs:
                     profIDs.append(p['id'])
+
         if profIDs:
-            course['instructors'] = {'$in': profIDs}
+            profIDs = profIDs.split(', ')
+            if isinstance(profIDs, list):
+                for c in profIDs:
+                    c = str(c)
+            else:
+                course['instructors'] = {'$in': profIDs}
+
         if distribution:
-            course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
+                course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
+
+        if keywords: #keyword search
+            kws = keywords.split()
+            descRegex = '.*'
+            for kw in kws:
+                descRegex = descRegex + kw + '|'
+            descRegex = descRegex + '.*'
+            course['description'] = re.compile(descRegex, re.IGNORECASE)
+        
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
         if course_id:
             course['course_id'] = {'$in': course_id if isinstance(course_id, list) else [course_id]}
+        if unique_course:
+            course['unique_course'] = {'$in': unique_course if isinstance(unique_course, list) else [unique_course]}
             
         print "search query: ",  course
         if not course:
@@ -169,11 +219,11 @@ class CatDB:
             i = c.get('unique_course', None)
             if i:
                 unique_courses.add(i)
-        print unique_courses
+        #print unique_courses
         courseIDs = []
         uniqueCourses = []
         for c in self.uniqueCourseCol.find({'course':{'$in' : list(unique_courses)}}):
-            print c
+            #print c
             uniqueCourses.append(c)
             years = c.get('years', [])
             bestYear = {}
@@ -183,7 +233,7 @@ class CatDB:
             i = bestYear.get('id', None)
             if i:
                 courseIDs.append(i)
-        print courseIDs
+        #print courseIDs
         # Add a list of terms to each course
         results = self.courseCol.find({'_id': {'$in':courseIDs}})
         results_list = []
@@ -194,10 +244,11 @@ class CatDB:
                     c['all_terms'] = [x['term'] for x in d['years']]
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
-        if len(results_list) < 100: # Luke's hack to prevent returning every course in the DB. Need to improve.
-            return results_list
-        else:
-            return []
+        #if len(results_list) < 100: # Luke's hack to prevent returning every course in the DB. Need to improve.
+        print "returning list of courses...", results_list
+        return results_list
+        #else:
+            #return 
         
 
 

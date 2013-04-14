@@ -1,10 +1,7 @@
 import argparse
 from bs4 import BeautifulSoup
-#from BeautifulSoup import BeautifulSoup
-#from BeautifulSoup import Tag
 from bs4 import Tag
 from collections import OrderedDict
-from parsing import Parser
 import getpass
 import json
 import pycurl
@@ -55,26 +52,6 @@ class Curler:
     MAX_DELAY = 1
     SAVE_FILE = "state_of_curler.json"
     VERBOSE = False
-    # because the review site is dumb and uses different semester numbers...
-    term_dict = {
-            '140773':'1132', # fall 12-13
-            '140772':'1131', # summer 2012
-            '140770':'1124', # spring 11-12
-            '140767':'1112', # fall 11-12
-            '140764':'1121', # summer 11
-            '140762':'1114', # spring 10-11
-            '140759':'1112', # fall 10-11
-            '140756':'1111', # summer 10
-            '140754':'1104', # spring 09-10
-            '140752':'1102', # fall 09-10
-            '140751':'1101', # summer 09
-            '140645':'1094', # spring 08-09
-            '125525':'1092', # fall 08-09
-            '116637':'1091', # summer 08-09
-            '106445':'1084', # spring 07-08
-            '93427':'1082' # fall 07-08
-            } 
-    p = Parser()
 
     def __init__(self):
         self.formvals = None
@@ -247,9 +224,8 @@ class Curler:
         response = self.gowait(c, False, True);
 
         self.currentsoup = BeautifulSoup(response); # maybe use soupstrainer?
-        #print "Currentsoup: ", type(self.currentsoup.find_all)
         self.selects = self.currentsoup.find_all('select');
-        #v(self.selects)
+        v(self.selects)
         print "Logged in!"
 
     # Submit will use the current soup to submit the form, then replace it with the 
@@ -329,11 +305,8 @@ class Curler:
                 # We've already saved this one (last run), so continue from there!
                 return True;
             # Do stuff with the full form!
-            coursenum = "%s_%s" % (self.formvals['subjectSelect'], self.formvals['numberSelect'])
-            term = self.formvals['termSelect']
-            if term in self.term_dict:
-                term = self.term_dict.get(term, term)
-            
+            coursenum = "%s%s" % (self.formvals['subjectSelect'], self.formvals['numberSelect'])
+            term = self.formvals['termSelect'];
             return self.saveData(response, coursenum, term);
         elif index == len(self.selects) - 1:
             formtyperound = True;
@@ -400,7 +373,7 @@ class Curler:
         # TODO: do stuff with self.currentsoup;
         print "%s_%s" % (coursenum, term)
         v( "Saving data")
-        #self.writefile(html, "%s_%s" % (coursenum, term));
+        self.writefile(html, "%s_%s" % (coursenum, term));
         
         def isLink(element):
             if isinstance(element, Tag) and element.name == 'a' and element.string == "clicking here":
@@ -422,25 +395,19 @@ class Curler:
                 c.setopt(c.HTTPGET, 1);
                 advicehtml = self.gowait(c, False, True);
                 v( "Saving advice data")
-                #self.writefile(advicehtml, "%s_%s_a" % (coursenum, term))
-                print "Sending data to be parsed!"
-                self.p.parse_files(html, advicehtml, coursenum, term)
+                self.writefile(advicehtml, "%s_%s_a" % (coursenum, term))
 
         # Save the good set of form values to start from if we crash
         self.saveformvals()
 
         return True;
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("maxdelay", help="the maximum number of seconds we will sleep between requests", type=int);
-    parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
-    args = parser.parse_args()
-    Curler.VERBOSE = args.verbose
-    Curler.MAX_DELAY = args.maxdelay
-else:
-    Curler.VERBOSE = True
-    Curler.MAX_DELAY = 5
+parser = argparse.ArgumentParser()
+parser.add_argument("maxdelay", help="the maximum number of seconds we will sleep between requests", type=int);
+parser.add_argument("-v", "--verbose", help="print out lots of junk for debugging", action="store_true")
+args = parser.parse_args()
+Curler.VERBOSE = args.verbose
+Curler.MAX_DELAY = args.maxdelay
 
 cu = Curler();
 cu.loadformvals();
