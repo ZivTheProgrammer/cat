@@ -57,9 +57,23 @@ class Curler:
     VERBOSE = False
     # because the review site is dumb and uses different semester numbers...
     term_dict = {
-            '140773':'1132',
-            '140772':'1131'
-            } #TODO: fill this thing in...
+            '140773':'1132', # fall 12-13
+            '140772':'1131', # summer 2012
+            '140770':'1124', # spring 11-12
+            '140767':'1112', # fall 11-12
+            '140764':'1121', # summer 11
+            '140762':'1114', # spring 10-11
+            '140759':'1112', # fall 10-11
+            '140756':'1111', # summer 10
+            '140754':'1104', # spring 09-10
+            '140752':'1102', # fall 09-10
+            '140751':'1101', # summer 09
+            '140645':'1094', # spring 08-09
+            '125525':'1092', # fall 08-09
+            '116637':'1091', # summer 08-09
+            '106445':'1084', # spring 07-08
+            '93427':'1082' # fall 07-08
+            } 
     p = Parser()
 
     def __init__(self):

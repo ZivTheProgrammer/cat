@@ -117,7 +117,7 @@ class CatDB:
     def get_course(self, course=None, subject=None, course_number=None,
             min_course_number=None, max_course_number=None, professor_id=None,
             professor_name=None, term=None, min_term=None, max_term=None,
-            distribution=None, pdf=None, course_id=None, unique=True):
+            distribution=None, pdf=None, course_id=None, unique=True, keywords=None):
         #TODO: make sure all of these are strings
         if course:
             course = course.split(', ');
@@ -176,10 +176,10 @@ class CatDB:
         if distribution:
                 course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
 
-        if description: #keyword search
-            keywords = description.split()
+        if keywords: #keyword search
+            kws = keywords.split()
             descRegex = '.*'
-            for kw in keywords:
+            for kw in kws:
                 descRegex = descRegex + kw + '|'
             descRegex = descRegex + '.*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
