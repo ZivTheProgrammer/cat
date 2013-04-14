@@ -40,6 +40,10 @@ padding: 10px;
 overflow:auto;
 }
 
+.course {
+padding:5px;
+}
+
 .course:hover{
 background-color:grey;
 cursor:pointer;
@@ -48,16 +52,23 @@ cursor:pointer;
 .course_shown{
 background-color:white;
 cursor:default;
+padding:5px;
 }
 
 .detail {
     display:none;
+    /*height: 100%;
+    margin-left:10px;
+    margin-top:10px;
+    width:560px;*/
 }
 
 .detail_shown {
     display:block;
-    height: 100%;
-    background-color:chartreuse;
+    /*background-color:#f0f0f0;
+    margin-left:10px;
+    margin-top:10px;
+    width:570px;*/
 }
 
 .semester {
@@ -129,7 +140,7 @@ div{
     position:absolute;
     left:0;
     right:0;
-    top: 20px;
+    top: 10px;
     margin-left:auto;
     margin-right:auto;
     z-index:0;
@@ -145,38 +156,61 @@ div{
 #cart_div {
     background-color:#333333;
     position:absolute;
-    top:550px;
+    top:537px;
     width:100%;
     min-height: 50px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-radius:6px;
     }
     
 #results_div{
-background-color:blue;
 width:100%;
 position:absolute;
 top:50px;
-height:500px;
+height:475px;
 z-index:-2;
+margin-top:5px;
 }
 
 #results_left_div{
-background-color:orange;
 position:absolute;
-width:400px;
-height:100%;
+width:370px;
+height:95%;
 overflow:auto;
+margin-left:15px;
+margin-top:10px;
 }
 
-#results_right_div {
-background-color:yellow;
+#left_scrollbar_wrap{
+background-color:#f0f0f0;
 position:absolute;
-left:400px;
-width:600px;
+width:396px;
 height:100%;
+border-radius:6px;
+border:1px;
+border-style:solid;
+border-color:#0f0f0f;
+}
+
+#right_scrollbar_wrap {
+background-color:#f0f0f0;
+position:absolute;
+left:404px;
+width:596px;
+height:100%;
+border-radius:6px;
+border:1px;
+border-style:solid;
+border-color:#0f0f0f;
+}
+
+#results_right_div{
+position:absolute;
+width:570px;
+height:95%;
 overflow:auto;
-}    
+margin-left:15px;
+margin-top:10px;
+}  
 
 #show_advanced{
 position:absolute;
@@ -194,16 +228,15 @@ right:0;
 height:50px;
 position:absolute;
 text-align:center;
-border-top-left-radius: 20px;
-border-top-right-radius: 20px;
+border-radius:6px;
 }
 
 #omnibar_input {
 -webkit-appearance:none;
 width:400px;
-margin-top:5px;
+margin-top:7px;
 font-size:1.2em;
-height:40px;
+height:35px;
 }
 
 #advanced_search{

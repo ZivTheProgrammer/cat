@@ -9,6 +9,12 @@
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/themes/cupertino/jquery.ui.theme.css">
 <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
 <script src="{{STATIC_URL}}js/jquery-ui-1.10.2.custom.min.js"></script>
+
+
+<!--<script> {% include "jquery.mousewheel.js" %} </script>
+<script> {% include "jquery.jscrollpane.min.js" %} </script>
+<style type="text/css"> {% include "jquery.jscrollpane.css" %} </style>-->
+
 <script> {% include "index.js" %} </script>
 </head>
 
@@ -44,18 +50,21 @@
 <div id = "omnibar_div">
     <button id="show_advanced"> Advanced Search </button>
     <form id="omnibar_form" action="" method="post"> {% csrf_token %}
-        <input id="omnibar_input" type="search" name="text"></input>
+        <input id="omnibar_input" type="search" name="text" autofocus="autofocus"></input>
         <input id="omnibar_submit" value="Search" type="submit"></input>
     </form>
 </div>
 
 <div id="results_div">
+    <div id="left_scrollbar_wrap">
     <div id="results_left_div">
         <ul>
 
         </ul>
     </div>
-
+    </div>
+    
+    <div id="right_scrollbar_wrap">
     <div id="results_right_div">
         <!--<p> Welcome to CAT! </p>
         <button id="preset_search_1"> Find PDF-only classes </button>-->
@@ -73,6 +82,7 @@
             </div>
         </div>
         {% endfor %}
+    </div>
     </div>
 </div>
 

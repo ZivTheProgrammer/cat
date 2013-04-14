@@ -2,15 +2,15 @@
 function display(course_id) {
     /* highlight the course if it's in the search results */
     if ($("#result_num_"+course_id).attr('class') !=('course_shown')) {
-        $(".course_shown").switchClass("course_shown","course");
-        $("#result_num_"+course_id).switchClass('course','course_shown');
+        $(".course_shown").addClass("course").removeClass("course_shown");//switchClass("course_shown","course");
+        $("#result_num_"+course_id).addClass("course_shown").removeClass("course");//switchClass('course','course_shown');
     }
     
     /* show the info */
     if ($("#detail_num_"+course_id).attr('class') != "detail_shown") {
-        $(".detail_shown").switchClass("detail_shown", "detail");                        
+        $(".detail_shown").addClass("detail").removeClass("detail_shown");//switchClass("detail_shown", "detail");                        
         var detail_id = "#detail_num_"+course_id;
-        $(detail_id).switchClass("detail", "detail_shown");
+        $(detail_id).addClass("detail_shown").removeClass("detail");//switchClass("detail", "detail_shown");
     }
 }
 
@@ -41,6 +41,13 @@ $(document).ready(function() {
     $(".coursecart").click(function(){
         var course_id = this.id.split('_')[2];
         display(course_id);
+    });
+    
+    /* Enable submitting omnibar with enter key */
+    $("#omnibar_form").keypress(function(kp) {
+        if (kp.which == 13) {
+            $("#omnibar_form").submit();
+        }
     });
     
     /* set the behavior of the "load semester button" */
@@ -131,6 +138,10 @@ $(document).ready(function() {
             function( data ) {
                 /* put the data in the result div */
                 $("#results_div").empty().append( $( data ) );
+                
+                /* give the results divs a fancy scrollbar */
+                /*$("#results_left_div").jScrollPane();
+                $("#results_right_div").jScrollPane();*/
                 
                 /* Enable showing cart courses */
                 $(".coursecart").click(function(ev){
