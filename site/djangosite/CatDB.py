@@ -20,8 +20,11 @@ class CatDB:
         self.uniqueCourseCol = self.db.unique
 
     def get_student(self, netID):
-        return self.studentCol.find_one({'netID': netID});
-
+        course_list = self.studentCol.find_one({'netID': netID});
+        if not course_list:
+            course_list = {}
+        return course_list
+        
     def add_course(self, netID, courseList):
         if (self.studentCol.find_one({'netID': netID}) is None):
             entry = {};
@@ -112,9 +115,9 @@ class CatDB:
             list_scores[course] = totalscore;
 
     def get_course(self, course=None, subject=None, course_number=None,
-            min_course_number='000', max_course_number='999', professor_id=None,
-            professor_name=None, term=None, min_term='0000', max_term='9999',
-            distribution=None, pdf=None, unique=True):
+            min_course_number=None, max_course_number=None, professor_id=None,
+            professor_name=None, term=None, min_term=None, max_term=None,
+            distribution=None, pdf=None, course_id=None, unique=True):
         #TODO: make sure all of these are strings
         if course:
             course = course.split(', ');
@@ -131,23 +134,17 @@ class CatDB:
             course['subject'] = { '$in':subject if isinstance(subject, list) else [subject]}
 
         if course_number:
-            course_number = course_number.split(', ');
-            if isinstance(course_number,list):
-                for c in course_number:
-                    c =str(c)
-            else:
-                course['course_number'] = {'$in':course_number if isinstance(course_number, list) else [course_number]}
-        else:
+            course['course_number'] = {'$in':course_number if isinstance(course_number, list) else [course_number]}
+        elif min_course_number or max_course_number:
+            if not max_course_number: max_course_number = '9999'
+            if not min_course_number: min_course_number = '0000'
             course['course_number'] = {'$gt':min_course_number, '$lt':max_course_number}
 
         if term:
-            term = term.split(', ');
-            if isinstance(term, list):
-                for c in term:
-                    c = str(c)
-            else:
-                course['term'] = term
-        else:
+            course['term'] = term
+        elif min_term or max_term:
+            if not max_term: max_term = '9999'
+            if not min_term: min_term = '0000'
             course['term'] = {'$gt':min_term, '$lt':max_term}
         profIDs = []
 
@@ -189,9 +186,12 @@ class CatDB:
         
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
-
+        if course_id:
+            course['course_id'] = {'$in': course_id if isinstance(course_id, list) else [course_id]}
+            
+        print "search query: ",  course
         if not course:
-            return None
+            return []
         results = self.courseCol.find(course)
 
         # Replace crosslistings with primary listings
@@ -210,16 +210,17 @@ class CatDB:
 
         if not unique:
             return results_list
-        
         # Get the most recent semester of each course
         unique_courses = set()
         for c in results_list:
             i = c.get('unique_course', None)
             if i:
                 unique_courses.add(i)
+        print unique_courses
         courseIDs = []
         uniqueCourses = []
-        for c in self.uniqueCourseCol.find({'course':{'$in': list(unique_courses)}}):
+        for c in self.uniqueCourseCol.find({'course':{'$in' : list(unique_courses)}}):
+            print c
             uniqueCourses.append(c)
             years = c.get('years', [])
             bestYear = {}
@@ -229,7 +230,7 @@ class CatDB:
             i = bestYear.get('id', None)
             if i:
                 courseIDs.append(i)
-
+        print courseIDs
         # Add a list of terms to each course
         results = self.courseCol.find({'_id': {'$in':courseIDs}})
         results_list = []
@@ -240,8 +241,10 @@ class CatDB:
                     c['all_terms'] = [x['term'] for x in d['years']]
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
-
-        return results_list
+        if len(results_list) < 100: # Luke's hack to prevent returning every course in the DB. Need to improve.
+            return results_list
+        else:
+            return []
         
 
 
@@ -255,7 +258,6 @@ class CatDB:
             terms = course.get('years', [])
         else:
             terms = []
-        print "terms: ", terms
         term_ids = [t['_id'] for t in terms]
         offerings = self.courseCol.find({'_id' : {'$in' : term_ids}})
         reviews = []

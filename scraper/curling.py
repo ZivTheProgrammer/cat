@@ -231,12 +231,11 @@ class Curler:
         c.setopt(c.URL, "https://www.applyweb.com/eval/EvalGatekeeper/EvalGatekeeper?service=external/RollupReportBrowser&random=1348716484361");
         c.setopt(c.HTTPGET, 1);
         response = self.gowait(c, False, True);
-        print "Response:", response
 
         self.currentsoup = BeautifulSoup(response); # maybe use soupstrainer?
-        print "Currentsoup: ", type(self.currentsoup.find_all)
+        #print "Currentsoup: ", type(self.currentsoup.find_all)
         self.selects = self.currentsoup.find_all('select');
-        v(self.selects)
+        #v(self.selects)
         print "Logged in!"
 
     # Submit will use the current soup to submit the form, then replace it with the 
@@ -386,7 +385,7 @@ class Curler:
         # TODO: do stuff with self.currentsoup;
         print "%s_%s" % (coursenum, term)
         v( "Saving data")
-        self.writefile(html, "%s_%s" % (coursenum, term));
+        #self.writefile(html, "%s_%s" % (coursenum, term));
         
         def isLink(element):
             if isinstance(element, Tag) and element.name == 'a' and element.string == "clicking here":
@@ -408,7 +407,7 @@ class Curler:
                 c.setopt(c.HTTPGET, 1);
                 advicehtml = self.gowait(c, False, True);
                 v( "Saving advice data")
-                self.writefile(advicehtml, "%s_%s_a" % (coursenum, term))
+                #self.writefile(advicehtml, "%s_%s_a" % (coursenum, term))
                 print "Sending data to be parsed!"
                 self.p.parse_files(html, advicehtml, coursenum, term)
 
