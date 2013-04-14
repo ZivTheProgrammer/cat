@@ -117,7 +117,8 @@ class CatDB:
     def get_course(self, course=None, subject=None, course_number=None,
             min_course_number=None, max_course_number=None, professor_id=None,
             professor_name=None, term=None, min_term=None, max_term=None,
-            distribution=None, pdf=None, course_id=None, unique=True, keywords=None):
+            distribution=None, pdf=None, course_id=None, unique_course=None,
+            keywords=None, unique=True):
         #TODO: make sure all of these are strings
         if course:
             course = course.split(', ');
@@ -188,6 +189,8 @@ class CatDB:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
         if course_id:
             course['course_id'] = {'$in': course_id if isinstance(course_id, list) else [course_id]}
+        if unique_course:
+            course['unique_course'] = {'$in': unique_course if isinstance(unique_course, list) else [unique_course]}
             
         print "search query: ",  course
         if not course:
@@ -216,11 +219,11 @@ class CatDB:
             i = c.get('unique_course', None)
             if i:
                 unique_courses.add(i)
-        print unique_courses
+        #print unique_courses
         courseIDs = []
         uniqueCourses = []
         for c in self.uniqueCourseCol.find({'course':{'$in' : list(unique_courses)}}):
-            print c
+            #print c
             uniqueCourses.append(c)
             years = c.get('years', [])
             bestYear = {}
@@ -230,7 +233,7 @@ class CatDB:
             i = bestYear.get('id', None)
             if i:
                 courseIDs.append(i)
-        print courseIDs
+        #print courseIDs
         # Add a list of terms to each course
         results = self.courseCol.find({'_id': {'$in':courseIDs}})
         results_list = []
@@ -241,10 +244,11 @@ class CatDB:
                     c['all_terms'] = [x['term'] for x in d['years']]
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
-        if len(results_list) < 100: # Luke's hack to prevent returning every course in the DB. Need to improve.
-            return results_list
-        else:
-            return []
+        #if len(results_list) < 100: # Luke's hack to prevent returning every course in the DB. Need to improve.
+        print "returning list of courses...", results_list
+        return results_list
+        #else:
+            #return 
         
 
 
