@@ -267,9 +267,11 @@ class CatDB:
         reviews = []
         for i in offerings:
             semester = {}
-            semester['term'] = i['term']
-            semester['instructors'] = i['instructors'];
-            semester['reviews'] = i.get('reviews', []);
+            semester['term'] = i.get('term', []);
+            semester['instructors'] = i.get('instructors', []);
+#            semester['reviews'] = i.get('reviews', []);
+            semester['review_text'] = i.get('review_text', []);
+            semester['review_Nums'] = i.get('review_Nums', []);
             reviews.append(semester)
 
         return reviews
