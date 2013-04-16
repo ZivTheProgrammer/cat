@@ -158,7 +158,7 @@ class Parser:
 find_next("td")
         ratings["written"] = []
         for i in range(5):
-            ratings["written"].append(cell.string).replace('%', ''))
+            ratings["written"].append(cell.string.replace('%', ''))
             cell = cell.find_next_sibling("td")
         cell = cell.find_next_sibling("td")
         ratings["written_mean"] = cell.string.strip()
@@ -169,7 +169,7 @@ find_next("td")
 find_next("td")
         ratings["readings"] = []
         for i in range(5):
-            ratings["readings"].append(cell.string).replace('%', ''))
+            ratings["readings"].append(cell.string.replace('%', ''))
             cell = cell.find_next_sibling("td")
         cell = cell.find_next_sibling("td")
         ratings["readings_mean"] = cell.string.strip()
@@ -180,7 +180,7 @@ find_next("td")
 find_next("td")
         ratings["precepts"] = []
         for i in range(5):
-            ratings["precepts"].append(cell.string).replace('%', ''))
+            ratings["precepts"].append(cell.string.replace('%', ''))
             cell = cell.find_next_sibling("td")
         cell = cell.find_next_sibling("td")
         ratings["precepts_mean"] = cell.string.strip()
