@@ -69,14 +69,13 @@ $(document).ready(function() {
                         
     /* Show and hide the advanced search dialog */
     $("#show_advanced").click(function(){
-        $("#advanced_search_wrapper").fadeIn(function(){
-			$("#advanced_search").fadeIn(function() {
-            	$("#advanced_search_wrapper").click(function(ev) {
-                	if (ev.target != this) return;
-                	$("#advanced_search_wrapper").fadeOut();
-                	$("#advanced_search").fadeOut();
-					$("#advanced_search_wrapper").unbind('click');
-				});
+        $("#advanced_search_wrapper").fadeIn();
+        $("#advanced_search").fadeIn(function() {
+            $("#advanced_search_wrapper").click(function(ev) {
+                if (ev.target != this) return;
+                $("#advanced_search_wrapper").fadeOut();
+                $("#advanced_search").fadeOut();
+                $("#advanced_search_wrapper").unbind('click');
             });  
         });
     });
@@ -88,21 +87,24 @@ $(document).ready(function() {
     
     /* Show and hide the analytics */
      $("#show_analytics").click(function(){
-        $("#analytics_wrapper").fadeIn(function(){
-            $("#analytics_wrapper").click(function(ev) {
+        $("#advanced_search_wrapper").fadeIn();
+        $("#analytics").fadeIn(function(){
+            $("#advanced_search_wrapper").click(function(ev) {
                 if (ev.target != this) return;
-                $("#analytics_wrapper").fadeOut();
-                $("#analytics_wrapper").unbind('click');
+                $("#advanced_search_wrapper").fadeOut();
+                $("#analytics").fadeOut();
+                $("#advanced_search_wrapper").unbind('click');
             });  
         });
     });
     
     $("#hide_analytics").click(function(){
-        $("#analytics_wrapper").fadeOut();
+        $("#advanced_search_wrapper").fadeOut();
+        $("#analytics").fadeOut();
     });
     
     /* Set up the advanced search form */
-    $( "#advanced_num_slider" ).slider({
+    /*$( "#advanced_num_slider" ).slider({
       range: true,
       min: 100,
       max: 600,
@@ -112,19 +114,47 @@ $(document).ready(function() {
       }
     });
     $( "#advanced_num_range" ).val($( "#advanced_num_slider" ).slider( "values", 0 ) +
-      "-" + $( "#advanced_num_slider" ).slider( "values", 1 ) );
+      "-" + $( "#advanced_num_slider" ).slider( "values", 1 ) );*/
     
     /* 'Submit' the advanced search form */
     $("#advanced_form").submit(function(event) {
         event.preventDefault();
-        var input = $("input#advanced_keyword").val();
-        input += " " + $("select#advanced_distribution").val();
-        var nums = $("input#advanced_num_range").val().split("-");
-        if (nums[0] > 100) input += " >" + nums[0];
-        if (nums[1] < 600) input += " <" + nums[1];
+        var boxes;
+        var input = $("#advanced_subject").val();
+        if ($("#advanced_course_number").val().trim().length != 0) {
+            input += " " + $("#advanced_course_number").val();
+        }
+        boxes = $("input[name=level]:checked");
+        boxes.each(function(){
+            input += " >=" + $(this).val() + " <" + (parseInt($(this).val())+100);
+        });
+        if ($("#advanced_instructor").val().trim().length != 0) {
+            input += " " + $("#advanced_instructor").val();
+        }
+        if ($("#advanced_title").val().trim().length != 0) {
+            input += " " + $("#advanced_title").val();
+        }
+        boxes = $("input[name=day]:checked");
+        boxes.each(function(){
+            input += " " + $(this).val();
+        });
+        boxes = $("input[name=time]:checked");
+        boxes.each(function(){
+            input += " " + $(this).val();
+        });
+        boxes = $("input[name=dist]:checked");
+        boxes.each(function(){
+            input += " " + $(this).val();
+        });
+        if ($("#advanced_keyword").val().trim().length != 0) {
+            input += " " + $("#advanced_keyword").val();
+        }
+        
         $("#omnibar_input").val(input);
         $("#omnibar_input").submit();
-        $(".advanced_search_on").switchClass("advanced_search_on", "advanced_search_off");
+        $("#advanced_search").fadeOut();
+        $("#advanced_search_wrapper").fadeOut();
+        $("#advanced_search_wrapper").unbind('click');
     });
 
     /* Attach a handler to the preset search button */
