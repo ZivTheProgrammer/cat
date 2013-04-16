@@ -145,7 +145,7 @@ class Parser:
         ratings["lectures"] = []
 #        print cell.string
         for i in range(5):
-            ratings["lectures"].append(cell.string)
+            ratings["lectures"].append(cell.string.replace('%', ''))
             cell = cell.find_next_sibling("td")
         cell = cell.find_next_sibling("td")
         ratings["lectures_mean"] = cell.string.strip()
@@ -158,7 +158,7 @@ class Parser:
 find_next("td")
         ratings["written"] = []
         for i in range(5):
-            ratings["written"].append(cell.string)
+            ratings["written"].append(cell.string).replace('%', ''))
             cell = cell.find_next_sibling("td")
         cell = cell.find_next_sibling("td")
         ratings["written_mean"] = cell.string.strip()
@@ -169,7 +169,7 @@ find_next("td")
 find_next("td")
         ratings["readings"] = []
         for i in range(5):
-            ratings["readings"].append(cell.string)
+            ratings["readings"].append(cell.string).replace('%', ''))
             cell = cell.find_next_sibling("td")
         cell = cell.find_next_sibling("td")
         ratings["readings_mean"] = cell.string.strip()
@@ -180,7 +180,7 @@ find_next("td")
 find_next("td")
         ratings["precepts"] = []
         for i in range(5):
-            ratings["precepts"].append(cell.string)
+            ratings["precepts"].append(cell.string).replace('%', ''))
             cell = cell.find_next_sibling("td")
         cell = cell.find_next_sibling("td")
         ratings["precepts_mean"] = cell.string.strip()

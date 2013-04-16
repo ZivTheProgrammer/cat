@@ -248,6 +248,7 @@ class CatDB:
     # Returns the reviews for all past semesters of a given course.
     # Gives a list of dictionaries, each of which contains the info for
     # one semester, with the review, term number and professor
+    # unique_id is the value of the unique_course field for a course
     def get_reviews(self, unique_id):
         # Get the list of all the semesters the course was offered
         course = self.uniqueCourseCol.find_one({'course': unique_id});
@@ -255,7 +256,7 @@ class CatDB:
             terms = course.get('years', [])
         else:
             terms = []
-        term_ids = [t['_id'] for t in terms]
+        term_ids = [t['id'] for t in terms]
         offerings = self.courseCol.find({'_id' : {'$in' : term_ids}})
         reviews = []
         for i in offerings:
