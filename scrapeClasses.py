@@ -46,7 +46,11 @@ elif action == 'add':
 
 
 # Get the list of available terms
-fTerm = urlopen(feed + '?term=list')
+try:
+    fTerm = urlopen(feed + '?term=list')
+except:
+    print "***********Couldn't load list of courses************"
+    exit()
 terms = ET.parse(fTerm)
 
 for term in terms.iter(ns + 'term'):
@@ -56,23 +60,34 @@ for term in terms.iter(ns + 'term'):
         continue
     print "term code: " + termCode
     # Get the data from each term, starting with list of subjects:
-    fSub = urlopen(feed + '?term=' + termCode + "&subject=list")
+    try:
+        fSub = urlopen(feed + '?term=' + termCode + "&subject=list")
+    except:
+        print "***********Couldn't load term %s subject list************" % (term)
+        continue
     subjects = ET.parse(fSub)
     # Get data for each subject
     for sub in subjects.iter(ns + 'subject'):
         subCode = sub.find(ns + 'code').text
         # Get all the courses for each subject
         sleep(.5)
-        fCourse = urlopen(feed + "?term=" + termCode + "&subject=" + subCode)
+        try:
+            fCourse = urlopen(feed + "?term=" + termCode + "&subject=" + subCode)
+        except:
+            print "***********Couldn't load term %s and subject %s************" % (termCode, subCode)
+            continue
+            
         courses = ET.parse(fCourse)
+        parent_map = dict((c, p) for p in courses.getiterator() for c in p)
         for course in courses.iter(ns + 'course'):
             entry = {}
             entry['term'] = termCode
             # Find the subject code used for the primary listing (not necessarily
             # the subject we searched by
-            entry['subject'] = courses.find('.//' + ns + 'subjects/' + ns
-                    + 'subject/' + ns + 'code').text
-            #entry['subject']
+            # TODO: make sure we get the right subject- there may be multiple on the page
+            #entry['subject'] = courses.find('.//' + ns + 'subjects/' + ns
+            #        + 'subject/' + ns + 'code').text
+            entry['subject'] = parent_map[parent_map[course]].find(ns + 'code').text
             catNum = course.findall(ns + 'catalog_number')
             if len(catNum) > 1:
                 print "ERROR: course has more than one number"

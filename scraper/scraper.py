@@ -132,6 +132,7 @@ def get_single_class(row):
     bldg_link = cells[4].strong.a
     return {
           'classnum': cells[0].strong.string,
+          'section' : cells[1].strong.string,
           'days': re.sub(r'\s+', '', cells[3].strong.string),
           'starttime': time[0].strip(),
           'endtime': time[1].strip(),

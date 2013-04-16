@@ -21,7 +21,6 @@ def index(request):
     db = CatDB()
     student = db.get_student("bbaggins")
     courses = student.get('courseList', [])
-    print "student's courses...", courses
     courses = db.get_course(course_id = courses)
     for result in courses:
         result = annotate(db, result)

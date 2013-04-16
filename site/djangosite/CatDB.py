@@ -121,12 +121,7 @@ class CatDB:
             keywords=None, unique=True):
         #TODO: make sure all of these are strings
         if course:
-            course = course.split(', ');
-            if isinstance(course,list):
-                for c in course:
-                    c = str(c)
-            else:
-                return self.courseCol.find(course)
+            return self.courseCol.find(course)
         else:
             course = {}
 
@@ -150,15 +145,14 @@ class CatDB:
         profIDs = []
 
         if professor_id:
-            professor_id = professor_id.split(', ')
+            """professor_id = professor_id.split(', ')
             if isinstance(professor_id, list):
                 for c in professor_id:
-                    c = str(c)
-            else:
-                profIDs = professor_id if isinstance(professor_id, list) else [professor_id]
+                    c = str(c)"""
+            #else:
+            profIDs = professor_id if isinstance(professor_id, list) else [professor_id]
 
         if professor_name:
-            professor_name = professor_name.split(', ');
             if not isinstance(professor_name, list):
                 professor_name = [professor_name]
             for n in professor_name:
@@ -167,12 +161,11 @@ class CatDB:
                     profIDs.append(p['id'])
 
         if profIDs:
-            profIDs = profIDs.split(', ')
             if isinstance(profIDs, list):
-                for c in profIDs:
-                    c = str(c)
+                profIDs = [str(c) for c in profIDs]
             else:
-                course['instructors'] = {'$in': profIDs}
+                profIDs = [profIDs]
+            course['instructors'] = {'$in': profIDs}
 
         if distribution:
                 course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
