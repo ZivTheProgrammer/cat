@@ -70,16 +70,20 @@ $(document).ready(function() {
     /* Show and hide the advanced search dialog */
     $("#show_advanced").click(function(){
         $("#advanced_search_wrapper").fadeIn(function(){
-            $("#advanced_search_wrapper").click(function(ev) {
-                if (ev.target != this) return;
-                $("#advanced_search_wrapper").fadeOut();
-                $("#advanced_search_wrapper").unbind('click');
+			$("#advanced_search").fadeIn(function() {
+            	$("#advanced_search_wrapper").click(function(ev) {
+                	if (ev.target != this) return;
+                	$("#advanced_search_wrapper").fadeOut();
+                	$("#advanced_search").fadeOut();
+					$("#advanced_search_wrapper").unbind('click');
+				});
             });  
         });
     });
     
     $("#hide_advanced").click(function(){
         $("#advanced_search_wrapper").fadeOut();
+		$("#advanced_search").fadeOut();
     });
     
     /* Show and hide the analytics */
