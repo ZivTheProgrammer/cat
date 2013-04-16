@@ -9,53 +9,87 @@
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/themes/cupertino/jquery.ui.theme.css">
 <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
 <script src="{{STATIC_URL}}js/jquery-ui-1.10.2.custom.min.js"></script>
+
+
+<!--<script> {% include "jquery.mousewheel.js" %} </script>
+<script> {% include "jquery.jscrollpane.min.js" %} </script>
+<style type="text/css"> {% include "jquery.jscrollpane.css" %} </style>-->
+
 <script> {% include "index.js" %} </script>
 </head>
 
 <body>
 
-<div id = "advanced_search_wrapper">
-    <div id = "advanced_search">
+<div id = "advanced_search_wrapper"></div>
+
+<div id="outside_div">
+	
+	<div id = "advanced_search">
         <button id = "hide_advanced"> Close </button>
+        <h3>Advanced Search</h3>
         <form id = "advanced_form" action="" method="post">
-            <input id = "advanced_keyword" type="search" name="text"></input>
-            <select id = "advanced_distribution">
+			<span class="advanced_label">Subject:</span><input id = "advanced_subject" type="text" autofocus="autofocus"></input></br>
+			<span class="advanced_label">Course Number:</span><input id = "advanced_course_number" type="text"></input></br>
+			<span class="advanced_label">Level:</span><input class = "advanced_level_boxes " name="level" value="100" type="checkbox">100</input>
+			<input class = "advanced_level_boxes" name="level" value="200" type="checkbox">200</input>
+			<input class = "advanced_level_boxes" name="level" value="300" type="checkbox">300</input>
+			<input class = "advanced_level_boxes" name="level" value="400" type="checkbox">400</input>
+			<input class = "advanced_level_boxes" name="level" value="500" type="checkbox">500</input></br>
+			<span class="advanced_label">Instructor:</span><input class="" id = "advanced_instructor" type="text"></input></br>
+			<span class="advanced_label">Title:</span><input class="" id = "advanced_title" type="text"></input></br>
+			<span class="advanced_label">Day:</span><input class = "advanced_day_boxes" name="day" value="Mon" type="checkbox">Mon</input>
+			<input class = "advanced_day_boxes" name="day" value="Tue" type="checkbox">Tue</input>
+			<input class = "advanced_day_boxes" name="day" value="Wed" type="checkbox">Wed</input>
+			<input class = "advanced_day_boxes" name="day" value="Thurs" type="checkbox">Thurs</input>
+			<input class = "advanced_day_boxes" name="day" value="Fri" type="checkbox">Fri</input></br>
+			<span class="advanced_label">Start time:</span><input class = "advanced_time_boxes " name="time" value="8:00" type="checkbox">8:00</input>
+			<input class = "advanced_time_boxes" name="time" value="9:00" type="checkbox">9:00</input>
+			<input class = "advanced_time_boxes" name="time" value="10:00" type="checkbox">10:00</input>
+			<input class = "advanced_time_boxes" name="time" value="11:00" type="checkbox">11:00</input>
+			<input class = "advanced_time_boxes" name="time" value="12:30" type="checkbox">12:30</input></br>
+			<span class="advanced_label">&nbsp;</span>
+			<input class = "advanced_time_boxes" name="time" value="1:00" type="checkbox">1:00</input>
+			<input class = "advanced_time_boxes" name="time" value="2:00" type="checkbox">2:00</input>
+			<input class = "advanced_time_boxes" name="time" value="3:00" type="checkbox">3:00</input>
+			<input class = "advanced_time_boxes" name="time" value="4:00" type="checkbox">4:00</input>
+			<input class = "advanced_time_boxes" name="time" value="5:00" type="checkbox">5:00</input>
+			<input class = "advanced_time_boxes" name="time" value="6:00" type="checkbox">after 6:00</input></br>
+			<span class="advanced_label">Distribution:</span>
+			{% for d in distrib %} <input class = "advanced_dist_boxes " name="dist" value='{{ d }}' type="checkbox">{{ d }}</input>
+			{% endfor %} </br>
+			<span class="advanced_label">Closed/Canceled:</span><input class = "advanced_closed " name="closed" value="closed" type="checkbox"></input></br>
+            <span class="advanced_label">keyword:</span><input id = "advanced_keyword" type="text" name="keyword"></input></br>
+            <!--<select id = "advanced_distribution">
                 <option value=''></option>
                 {% for d in distrib %} <option value='{{ d }}'>{{ d }}</option> {% endfor %}
-            </select>    
+            </select>
             <div style="display:block;">
                 <input type="text" id="advanced_num_range" style="border: 0; font-weight: bold;" readonly/>
                 <div id="advanced_num_slider"></div>
-            </div>
+            </div>-->
             <input value="search" type="submit"></input>
         </form>
     </div>
-</div>
-
-
-<div id = "analytics_wrapper">
-    <div id = "analytics">
-        <button id = "hide_analytics"> Close </button>
-    </div>
-</div>
-
-<div id="outside_div">
+	
 
 <div id = "omnibar_div">
     <button id="show_advanced"> Advanced Search </button>
     <form id="omnibar_form" action="" method="post"> {% csrf_token %}
-        <input id="omnibar_input" type="search" name="text"></input>
+        <input id="omnibar_input" type="search" name="text" autofocus="autofocus"></input>
         <input id="omnibar_submit" value="Search" type="submit"></input>
     </form>
 </div>
 
 <div id="results_div">
+    <div id="left_scrollbar_wrap">
     <div id="results_left_div">
         <ul>
 
         </ul>
     </div>
-
+    </div>
+    
+    <div id="right_scrollbar_wrap">
     <div id="results_right_div">
         <!--<p> Welcome to CAT! </p>
         <button id="preset_search_1"> Find PDF-only classes </button>-->
@@ -74,6 +108,7 @@
         </div>
         {% endfor %}
     </div>
+    </div>
 </div>
 
 <div id="cart_div">
@@ -83,6 +118,10 @@
         {% endfor %}
     </ul>
     <button id="show_analytics"> Analyze! </button>
+</div>
+
+<div id = "analytics">
+    <button id = "hide_analytics"> Close </button>
 </div>
 
 </div>
