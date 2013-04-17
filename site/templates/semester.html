@@ -1,8 +1,11 @@
-<div class = "detail_title"> {{result.title}} </div>
 <div class = "detail_term"> {{result.term_name}} ({{result.term}}) </div>
-<div class = "detail_distribution"> {{result.distribution}} {% for s in result.pdf %} {{ s.upper }} {% endfor %} </div>
+<div class = "detail_subject_number_dist"> {{result.subject}} {{result.course_number}} {% if result.distribution %}({{ result.distribution }}){% endif %}  {% for s in result.pdf %} {{ s }} {% endfor %}</div>
+<div class = "detail_title"> {{result.title}} </div>
 <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
-<div class = "detail_description"> {{result.description}} </div>
+<div class = "detail_description"> {{result.description}} </div> </br>
+<div class = "detail_readings"> Sample Reading List: </br> {% for s in result.readings %} <span class="detail_author">{{ s.author }}</span>, <span class="detail_title">{{ s.title }}</span></br> {% endfor %}</div></br>
+<div class = "detail_grading"> Requirements/Grading:</br> {% for s in result.grading %} {{ s }}</br> {% endfor %} </div></br>
+<div class = "detail_prereqs"> Prerequsites and Restrictions:</br>{{result.prereqs}} </div></br>
 <div class = "detail_classes"> Classes:
     <ul>
         {% for class in result.classes %}

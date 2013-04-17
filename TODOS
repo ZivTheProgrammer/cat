@@ -8,4 +8,12 @@ Need to format detail view and make it include:
    Reading/Writing assignments:
    Requirements/Grading:
    Other Requirements:
+   Links from professor names to contact info, eg:
+   	 http://registrar.princeton.edu/course-offerings/dirinfo.xml?uid=960019894
 
+I'm pretty sure a course can satisfy multiple distribution requirements.
+  Are we returning a list for that? How's that working? It looks like the 
+  Django code only checks for one, but I could be reading it wrong.
+
+What about this thing that appears on some courses?
+     ENROLLMENT BY APPLICATION OR INTERVIEW. DEPARTMENTAL PERMISSION REQUIRED.
