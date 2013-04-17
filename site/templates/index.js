@@ -43,13 +43,6 @@ $(document).ready(function() {
         display(course_id);
     });
     
-    /* Enable submitting omnibar with enter key */
-    $("#omnibar_form").keypress(function(kp) {
-        if (kp.which == 13) {
-            $("#omnibar_form").submit();
-        }
-    });
-    
     /* set the behavior of the "load semester button" */
     $(".semester_menu>button").click(function() {
         var params = $(this).attr('class').split('_');
