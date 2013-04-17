@@ -136,6 +136,7 @@ for term in terms.iter(ns + 'term'):
             # Now get data from the registrar site
             regData = scraper.scrape_id_term(entry['course_id'], entry['term'])
             #print regData
+            """
             if regData.get('prereqs', None):
                 entry['prereqs'] = regData['prereqs']
             if regData.get('area', None):
@@ -148,6 +149,14 @@ for term in terms.iter(ns + 'term'):
                 entry['classes'] = regData['classes']
             if regData.get('pdf', None):
                 entry['pdf'] = regData['pdf']
+            if regData.get('assignments', None):
+                entry['assignments'] = regData['assignments']
+            """
+
+            for key in regData.keys():
+                if key in ['prereqs', 'distribution', 'readings', 'grading','classes',
+                        'pdf', 'assignments', 'other_reqs', 'other_info']:
+                    entry[key] = regData[key]
 
             # TODO: check for courses that have changed number, etc.
             entry['unique_course'] = entry['subject'] + entry['course_number']

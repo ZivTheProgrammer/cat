@@ -69,6 +69,9 @@ def get_course_details(soup):
     descrdiv = soup.find('div', id='descr')
     readings = soup.find(text="Sample reading list:")
     grading = soup.find(text=re.compile("\n?Requirements/Grading:\n?"))
+    assignments = soup.find(text=re.compile("\n?Reading/Writing assignments:\n?"))
+    other_reqs = soup.find(text=re.compile("\n?Other Requirements:\n?"))
+    other_info = soup.find(text=re.compile("\n?Other [Ii]nformation:\n?"))
 
     grades = []
     if grading:
@@ -103,6 +106,7 @@ def get_course_details(soup):
             elif author and sib.strip() and author != "Sample reading list:":
                 readings_list.append({'title':sib.strip(), 'author':author})
                 author = None
+
     
     return {
             #'courseid': COURSE_URL_REGEX.search(soup.find('a', href=COURSE_URL_REGEX)['href']).group('id'),
@@ -112,7 +116,10 @@ def get_course_details(soup):
             'prereqs': clean(pretitle.parent.findNextSibling(text=True)) if pretitle != None else '',
             'grading': grades,
             'readings': readings_list,
-            'pdf': pdf_options
+            'pdf': pdf_options,
+            'assignments' : clean(assignments.parent.findNextSibling(text=True)) if assignments != None else '',
+            'other_reqs' : clean(other_reqs.parent.findNextSibling(text=True)) if other_reqs != None else '',
+            'other_info' : clean(other_info.parent.findNextSibling(text=True)) if other_info != None else ''
             }
 
 def get_course_listings(soup):
