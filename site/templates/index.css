@@ -10,6 +10,28 @@ html, body {
     background-image: linear-gradient(top, #AEC4DE, #FFFFFF);
 }
 
+.detail_all_the_things {
+   font-family:Verdana,sans-serif;
+   font-size:80%;
+}
+
+.detail_term {
+    font-weight:bold;
+}
+
+.detail_subject_number_dist {
+    font-weight:bold;
+}
+
+.detail_title {
+    color:rgb(83,83,83);
+    font-size:125%;
+}
+
+.detail_profs {
+    color:rgb(129,37,0);
+}
+
 #hide_advanced {
 	float:right;
 }
