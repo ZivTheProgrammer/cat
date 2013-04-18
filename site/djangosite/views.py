@@ -100,6 +100,8 @@ def parse(text):
         # Match distribution requirement codes
         if token in DISTRIBUTION_AREAS:
             output['distribution'].append(token)
+        elif token == 'ST':
+            output['distribution'].extend(['STN', 'STL'])
         # Match subject codes
         elif re.match('^[A-Z]{3}$', token):
             output['subject'].append(token)

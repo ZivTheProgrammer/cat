@@ -110,7 +110,7 @@ def get_course_details(soup):
     
     return {
             #'courseid': COURSE_URL_REGEX.search(soup.find('a', href=COURSE_URL_REGEX)['href']).group('id'),
-            'area': area,#[1:-1],    # trim parens #  match.group(1) if match != None else ''
+            'distribution': area,#[1:-1],    # trim parens #  match.group(1) if match != None else ''
             'title': clean(soup('h2')[1].string),
             'descrip': clean(descrdiv.contents[0] if descrdiv else ''),
             'prereqs': clean(pretitle.parent.findNextSibling(text=True)) if pretitle != None else '',
