@@ -8,11 +8,7 @@
       <span class="detail_author">{{ s.author }}</span>, <span class="detail_title">{{ s.title }}</span></br> 
    {% endfor %}
 </div></br>
-<div class = "detail_assignments"> Reading/Writing assignments:</br>
-   {% for s in result.assignments %}
-      {{ s }} </br>
-   {% endfor %}
-</div></br>
+<div class = "detail_assignments"> Reading/Writing assignments:</br>{{ result.assignments }}</div></br>
 <div class = "detail_grading"> Requirements/Grading:</br> 
    {% for s in result.grading %} 
       {{ s }}</br> 
