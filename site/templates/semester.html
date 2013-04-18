@@ -1,12 +1,13 @@
+<div class = "detail_all_the_things">
 <div class = "detail_term"> {{result.term_name}} ({{result.term}}) </div>
-<div class = "detail_subject_number_dist"> {{result.subject}} {{result.course_number}} {% for s in result.crosslistings %}/ {{ s.subject }} {{ s.course_number }} {% endfor %} {% if result.distribution %}({{ result.distribution }}){% endif %}  {% for s in result.pdf %} {{ s }} {% endfor %}</div>
+<div class = "detail_subject_number_dist"> {{result.subject}} {{result.course_number}} {% for s in result.crosslistings %}/ {{ s.subject }} {{ s.course_number }} {% endfor %} {% if result.distribution %}({{ result.distribution }}){% endif %}  {% for s in result.pdf %} {{ s }} {% endfor %}</div></br>
 <div class = "detail_title"> {{result.title}} </div>
 <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
 <div class = "detail_description"> {{result.description}} </div> </br>
 {% if result.readings %}
 <div class = "detail_readings"> Sample Reading List:</br> 
    {% for s in result.readings %} 
-      <span class="detail_author">{{ s.author }}</span>, <span class="detail_title">{{ s.title }}</span></br> 
+      <span class="detail_author">{{ s.author }}</span>, <span class="detail_book_title">{{ s.title }}</span></br> 
    {% endfor %}
 </div></br>
 {% endif %}
@@ -42,3 +43,4 @@
     </ul> 
 </div>
 {% endif %}
+</div>
