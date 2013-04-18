@@ -1,34 +1,35 @@
 This is just a file of stuff we think about that needs to be done. These are mostly little things that anyone
 could do in their spare time:
 
+/--------BUGS----------/
+
 **FOR TESTING REVIEWS**
 There's a freaky review for AAS 201, from 2006 for Robert Fredin, that's just "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" and it makes ICE look pretty bad.
 
-Need to format detail view and make it include:
-   Links from professor names to contact info, eg:
-   	 http://registrar.princeton.edu/course-offerings/dirinfo.xml?uid=960019894
-
+/------Features--------/
 I'm pretty sure a course can satisfy multiple distribution requirements.
   Are we returning a list for that? How's that working? It looks like the 
   Django code only checks for one, but I could be reading it wrong.
 
 What about this thing that appears on some courses?
      ENROLLMENT BY APPLICATION OR INTERVIEW. DEPARTMENTAL PERMISSION REQUIRED.
-     
+
 The courses that are returned from the search need to be sorted.  If we want to be like the registrar, they should 
 be sorted first be subject, e.g. COS, and then stably sorted by number, e.g. 109. 
-     
+
 Searching for "no pdf" "not pdfable" "not pdf-able" "pdf only" "pdfonly" and "nopdf" should all work as
     expected.  Now only "no-pdf" and "pdf-only" work.
-- I also think just "pdf" should work for pdf-only courses.
     
-Currently all searches are implicitly ORs of all tokens. Would it be too hard to add an AND function to
-    allow users to search something like "QR and COS" to get only the courses that satisfy both?
-    
-Searching by time should work.  Question: If a user searches an hour, say "11:00" or "11am" or "11AM" or "11:00 am" etc., should the 
-    search should return all classes that start anytime within that hour, or only classes that start exactly at that time?
+Should searching for "pdf" return pdf-only courses or all courses that are pdf-able (i.e. most courses)
+
+Searching by time should work.  Question: If a user searches an hour, say "11:00" or "11am" or "11AM" or "11:00 am" etc., should the search should return all classes that start anytime within that hour, or only classes that start exactly at that time?
 --Any time within that hour. That's what the Registrar does.
-    
+
+/------Feepers---------/
+Need to format detail view and make it include:
+   Links from professor names to contact info, eg:
+   	 http://registrar.princeton.edu/course-offerings/dirinfo.xml?uid=960019894
+     
 Will it be possible to search by grade percentages, i.e. "<50% final" or "no oral presentation" or ">60% papers"?  Even if this
     just worked for finals, midterms, and papers, this would be /SUPER/ cool.  Some courses don't include this data, so they could
     just be ignored for this type of searches.
