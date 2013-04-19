@@ -38,4 +38,6 @@ Will it be possible to search by grade percentages, i.e. "<50% final" or "no ora
     just worked for finals, midterms, and papers, this would be /SUPER/ cool.  Some courses don't include this data, so they could
     just be ignored for this type of searches.
     
-   
+Searches should let you use ">=" and "<=", as well as ">" and "<".   
+
+Fix numerical reviews to actually make sure the sections are labelled correctly.
