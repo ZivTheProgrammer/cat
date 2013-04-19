@@ -45,7 +45,7 @@ def search_results(request):
     # Load courses in cart
     student = db.get_student("bbaggins")
     list = student.get('courseList', [])
-    courses = db.get_course(course_id= list)
+    courses = db.get_course(course_id = list)
     for result in courses:
         result = annotate(db, result)
         if result['course_id'] in classified:
@@ -69,7 +69,7 @@ def get_semester(request):
 def add_course_cart(request):
     db = CatDB()
     db.add_course("bbaggins", request.POST['course_id'])
-    return render(request, "cart_course.html", {'course_id': request.POST['course_id']})
+    return render(request, "cart_course.html", {'course_id': request.POST['course_id'], 'course_name': request.POST['course_code']})
     
 # Remove a course from the user's course cart.  
 def remove_course_cart(request):

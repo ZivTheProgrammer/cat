@@ -87,8 +87,10 @@
 
 <div id="cart_div">
     <ul id="cart_list">
-        {% for course in courses %}
-            {% include "cart_course.html" with course_id=course.course_id%}
+        {% for course_id, result in results.items %}
+            {% if result.source = "cart" %}
+                {% include "cart_course.html" with course_id=course_id course_name=result.unique_course %}
+            {% endif %}
         {% endfor %}
     </ul>
     <button id="show_analytics"> Analyze! </button>

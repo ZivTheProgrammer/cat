@@ -8,7 +8,7 @@
                     <span class="sub_span"> {% include "prof_snippet.html" %}</span>                   
                     <form class="savecourse_form" id="save_{{course_id}}"> {% csrf_token %}
                         <input type="hidden" name="course_id" value="{{course_id}}">
-                        <input type="hidden" name="course_code" value="{{result.subject}} {{result.course_number}}">
+                        <input type="hidden" name="course_code" value="{{result.subject}}{{result.course_number}}">
                         <input type="submit" value="Save" {% if result.source == 'both' %}disabled{% endif %}>
                     </form>                
                 </li>
