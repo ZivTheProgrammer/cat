@@ -188,7 +188,7 @@ class CatDB:
             descRegex = '.*('
             for kw in keywords:
                 if (kw.lower() not in self.words2ignore):
-                    descRegex = descRegex + kw + '|'
+                    descRegex = descRegex + ' ' + kw + '|'
             descRegex = descRegex + 'slkfjeiwenvnuhfguhew).*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
         
