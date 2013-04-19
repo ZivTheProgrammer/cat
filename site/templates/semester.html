@@ -5,33 +5,33 @@
     <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
     <div class = "detail_description"> {{result.description}} </div> </br>
     {% if result.readings %}
-    <div class = "detail_readings"> Sample Reading List:</br> 
+    <div class = "detail_readings"><span class="detail_heading"> Sample Reading List:</span></br> 
        {% for s in result.readings %} 
           <span class="detail_author">{{ s.author }}</span>, <span class="detail_book_title">{{ s.title }}</span></br> 
        {% endfor %}
     </div></br>
     {% endif %}
     {% if result.assignments %}
-    <div class = "detail_assignments"> Reading/Writing assignments:</br>{{ result.assignments }}</div></br>
+    <div class = "detail_assignments"><span class="detail_heading"> Reading/Writing assignments:</span></br>{{ result.assignments }}</div></br>
     {% endif %}
     {% if result.grading %}
-    <div class = "detail_grading"> Requirements/Grading:</br> 
+    <div class = "detail_grading"><span class="detail_heading"> Requirements/Grading:</span></br> 
        {% for s in result.grading %} 
           {{ s }}</br> 
        {% endfor %} 
     </div></br>
     {% endif %}
     {% if result.prereqs %}
-    <div class = "detail_prereqs"> Prerequsites and Restrictions:</br>{{result.prereqs}}</div></br> 
+    <div class = "detail_prereqs"><span class="detail_heading"> Prerequsites and Restrictions:</span></br>{{result.prereqs}}</div></br> 
     {% endif %}
     {% if result.other_reqs %}
-    <div class = "detail_other_reqs"> Other Requirements:</br>{{ result.other_reqs }}</div></br> 
+    <div class = "detail_other_reqs"><span class="detail_heading"> Other Requirements:</span></br>{{ result.other_reqs }}</div></br> 
     {% endif %}
     {% if result.other_info %}
-    <div class = "detail_other_info"> Other Information:</br>{{ result.other_info }}</div></br> 
+    <div class = "detail_other_info"><span class="detail_heading"> Other Information:</span></br>{{ result.other_info }}</div></br> 
     {% endif %}
     {% if result.classes %}
-    <div class = "detail_classes"> Classes:
+    <div class = "detail_classes"><span class="detail_heading"> Classes:</span>
         <ul>
             {% for class in result.classes %}
             <li> {{ class.section}} : {{ class.days}} {{ class.starttime }} - {{ class.endtime }}
