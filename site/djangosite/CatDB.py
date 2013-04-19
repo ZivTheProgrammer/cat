@@ -108,13 +108,12 @@ class CatDB:
         for course in list_courses:
             courseDesc = course['description']
             title = course['title']
-            totalcount = 0
             matchDesc = 0
             matchTitle = 0
             totalscore = 0
-            numMatch = 0
+            totalcount = 0
             if keywords is None:
-                return list_courses;
+                return list_courses
             for q in keywords:
                 if (re.search(q, title)):
                     matchTitle = matchTitle + 1
@@ -125,7 +124,6 @@ class CatDB:
             totalscore = matchTitle*1000 + matchDesc*100 + totalcount
             scores[course['course_id']] = totalscore; # dictionary of scores of courses
         # sort by score
-        print scores
         for c in sorted(scores, key = scores.get, reverse = True):
             courses_ranked.append(self.courseCol.find_one({'course_id': c}));
         return courses_ranked;
@@ -134,12 +132,28 @@ class CatDB:
             min_course_number=None, max_course_number=None, professor_id=None,
             professor_name=None, term=None, min_term=None, max_term=None,
             distribution=None, pdf=None, course_id=None, unique_course=None,
-            keywords=None, unique=True):
+            keywords=None, unique=True, time=None, day=None):
         #TODO: make sure all of these are strings
         if course:
             return self.courseCol.find(course)
         else:
             course = {}
+
+#        if time:
+#            course['classes'] = {
+#                    $elemMatch: {
+#                    section: {'$in': {'L01', 'C01', 'C02', 'C03'}} # FIX
+#                    starttime: time
+#                    }
+#                     }
+
+#        if day:
+#            course['classes'] = {
+#                $elemMatch: {
+#                    section: {'$in': {'L01', 'C01', 'C02', 'C03'}} # FIX
+#                    days: {}
+#                    }
+#                }
 
         if subject:
             # TODO: Make all capital letters
