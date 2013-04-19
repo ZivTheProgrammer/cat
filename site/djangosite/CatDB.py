@@ -125,7 +125,6 @@ class CatDB:
             totalscore = matchTitle*1000 + matchDesc*100 + totalcount
             scores[course['course_id']] = totalscore; # dictionary of scores of courses
         # sort by score
-        print 'hi'
         print scores
         for c in sorted(scores, key = scores.get, reverse = True):
             courses_ranked.append(self.courseCol.find_one({'course_id': c}));
