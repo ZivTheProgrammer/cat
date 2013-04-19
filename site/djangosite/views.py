@@ -124,6 +124,10 @@ def parse(db, text):
             output['min_course_number'] = token[1:]
         elif re.match('^<[0-9]{3}$', token):
             output['max_course_number'] = token[1:]
+        elif re.match('^>=[0-9]{3}$', token):
+            output['min_course_number'] = str(int(token[2:])-1)
+        elif re.match('^<=[0-9]{3}$', token):
+            output['max_course_number'] = str(int(token[2:])+1)
         # Match PDF criteria
         elif re.match('^NO-AUDIT$', token):
             output['pdf'].append('na')
