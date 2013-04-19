@@ -33,10 +33,10 @@ def index(request):
 # Get search results and pass them back to the search page.
 def search_results(request):
     # Used to keep track of result versus cart courses
-    classified = {}
+    classified = OrderedDict()
     # Load courses in search results
-    query = parse(request.POST['text'])
     db = CatDB()
+    query = parse(db, request.POST['text'])
     output = db.get_course(**query)
     for result in output:
         result = annotate(db, result)
@@ -92,7 +92,6 @@ def annotate(db, semester):
         all_named_terms = OrderedDict()
         for term in semester['all_terms']:
             all_named_terms[term] = term_name(int(term))
-        print all_named_terms
         semester['all_named_terms'] = all_named_terms
     return semester
 
@@ -105,7 +104,7 @@ def term_name(term_no):
         return "Summer {:d}".format(1899 + term_no / 10)
 
 # Helper function to interpret the OMNIBAR(tm).
-def parse(text):
+def parse(db, text):
     tokens = text.upper().split()
     output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [], 'keywords': []}
     previous = {}
@@ -129,11 +128,6 @@ def parse(text):
             output['min_course_number'] = str(int(token[2:])-1)
         elif re.match('^<=[0-9]{3}$', token):
             output['max_course_number'] = str(int(token[2:])+1)
-
-        # Match professor names
-        elif re.match('^[A-Z]+$', token):
-            output['professor_name'].append(token)
-            output['keywords'].append(token) # Be smarter about this!
         # Match PDF criteria
         elif re.match('^NO-AUDIT$', token):
             output['pdf'].append('na')
@@ -141,4 +135,11 @@ def parse(text):
             output['pdf'].append('npdf')
         elif re.match('^PDF-ONLY$', token):
             output['pdf'].append('pdfonly')
+        # Match professor names
+        elif re.match('^[A-Z]+$', token):
+            if db.get_professor(token).count() > 0:
+                output['professor_name'].append(token)
+            else:
+                output['keywords'].append(token)
     return output
+    

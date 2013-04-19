@@ -12,7 +12,7 @@ import pprint
 
 class CatDB:
 
-    words2ignore = ['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'there'];
+    words2ignore = ['the', 'be', 'to', 'of', u'and', 'a', 'in', 'that', 'have', 'i', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'there'];
 
     def __init__(self):
         self.connection = MongoClient()
@@ -106,12 +106,12 @@ class CatDB:
         scores = {}
         courses_ranked = []
         for course in list_courses:
-            courseDesc = course['description']
-            title = course['title']
+            courseDesc = course['description'].upper()
+            title = course['title'].upper()
+            totalcount = 0
             matchDesc = 0
             matchTitle = 0
             totalscore = 0
-            totalcount = 0
             if keywords is None:
                 return list_courses
             for q in keywords:
@@ -203,8 +203,8 @@ class CatDB:
         if keywords: #keyword search
             descRegex = '.*('
             for kw in keywords:
-                if (kw not in self.words2ignore):
-                    descRegex = descRegex + kw + '|'
+                if (kw.lower() not in self.words2ignore):
+                    descRegex = descRegex + ' ' + kw + '|'
             descRegex = descRegex + 'slkfjeiwenvnuhfguhew).*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
         
