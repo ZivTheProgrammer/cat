@@ -151,7 +151,7 @@ class Curler:
         c.setopt(c.FOLLOWLOCATION, 1);        
         c.setopt(c.MAXREDIRS, 6);
         c.setopt(c.CONNECTTIMEOUT, 5)
-        c.setopt(c.TIMEOUT, 12)
+        c.setopt(c.TIMEOUT, 15)
         c.setopt(c.USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:14.0) Gecko/20100101 Firefox/14.0.1");
         c.setopt(c.COOKIEFILE, '')
         c.setopt(c.FAILONERROR, True)
