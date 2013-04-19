@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 import re
 import string
+import pprint
 
 """ A class that provides functions to get information from our database
     of courses. To use, create a CatDB object:
@@ -10,6 +11,8 @@ import string
 """
 
 class CatDB:
+
+    words2ignore = ['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'there'];
 
     def __init__(self):
         self.connection = MongoClient()
@@ -98,21 +101,35 @@ class CatDB:
         would return whichever of MAT201, COS201 and ELE201 that exist,
         from every semester
     """
-    def rank(list_courses, query):
-        keywords = query['description']
+    def rank(self, list_courses, keywords):
         totalscore = 0;
         numMatch = 0;
         # check how many keywords the course description contains
+        scores = {}
+        courses_ranked = []
         for course in list_courses:
-            courseDesc = course['stuff'];
+            courseDesc = course['description'];
+            title = course['title'];
             totalcount = 0;
+            matchDesc = 0;
+            matchTitle = 0;
+            if keywords is None:
+                return list_courses;
             for q in keywords:
-                if (re.match(q, courseDesc) is not null):
-                    numMatch = numMatch + 1
+                if (re.match(q, title) is not None):
+                    matchTitle = matchTitle + 1;
+                if (re.match(q, courseDesc) is not None):
+                    matchDesc = matchDesc + 1
                     totalcount = totalcount + courseDesc.count(q)
             # sleazy
-            totalscore = numMatch*1000 + totalcount
-            list_scores[course] = totalscore;
+            totalscore = matchTitle*1000 + matchDesc*100 + totalcount
+            scores[course['course_id']] = totalscore; # dictionary of scores of courses
+        # sort by score
+        print 'hi'
+        print scores
+        for c in sorted(scores, key = scores.get, reverse = True):
+            courses_ranked.append(self.courseCol.find_one({'course_id': c}));
+        return courses_ranked;
 
     def get_course(self, course=None, subject=None, course_number=None,
             min_course_number=None, max_course_number=None, professor_id=None,
@@ -171,10 +188,10 @@ class CatDB:
                 course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
 
         if keywords: #keyword search
-            kws = keywords.split()
             descRegex = '.*'
-            for kw in kws:
-                descRegex = descRegex + kw + '|'
+            for kw in keywords:
+                if (kw not in self.words2ignore):
+                    descRegex = descRegex + kw + '|'
             descRegex = descRegex + '.*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
         
@@ -205,7 +222,7 @@ class CatDB:
                 results_list.append(c)
 
         if not unique:
-            return results_list
+            return self.rank(results_list, keywords);
         # Get the most recent semester of each course
         unique_courses = set()
         for c in results_list:
@@ -238,13 +255,14 @@ class CatDB:
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
         #if len(results_list) < 100: # Luke's hack to prevent returning every course in the DB. Need to improve.
-        print "returning list of courses...", results_list
+        results_list = self.rank(results_list, keywords);
+        print "returning lists of courses...", results_list
+        #pp = pprint.PrettyPrinter(indent=2)
+        #pp.pprint(results_list)
         return results_list
         #else:
             #return 
         
-
-
     # Returns the reviews for all past semesters of a given course.
     # Gives a list of dictionaries, each of which contains the info for
     # one semester, with the review, term number and professor
