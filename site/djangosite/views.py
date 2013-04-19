@@ -4,6 +4,7 @@ from forms import *
 import CASClient
 import re
 from CatDB import CatDB
+from collections import OrderedDict
 
 DISTRIBUTION_AREAS = ['EM', 'EC', 'HA', 'LA', 'QR', 'SA', 'STN', 'STL']
 
@@ -18,13 +19,16 @@ def login(request):
 
 # Base view for the site
 def index(request):
+    classified = {}
     db = CatDB()
     student = db.get_student("bbaggins")
     courses = student.get('courseList', [])
     courses = db.get_course(course_id = courses)
     for result in courses:
         result = annotate(db, result)
-    return render(request, "index.html", {'distrib': DISTRIBUTION_AREAS, 'courses': courses})
+        result['source'] = 'cart'
+        classified[result['course_id']] = result
+    return render(request, "index.html", {'distrib': DISTRIBUTION_AREAS, 'courses': courses, 'results': classified})
 
 # Get search results and pass them back to the search page.
 def search_results(request):
@@ -54,15 +58,16 @@ def search_results(request):
 # Get a new semester and pass it back to the search page.
 def get_semester(request):
     db = CatDB()
-    result = db.get_course({"course_id": request.GET['course_id']})[0]
-    result['term'] = request.GET['semester'] # For testing!
+    course = db.get_course({"course_id": request.GET['course_id']})[0]
+    result = db.get_course({"subject": course['subject'], 
+        "course_number": course['course_number'], 
+        "term": request.GET['semester']})[0]
     result = annotate(db, result)
     return render(request, "get_semester.html", {'result': result})
 
 # Add a course to the user's course cart.
 def add_course_cart(request):
     db = CatDB()
-    print request.POST
     db.add_course("bbaggins", request.POST['course_id'])
     return render(request, "cart_course.html", {'course_id': request.POST['course_id']})
     
@@ -79,24 +84,32 @@ def annotate(db, semester):
         semester['profs'] = []
         for instructor in semester['instructors']:
             semester['profs'].append(db.get_professor(id_number=instructor)[0])
-    # Add nice semester name
+    # Add nice semester names
     if 'term' in semester:
         term_no = int(semester['term'])
-        if term_no % 10 == 4:
-            semester['term_name'] = "Spring {:d}".format(1900 + term_no / 10)
-        elif term_no % 10 == 2:
-            semester['term_name'] = "Fall {:d}".format(1899 + term_no / 10)
-        elif term_no % 10 == 1:
-            semester['term_name'] = "Summer {:d}".format(1899 + term_no / 10)
+        semester['term_name'] = term_name(term_no)
+    if 'all_terms' in semester:
+        all_named_terms = OrderedDict()
+        for term in semester['all_terms']:
+            all_named_terms[term] = term_name(int(term))
+        print all_named_terms
+        semester['all_named_terms'] = all_named_terms
     return semester
+
+def term_name(term_no):
+    if term_no % 10 == 4:
+        return "Spring {:d}".format(1900 + term_no / 10)
+    elif term_no % 10 == 2:
+        return"Fall {:d}".format(1899 + term_no / 10)
+    elif term_no % 10 == 1:
+        return "Summer {:d}".format(1899 + term_no / 10)
 
 # Helper function to interpret the OMNIBAR(tm).
 def parse(text):
     tokens = text.upper().split()
-    output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': []}
+    output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [] 'keywords': []}
     previous = {}
     for token in tokens:
-        print token #For testing... remember to remove this eventually!
         # Match distribution requirement codes
         if token in DISTRIBUTION_AREAS:
             output['distribution'].append(token)
@@ -115,6 +128,7 @@ def parse(text):
         # Match professor names
         elif re.match('^[A-Z]+$', token):
             output['professor_name'].append(token)
+            output['keywords'].append(token) # Be smarter about this!
         # Match PDF criteria
         elif re.match('^NO-AUDIT$', token):
             output['pdf'].append('na')
