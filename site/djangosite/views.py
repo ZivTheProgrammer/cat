@@ -107,7 +107,7 @@ def term_name(term_no):
 # Helper function to interpret the OMNIBAR(tm).
 def parse(text):
     tokens = text.upper().split()
-    output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [] 'keywords': []}
+    output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [], 'keywords': []}
     previous = {}
     for token in tokens:
         # Match distribution requirement codes

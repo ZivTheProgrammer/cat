@@ -102,23 +102,23 @@ class CatDB:
         from every semester
     """
     def rank(self, list_courses, keywords):
-        totalscore = 0;
-        numMatch = 0;
         # check how many keywords the course description contains
         scores = {}
         courses_ranked = []
         for course in list_courses:
-            courseDesc = course['description'];
-            title = course['title'];
-            totalcount = 0;
-            matchDesc = 0;
-            matchTitle = 0;
+            courseDesc = course['description']
+            title = course['title']
+            totalcount = 0
+            matchDesc = 0
+            matchTitle = 0
+            totalscore = 0
+            numMatch = 0
             if keywords is None:
                 return list_courses;
             for q in keywords:
-                if (re.match(q, title) is not None):
-                    matchTitle = matchTitle + 1;
-                if (re.match(q, courseDesc) is not None):
+                if (re.search(q, title)):
+                    matchTitle = matchTitle + 1
+                if (re.search(q, courseDesc)):
                     matchDesc = matchDesc + 1
                     totalcount = totalcount + courseDesc.count(q)
             # sleazy
@@ -188,11 +188,11 @@ class CatDB:
                 course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
 
         if keywords: #keyword search
-            descRegex = '.*'
+            descRegex = '.*('
             for kw in keywords:
                 if (kw not in self.words2ignore):
                     descRegex = descRegex + kw + '|'
-            descRegex = descRegex + '.*'
+            descRegex = descRegex + 'slkfjeiwenvnuhfguhew).*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
         
         if pdf:
