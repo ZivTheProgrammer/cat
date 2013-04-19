@@ -50,6 +50,16 @@ class Parser:
     SAVE_FILE = "state_of_parser.json"
     VERBOSE = False
 
+    QUESTIONS = {
+            re.compile("overall quality of the lectures", re.I) : "lectures",
+            re.compile("overall quality of the [written|writing] assignments", re.I): "assignments",
+            re.compile("overall quality of the readings", re.I): "readings",
+            re.compile("overall quality of the precepts", re.I): "precepts",
+            re.compile("overall quality of the classes", re.I): "classes",
+            re.compile("overall quality of the [course|writing seminar]", re.I): "overall"
+            }
+    all_questions = set()
+
     def __init__(self):
         self.data = {}
         self.worddict={}
@@ -126,6 +136,7 @@ class Parser:
 
     def parse_numbers(self, text, coursenum=None, term=None):
         #soup = soupfile(filename)
+        #print 'Parsing numbers'
         soup = BeautifulSoup(text)
         if not coursenum:
             coursenum = coursenum_from_filename(text);
@@ -139,51 +150,42 @@ class Parser:
         courseDept = coursenum[:3]
 
         ratings = {}
-        lectures_row = table.find_next("tr").find_next("tr").find_next("tr")
+        row = table.find_next("tr").find_next("tr").find_next("tr")
 #        print lectures_row
-        cell = lectures_row.find_next("td").find_next("td").find_next("td").find_next("td")
-        ratings["lectures"] = []
-#        print cell.string
-        for i in range(5):
-            ratings["lectures"].append(cell.string.replace('%', ''))
-            cell = cell.find_next_sibling("td")
-        cell = cell.find_next_sibling("td")
-        ratings["lectures_mean"] = cell.string.strip()
-        # TODO: take out % signs
-        # TODO: get the rest of the rows
-        # TODO: put in the database
-        written_row = lectures_row.find_next("tr").find_next("tr")
-#        print written_row
-        cell = written_row.find_next("td").find_next("td").find_next("td").\
-find_next("td")
-        ratings["written"] = []
-        for i in range(5):
-            ratings["written"].append(cell.string.replace('%', ''))
-            cell = cell.find_next_sibling("td")
-        cell = cell.find_next_sibling("td")
-        ratings["written_mean"] = cell.string.strip()
+        #print row, len(row.contents)
+        while row and len(row.contents) > 1:
+            #print "In a new row"
+            # Figure out which question this is...
+            question_name = ''
+            question = row.find_next("td").string
+            #print question
+            for q in self.QUESTIONS:
+                #print 'looking at question', q
+                if q.search(question):
+                    #print 'question matches'
+                    #This question matches
+                    question_name = self.QUESTIONS[q]
+                    break
+            if not question_name:
+                row = row.find_next_sibling("tr").find_next_sibling("tr")
+                continue
+            #print row
+            #print 'row contains ', len(row.contents), 'objects'
+            self.all_questions.add(question)
 
-        readings_row = written_row.find_next("tr").find_next("tr")
-#        print readings_row
-        cell = readings_row.find_next("td").find_next("td").find_next("td").\
-find_next("td")
-        ratings["readings"] = []
-        for i in range(5):
-            ratings["readings"].append(cell.string.replace('%', ''))
+            cell = row.find_next("td").find_next("td").find_next("td").find_next("td")
+            numbers = []
+            for i in range(5):
+                numbers.append(cell.string.replace('%', ''))
+                cell = cell.find_next_sibling("td")
             cell = cell.find_next_sibling("td")
-        cell = cell.find_next_sibling("td")
-        ratings["readings_mean"] = cell.string.strip()
+            mean = cell.string.strip()
+            row = row.find_next_sibling("tr").find_next_sibling("tr")
+            #print numbers, mean
+            ratings[question_name] = numbers
+            ratings[question_name + '_mean'] = mean
+        print ratings
 
-        precepts_row = readings_row.find_next("tr").find_next("tr")
-#        print precepts_row
-        cell = precepts_row.find_next("td").find_next("td").find_next("td").\
-find_next("td")
-        ratings["precepts"] = []
-        for i in range(5):
-            ratings["precepts"].append(cell.string.replace('%', ''))
-            cell = cell.find_next_sibling("td")
-        cell = cell.find_next_sibling("td")
-        ratings["precepts_mean"] = cell.string.strip()
 
         """overall_row = precepts_row.find_next("tr").find_next("tr")
 #        print overall_row
@@ -210,6 +212,7 @@ find_next("td")
         else:
             print 'Added reviews to the database!!!'
             print entry;
+        #print self.all_questions
 
     def parse_dir(self):
         # "." means the current directory
