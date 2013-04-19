@@ -33,7 +33,7 @@ def index(request):
 # Get search results and pass them back to the search page.
 def search_results(request):
     # Used to keep track of result versus cart courses
-    classified = {}
+    classified = OrderedDict()
     # Load courses in search results
     query = parse(request.POST['text'])
     db = CatDB()
@@ -92,7 +92,6 @@ def annotate(db, semester):
         all_named_terms = OrderedDict()
         for term in semester['all_terms']:
             all_named_terms[term] = term_name(int(term))
-        print all_named_terms
         semester['all_named_terms'] = all_named_terms
     return semester
 
@@ -137,3 +136,4 @@ def parse(text):
         elif re.match('^PDF-ONLY$', token):
             output['pdf'].append('pdfonly')
     return output
+    
