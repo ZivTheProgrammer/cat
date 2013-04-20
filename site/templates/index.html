@@ -14,9 +14,11 @@
 <script> {% include "bootstrap.js" %} </script>-->
 
 
-<!--<script> {% include "jquery.mousewheel.js" %} </script>
+<script> {% include "jquery.mousewheel.js" %} </script>
 <script> {% include "jquery.jscrollpane.min.js" %} </script>
-<style type="text/css"> {% include "jquery.jscrollpane.css" %} </style>-->
+<style type="text/css"> {% include "jquery.jscrollpane.css" %} </style>
+
+<script> {% include "spin.min.js" %} </script>
 
 <script> {% include "index.js" %} </script>
 </head>
@@ -76,12 +78,12 @@
     </div>
 	
 
-<div id = "omnibar_div">
-    <button id="show_advanced"> Advanced Search </button>
+<div id = "omnibar_div">   
     <form id="omnibar_form" action="" method="post"> {% csrf_token %}
-        <input id="omnibar_input" type="search" name="text" placeholder="Search for Courses" autofocus="autofocus"></input>
+        <input id="omnibar_input" type="text" name="text" placeholder="Search for Courses" autofocus="autofocus"></input>
         <input id="omnibar_submit" value="" type="submit"></input>
     </form>
+    <button id="show_advanced"> Advanced Search </button>
 </div>
 
 <div id="results_div">

@@ -19,7 +19,7 @@ class CatDB:
         self.db = self.connection.cat_database
         self.courseCol = self.db.courses
         self.profCol = self.db.instructors
-	self.studentCol = self.db.students
+        self.studentCol = self.db.students
         self.uniqueCourseCol = self.db.unique
 
     def get_student(self, netID):
@@ -132,7 +132,9 @@ class CatDB:
             min_course_number=None, max_course_number=None, professor_id=None,
             professor_name=None, term=None, min_term=None, max_term=None,
             distribution=None, pdf=None, course_id=None, unique_course=None,
-            keywords=None, unique=True):
+            keywords=None, unique=True): 
+        print self.courseCol
+        print self.db
         #TODO: make sure all of these are strings
         if course:
             return self.courseCol.find(course)

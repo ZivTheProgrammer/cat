@@ -112,7 +112,7 @@ html, body {
     position:fixed;
     width: 100%;
     min-height: 100%;
-    background-color:rgba(100,100,100,0.5);
+    background-color:rgba(0,0,0,0.5);
     z-index: 10;
 }
 
@@ -191,27 +191,30 @@ div{
 }
 
 .coursecart{
-    display:inline;
+    display:inline-block;
     margin-right: 4px;
 	z-index:0;
+    min-width:90px;
+    background-color:black;
+    border: 1px solid white;
+}
+
+.coursecart *:hover {
+    cursor:pointer;
 }
     
 .removecourse_form{
     display:inline;
-    background-color:black;
     height:24px;
-    width:96px;
-    border-radius:4px;
-    border: 1px solid white;
+    width:98px;
     font-family: "Verdana", Verdana, sans-serif;
     font-size: 14px;
     font-style: bold;
     color:white;
 }
 
-.removecourse_form:hover {
-    cursor:pointer;
-    background-color:white;
+.coursecart:hover {
+    background-color:rgba(255,49,0,0.5);
 }
 
 .ui-slider {
@@ -317,9 +320,19 @@ color:white;
 
 #show_advanced{
 position:absolute;
-left: 10px;
-top: 10px;
+left: 790px;
+top: 12px;
 z-index: 1;
+color:white;
+background-color:black;
+border:1px solid white;
+font-family:Verdana,sans-serif;
+cursor:pointer;
+border-radius:2px;
+}
+
+#show_advanced:hover {
+    background-color:rgba(255,49,0,0.5);
 }
 
 #omnibar_form {
@@ -338,7 +351,7 @@ text-align:center;
 width:400px;
 margin-top:7px;
 font-size:1.2em;
-height:35px;
+height:30px;
 font-family:Verdana,sans-serif;
 }
 
@@ -413,8 +426,37 @@ color:white;
 }
 
 .removecourse_form>[type=submit] {
-    background:url(/static/orangeX.png);
+    background:url(/static/ox.png);
     background-size:contain;
     border:none;
+    width:17px;
+    height:17px;
+    padding-left:1px;   
     background-repeat:no-repeat;
+}
+
+.removecourse_form>label{
+    margin-left:4px;
+}
+
+#cart_list {
+    width:800px;
+}
+
+#show_analytics{
+    position:absolute;
+    top:15px;
+    left:876px;  
+    color:white;
+    background-color:black;
+    border:1px solid white;
+    font-family:Verdana,sans-serif;
+    font-size:105%;
+    padding:5px;
+    cursor:pointer;
+    border-radius:2px;
+}
+
+#show_analytics:hover {
+    background-color:rgba(255,49,0,0.5);
 }
