@@ -188,6 +188,7 @@ $(document).ready(function() {
                 
                 /* make the course's data show up when it is clicked */
                 $(".course").click(function() {
+                    $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
                     var course_id = $(this).attr('id').split('_')[2];
                     display(course_id);  
                 });

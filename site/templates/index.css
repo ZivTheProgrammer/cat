@@ -1,13 +1,61 @@
 html, body {
     height: 100%;
     margin: 0;
+    /*
     background-image: -khtml-gradient(linear, left top, left bottom, from(#AEC4DE), to(#FFFFFF));
     background-image: -moz-linear-gradient(top, #AEC4DE, #FFFFFF);
     background-image: -ms-linear-gradient(top, #AEC4DE, #FFFFFF);
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #AEC4DE), color-stop(100%, #FFFFFF));
     background-image: -webkit-linear-gradient(top, #AEC4DE, #FFFFFF);
     background-image: -o-linear-gradient(top, #AEC4DE, #FFFFFF);
-    background-image: linear-gradient(top, #AEC4DE, #FFFFFF);
+    background-image: linear-gradient(top, #AEC4DE, #FFFFFF);*/
+    background-image:url(/static/ClioTiger.jpg);
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+
+#omnibar_div:before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  height: 0;
+  width: 0;
+  border-top: 12px solid black;
+  border-left: 10px solid transparent;
+}
+
+#omnibar_div:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 0px;
+  height: 0;
+  width: 0;
+  border-top: 12px solid black;
+  border-right: 10px solid transparent;
+  }
+  
+ #cart_div:before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 0px;
+  height: 0;
+  width: 0;
+  border-bottom: 12px solid black;
+  border-left: 10px solid transparent;
+}
+
+#cart_div:after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  right: 0px;
+  height: 0;
+  width: 0;
+  border-bottom: 12px solid black;
+  border-right: 10px solid transparent;
 }
 
 .detail_all_the_things {
@@ -21,6 +69,7 @@ html, body {
 
 .detail_term {
     font-weight:bold;
+    padding-top:10px;
 }
 
 .detail_subject_number_dist {
@@ -28,12 +77,14 @@ html, body {
 }
 
 .detail_title {
-    color:rgb(83,83,83);
+    color:rgb(255,255,255);
     font-size:130%;
+    font-weight:bold;
 }
 
 .detail_profs {
-    color:rgb(129,37,0);
+    color:rgba(255,49,00, 1);
+    font-size:110%;
 }
 
 .detail_description {
@@ -86,15 +137,16 @@ z-index:11;
 
 .course {
 padding:5px;
+background-color:rgba(0,0,0,0.9);
 }
 
 .course:hover{
-background-color:grey;
+background-color:rgba(255,49,00, 0.5);
 cursor:pointer;
 }
 
 .course_shown{
-background-color:white;
+background-color:rgba(255,49,00,0.9);
 cursor:default;
 padding:5px;
 }
@@ -198,7 +250,7 @@ div{
     position: absolute;
     height:50px;
     width: 100%;
-    top:0;
+    top:5px;
 	z-index:0;
 }
 
@@ -208,58 +260,59 @@ div{
     top:537px;
     width:100%;
     min-height: 50px;
-    border-radius:6px;
+    /*border-radius:6px;*/
     }
     
 #results_div{
 width:100%;
 position:absolute;
 top:50px;
-height:475px;
+height:485px;
 z-index:0;
 margin-top:5px;
 }
 
 #results_left_div{
 position:absolute;
-width:370px;
-height:95%;
+width:365px;
+height:100%;
 overflow:auto;
 margin-left:15px;
-margin-top:10px;
 }
 
 #left_scrollbar_wrap{
-background-color:#f0f0f0;
+background-color:rgba(0,0,0,0.4);
 position:absolute;
-width:396px;
+width:385px;
 height:100%;
-border-radius:6px;
-border:1px;
+/*border-radius:6px;*/
+left:10px;
+/*border:1px;
 border-style:solid;
-border-color:#0f0f0f;
+border-color:#0f0f0f;*/
 }
 
 #right_scrollbar_wrap {
-background-color:#f0f0f0;
+background-color:rgba(0,0,0,0.4);
 position:absolute;
 left:404px;
-width:596px;
+width:586px;
 height:100%;
-border-radius:6px;
-border:1px;
+/*border-radius:6px;*/
+/*border:1px;
 border-style:solid;
-border-color:#0f0f0f;
+border-color:#0f0f0f;*/
 }
 
 #results_right_div{
 position:absolute;
-width:570px;
-height:95%;
+width:565px;
+height:100%;
 overflow:auto;
 margin-left:15px;
-margin-top:10px;
+color:white;
 }  
+
 
 #show_advanced{
 position:absolute;
@@ -277,7 +330,6 @@ right:0;
 height:50px;
 position:absolute;
 text-align:center;
-border-radius:6px;
 }
 
 #omnibar_input {
@@ -324,5 +376,26 @@ height:100%;
 }
 
 #search_results_list>li{
-border-bottom: 2px solid black;
+/*border-bottom: 2px solid black;*/
+margin-top:4px;
+margin-bottom:4px;
+margin-right:4px;
+border-radius:3px;
+color:white;
+}
+
+#omnibar_submit {
+    background:url(/static/mglass.png);
+    border:none;
+    background-size:cover;
+    background-repeat:no-repeat;
+    cursor:pointer;
+    width:20px;
+    height:28px;
+    margin-left:6px;  
+    position:absolute;  
+    top:0px;
+    bottom:0px;
+    margin-top:auto;
+    margin-bottom:auto;
 }
