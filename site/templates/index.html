@@ -9,17 +9,10 @@
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/themes/cupertino/jquery.ui.theme.css">
 <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
 <script src="{{STATIC_URL}}js/jquery-ui-1.10.2.custom.min.js"></script>
-
-<!--<style type="text/css"> {% include "bootstrap.css" %} </style>
-<script> {% include "bootstrap.js" %} </script>-->
-
-
 <script> {% include "jquery.mousewheel.js" %} </script>
 <script> {% include "jquery.jscrollpane.min.js" %} </script>
 <style type="text/css"> {% include "jquery.jscrollpane.css" %} </style>
-
 <script> {% include "spin.min.js" %} </script>
-
 <script> {% include "index.js" %} </script>
 </head>
 
@@ -63,7 +56,7 @@
 			{% for d in distrib %} <input class = "advanced_dist_boxes " name="dist" value='{{ d }}' type="checkbox">{{ d }}</input>
 			{% endfor %} </br>
 			<span class="advanced_label">Closed/Canceled:</span><input class = "advanced_closed " name="closed" value="closed" type="checkbox"></input></br>
-            <span class="advanced_label">keyword:</span><input id = "advanced_keyword" type="text" name="keyword"></input></br>
+            <span class="advanced_label">Keyword:</span><input id = "advanced_keyword" type="text" name="keyword"></input></br>
             <!--<select id = "advanced_distribution">
                 <option value=''></option>
                 {% for d in distrib %} <option value='{{ d }}'>{{ d }}</option> {% endfor %}

@@ -185,7 +185,7 @@ $(document).ready(function() {
             direction: 1, // 1: clockwise, -1: counterclockwise
             color: '#ff4900', // #rgb or #rrggbb
             speed: 1, // Rounds per second
-            trail: 60, // Afterglow percentage
+            trail: 80, // Afterglow percentage
             shadow: false, // Whether to render a shadow
             hwaccel: false, // Whether to use hardware acceleration
             className: 'spinner', // The CSS class to assign to the spinner
