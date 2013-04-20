@@ -12,6 +12,7 @@ function display(course_id) {
         var detail_id = "#detail_num_"+course_id;
         $(detail_id).addClass("detail_shown").removeClass("detail");//switchClass("detail", "detail_shown");
     }
+    $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true});
 }
 
 // Helper function: handles a click on a detail view's semester button.
@@ -37,9 +38,11 @@ function load_semester(params) {
 }
 
 $(document).ready(function() {
+
     /* Enable showing cart courses */
     $(".coursecart").click(function(){
         var course_id = this.id.split('_')[2];
+        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
         display(course_id);
     });
     
@@ -117,10 +120,20 @@ $(document).ready(function() {
         if ($("#advanced_course_number").val().trim().length != 0) {
             input += " " + $("#advanced_course_number").val();
         }
+        var min = 999;
+        var max = 0;
         boxes = $("input[name=level]:checked");
         boxes.each(function(){
-            input += " >=" + $(this).val() + " <" + (parseInt($(this).val())+100);
+            var level = parseInt($(this).val());
+            if (level < min) min = level;
+            if (level > max) max = level;
         });
+        if (min < 999) {
+            input += " >=" + min;
+        }
+        if (max > 0) {
+            input += " <" + (max + 100);
+        }
         if ($("#advanced_instructor").val().trim().length != 0) {
             input += " " + $("#advanced_instructor").val();
         }
@@ -160,6 +173,29 @@ $(document).ready(function() {
     $("#omnibar_form").submit(function(event) {
         /* stop form from submitting normally */
         event.preventDefault();
+        
+        /* make the spinner */
+        var opts = {
+            lines: 9, // The number of lines to draw
+            length: 5, // The length of each line
+            width: 4, // The line thickness
+            radius: 6, // The radius of the inner circle
+            corners: 1, // Corner roundness (0..1)
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#ff4900', // #rgb or #rrggbb
+            speed: 1, // Rounds per second
+            trail: 80, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: false, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: 'auto', // Top position relative to parent in px
+            left: '260px' // Left position relative to parent in px
+        };
+        var target = document.getElementById('omnibar_form');
+        var spinner = new Spinner(opts).spin(target);
+        
         /* send the data using post */
         var posting = $.post("/results/", $("#omnibar_form").serialize(), 
             function( data ) {
@@ -167,8 +203,7 @@ $(document).ready(function() {
                 $("#results_div").empty().append( $( data ) );
                 
                 /* give the results divs a fancy scrollbar */
-                /*$("#results_left_div").jScrollPane();
-                $("#results_right_div").jScrollPane();*/
+                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true});
                 
                 /* Enable showing cart courses */
                 $(".coursecart").click(function(ev){
@@ -178,6 +213,7 @@ $(document).ready(function() {
                 
                 /* make the course's data show up when it is clicked */
                 $(".course").click(function() {
+                    $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
                     var course_id = $(this).attr('id').split('_')[2];
                     display(course_id);  
                 });
@@ -192,7 +228,7 @@ $(document).ready(function() {
                 $(".savecourse_form").submit(function(ev) {
                     ev.preventDefault();
                     /* Disable the submit button */
-                    $("input[type=submit]", this).attr("disabled", "disabled");
+                    $("input[type=submit]", this).attr("disabled", "disabled").css("visibility","hidden");
                     
                     var posting = $.post("/course/add/", $(this).serialize(), function( data ) {
                         $("#cart_list").append(data);
@@ -200,6 +236,7 @@ $(document).ready(function() {
                         /* redisplay course information when user selects it in his/her cart */
                         $(".coursecart").click(function(){
                             var course_id = this.id.split('_')[2];
+                            $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
                             display(course_id);
                         });
                         
@@ -213,7 +250,7 @@ $(document).ready(function() {
                             $("#cart_num_"+course_id).remove();
                             /* if in result list activate save button */
                             if ($("#result_num_"+course_id).length > 0) {
-                                $("#save_"+course_id+">input[type=submit]").removeAttr("disabled");
+                                $("#save_"+course_id+">input[type=submit]").removeAttr("disabled").css("visibility","visible");
                             }
                             /* Otherwise delete course result */
                             else {
@@ -222,6 +259,9 @@ $(document).ready(function() {
                         });
                     });
                 }); 
+                
+                //stop the spinner 
+                spinner.stop();
             });
     });
 });

@@ -34,7 +34,7 @@
     <div class = "detail_classes"><span class="detail_heading"> Classes:</span>
         <ul>
             {% for class in result.classes %}
-            <li> {{ class.classnum}} : {{ class.days}} {{ class.starttime }} - {{ class.endtime }}
+            <li> {{ class.section}} : {{ class.days}} {{ class.starttime }} - {{ class.endtime }}
             {% if class.bldg %} in {{ class.bldg }} {{class.roomnum}}
             {% else %}, room TBD
             {% endif %}
