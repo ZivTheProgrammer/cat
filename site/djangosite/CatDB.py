@@ -12,14 +12,14 @@ import pprint
 
 class CatDB:
 
-    words2ignore = ['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'there'];
+    words2ignore = ['the', 'be', 'to', 'of', u'and', 'a', 'in', 'that', 'have', 'i', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'there'];
 
     def __init__(self):
         self.connection = MongoClient()
         self.db = self.connection.cat_database
         self.courseCol = self.db.courses
         self.profCol = self.db.instructors
-	self.studentCol = self.db.students
+        self.studentCol = self.db.students
         self.uniqueCourseCol = self.db.unique
 
     def get_student(self, netID):
@@ -89,13 +89,14 @@ class CatDB:
         if keywords == None:
             return list_courses;
         for course in list_courses:
-            courseDesc = course['description']
-            title = course['title']
+            courseDesc = course['description'].upper()
+            title = course['title'].upper()
             totalcount = 0
             matchDesc = 0
             matchTitle = 0
             totalscore = 0
-            numMatch = 0
+            if keywords is None:
+                return list_courses;
             for q in keywords:
                 if (re.search(q, title)):
                     matchTitle = matchTitle + 1
@@ -142,8 +143,14 @@ class CatDB:
             min_course_number=None, max_course_number=None, professor_id=None,
             professor_name=None, term=None, min_term=None, max_term=None,
             distribution=None, pdf=None, course_id=None, unique_course=None,
+<<<<<<< HEAD
             keywords=None, unique=True):
         print "search keywords:", keywords
+=======
+            keywords=None, unique=True): 
+        print self.courseCol
+        print self.db
+>>>>>>> 02baaaa61075a92eb81e4b605f499df4405387dc
         #TODO: make sure all of these are strings
         if course:
             return self.courseCol.find(course)
@@ -198,8 +205,8 @@ class CatDB:
         if keywords: #keyword search
             descRegex = '.*('
             for kw in keywords:
-                if (kw not in self.words2ignore):
-                    descRegex = descRegex + kw + '|'
+                if (kw.lower() not in self.words2ignore):
+                    descRegex = descRegex + ' ' + kw + '|'
             descRegex = descRegex + 'slkfjeiwenvnuhfguhew).*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
         
