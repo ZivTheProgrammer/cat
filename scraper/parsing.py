@@ -167,7 +167,10 @@ class Parser:
                     question_name = self.QUESTIONS[q]
                     break
             if not question_name:
-                row = row.find_next_sibling("tr").find_next_sibling("tr")
+                try:
+                    row = row.find_next_sibling("tr").find_next_sibling("tr")
+                except:
+                    row = None
                 continue
             #print row
             #print 'row contains ', len(row.contents), 'objects'
@@ -180,7 +183,11 @@ class Parser:
                 cell = cell.find_next_sibling("td")
             cell = cell.find_next_sibling("td")
             mean = cell.string.strip()
-            row = row.find_next_sibling("tr").find_next_sibling("tr")
+            try:
+                row = row.find_next_sibling("tr").find_next_sibling("tr")
+            except:
+                row = None
+
             #print numbers, mean
             ratings[question_name] = numbers
             ratings[question_name + '_mean'] = mean

@@ -144,7 +144,6 @@ class CatDB:
             professor_name=None, term=None, min_term=None, max_term=None,
             distribution=None, pdf=None, course_id=None, unique_course=None,
             keywords=None, unique=True):
-            keywords=None, unique=True): 
         #TODO: make sure all of these are strings
         if course:
             return self.courseCol.find(course)
