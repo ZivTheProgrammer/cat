@@ -143,14 +143,8 @@ class CatDB:
             min_course_number=None, max_course_number=None, professor_id=None,
             professor_name=None, term=None, min_term=None, max_term=None,
             distribution=None, pdf=None, course_id=None, unique_course=None,
-<<<<<<< HEAD
             keywords=None, unique=True):
-        print "search keywords:", keywords
-=======
             keywords=None, unique=True): 
-        print self.courseCol
-        print self.db
->>>>>>> 02baaaa61075a92eb81e4b605f499df4405387dc
         #TODO: make sure all of these are strings
         if course:
             return self.courseCol.find(course)
