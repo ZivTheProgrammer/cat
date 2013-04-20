@@ -117,10 +117,20 @@ $(document).ready(function() {
         if ($("#advanced_course_number").val().trim().length != 0) {
             input += " " + $("#advanced_course_number").val();
         }
+        var min = 999;
+        var max = 0;
         boxes = $("input[name=level]:checked");
         boxes.each(function(){
-            input += " >=" + $(this).val() + " <" + (parseInt($(this).val())+100);
+            var level = parseInt($(this).val());
+            if (level < min) min = level;
+            if (level > max) max = level;
         });
+        if (min < 999) {
+            input += " >=" + min;
+        }
+        if (max > 0) {
+            input += " <" + (max + 100);
+        }
         if ($("#advanced_instructor").val().trim().length != 0) {
             input += " " + $("#advanced_instructor").val();
         }

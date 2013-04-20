@@ -1,6 +1,6 @@
 <li class='coursecart' id='cart_num_{{course_id}}'>
     <form class="removecourse_form" id="remove_{{course_id}}"> {% csrf_token %}
-        <label>{{course_id}}</label>
+        <label><b>{{course_name}}</b></label>
         <input type="hidden" name="course_id" value="{{course_id}}">
         <input type="submit" value="Remove">
     </form>
