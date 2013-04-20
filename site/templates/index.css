@@ -198,7 +198,7 @@ div{
     
 .removecourse_form{
     display:inline;
-    background-color:#777777;
+    background-color:black;
     height:24px;
     width:96px;
     border-radius:4px;
@@ -206,6 +206,7 @@ div{
     font-family: "Verdana", Verdana, sans-serif;
     font-size: 14px;
     font-style: bold;
+    color:white;
 }
 
 .removecourse_form:hover {
@@ -338,6 +339,7 @@ width:400px;
 margin-top:7px;
 font-size:1.2em;
 height:35px;
+font-family:Verdana,sans-serif;
 }
 
 #advanced_search{
@@ -371,8 +373,6 @@ z-index:11;
 #search_results_list{
 margin: 0px;
 padding:0px;
-height:100%;
-
 }
 
 #search_results_list>li{
@@ -398,4 +398,23 @@ color:white;
     bottom:0px;
     margin-top:auto;
     margin-bottom:auto;
+}
+
+.savecourse_form>[type=submit]{
+    background:url(/static/cart.png);
+    background-size:contain;
+    border:none;
+    background-repeat:no-repeat;
+    width:30px;
+    height:25px;
+    cursor:pointer;
+    margin-left:295px;
+    margin-bottom:2px;
+}
+
+.removecourse_form>[type=submit] {
+    background:url(/static/orangeX.png);
+    background-size:contain;
+    border:none;
+    background-repeat:no-repeat;
 }

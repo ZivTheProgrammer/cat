@@ -203,7 +203,7 @@ $(document).ready(function() {
                 $(".savecourse_form").submit(function(ev) {
                     ev.preventDefault();
                     /* Disable the submit button */
-                    $("input[type=submit]", this).attr("disabled", "disabled");
+                    $("input[type=submit]", this).attr("disabled", "disabled").css("visibility","hidden");
                     
                     var posting = $.post("/course/add/", $(this).serialize(), function( data ) {
                         $("#cart_list").append(data);
@@ -224,7 +224,7 @@ $(document).ready(function() {
                             $("#cart_num_"+course_id).remove();
                             /* if in result list activate save button */
                             if ($("#result_num_"+course_id).length > 0) {
-                                $("#save_"+course_id+">input[type=submit]").removeAttr("disabled");
+                                $("#save_"+course_id+">input[type=submit]").removeAttr("disabled").css("visibility","visible");
                             }
                             /* Otherwise delete course result */
                             else {

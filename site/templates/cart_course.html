@@ -2,6 +2,6 @@
     <form class="removecourse_form" id="remove_{{course_id}}"> {% csrf_token %}
         <label><b>{{course_name}}</b></label>
         <input type="hidden" name="course_id" value="{{course_id}}">
-        <input type="submit" value="Remove">
+        <input type="submit" value="">
     </form>
 </li>
