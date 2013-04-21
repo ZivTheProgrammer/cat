@@ -23,11 +23,18 @@
         {% for course_id, result in results.items %}
         <div class = "detail" id="detail_num_{{course_id}}">
             <div class = "semester_menu"> 
-                {% for term, term_name in result.all_named_terms.items %}
-                    <button class="semester_{{course_id}}_{{term}}" {%if term == result.term%}disabled{%endif%}> {{term_name}} </button>
-                {% endfor %}                
+	        <form class="term_selector">
+		  <select class="term_dropdown">
+                    {% for term, term_name in result.all_named_terms.items %}
+                       <option class="semester_{{course_id}}_{{term}}"> {{term_name}} </option>
+                    {% endfor %}
+		  </select>
+		  <input class="term_selector_input" type="submit" value="Go!"></input>
+                </form>
+		<form class="reviews_form">
+		  <input type="submit" value="See Reviews"></input>
+		</form>
             </div>
-            
             <div class = "semester_shown detail_sem_{{result.term}}">
                 {% include "semester.html" %}
             </div>
