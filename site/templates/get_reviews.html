@@ -1,0 +1,10 @@
+<div>
+{% for review in results %}
+    <ul>
+    {% for name, value in review.items %}
+        <li> {{ name }}: {{ value }} </li>
+    {% endfor %}
+    </ul>
+    <br>
+{% endfor %}
+</div>

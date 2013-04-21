@@ -140,6 +140,10 @@ padding:5px;
 background-color:rgba(0,0,0,0.9);
 }
 
+.course.course_old{
+background-color:rgba(100, 100, 100, 0.9);
+}
+
 .course:hover{
 background-color:rgba(255,49,00, 0.5);
 cursor:pointer;
@@ -176,11 +180,12 @@ padding:5px;
 }
 
 .semester_menu{
-    position: absolute;
-    display: inline;
+    /*position: absolute;
     top: 4px;
     right: 4px;
     border-radius: 4px;
+    */
+    display:inline;
     background-color: #777777;
 }
 
@@ -332,7 +337,6 @@ overflow:auto;
 margin-left:15px;
 color:white;
 }  
-
 
 #show_advanced{
 position:absolute;
