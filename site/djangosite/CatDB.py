@@ -96,29 +96,28 @@ class CatDB:
             matchTitle = 0
             totalscore = 0
             if keywords is None:
-                return list_courses;
+                return list_courses
             for q in keywords:
-                if (re.search(q, title)):
+                if (re.search(q.upper(), title)):
                     matchTitle = matchTitle + 1
-                if (re.search(q, courseDesc)):
+                if (re.search(q.upper(), courseDesc)):
                     matchDesc = matchDesc + 1
                     totalcount = totalcount + courseDesc.count(q)
-            # sleazy
+            # sleazy            
             totalscore = matchTitle*1000 + matchDesc*100 + totalcount
             course['score'] = totalscore; # dictionary of scores of courses
         # sort by score
-        #print 'hi'
-        #print scores
         #for c in sorted(scores, key = scores.get, reverse = True):
             # Don't do this! The entries have been modified between getting them from the db
             # and this ranking
             #courses_ranked.append(self.courseCol.find_one({'course_id': c}));
         print '------------------------'
-        print list_courses
+        #print list_courses
         print '****************'
-        print sorted(list_courses, key=lambda course: course['score']);
-
-        return sorted(list_courses, key=lambda course: course['score']);
+        #print sorted(list_courses, key=lambda course: course['score'], reverse = True);
+        
+        list_courses.sort(list_courses, key=lambda course: (course['subject'], course['course_number']))
+        return sorted(list_courses, key=lambda course: course['score'], reverse = True);
 
     """ Returns all courses that match all the given information
         course can be a dict with all this info; if it's provided, everything
@@ -143,13 +142,41 @@ class CatDB:
             min_course_number=None, max_course_number=None, professor_id=None,
             professor_name=None, term=None, min_term=None, max_term=None,
             distribution=None, pdf=None, course_id=None, unique_course=None,
-            keywords=None, unique=True):
+            keywords=None, unique=True, time=None, day=None):
+#        print self.courseCol
+#        print self.db
+
         #TODO: make sure all of these are strings
         if course:
             return self.courseCol.find(course)
         else:
             course = {}
-
+            
+        if time:
+            course['classes'] =  { 
+                '$elemMatch': {
+                    'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
+                    'starttime': time
+                    }
+                }
+            
+        if day:
+            if not isinstance(day, list):
+                day = [day]
+            regex = '.*('
+            for d in day:
+                if (d == "t") or (d == "T"):
+                    regex = regex +  "(t[^h])|"
+                else:
+                    regex = regex + d + "|"
+            regex = regex + "HULALBALOL).*"
+            course['classes'] =  { 
+                '$elemMatch': {
+                    'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
+                    'days': re.compile(regex, re.IGNORECASE)  #{'$in': day}
+                    }
+                }
+            
         if subject:
             # TODO: Make all capital letters
             course['subject'] = { '$in':subject if isinstance(subject, list) else [subject]}
@@ -210,7 +237,7 @@ class CatDB:
         if unique_course:
             course['unique_course'] = {'$in': unique_course if isinstance(unique_course, list) else [unique_course]}
             
-        print "search query: ",  course
+        #print "search query: ",  course
         if not course:
             return []
         results = self.courseCol.find(course)
@@ -269,10 +296,9 @@ class CatDB:
         results_list = self.rank(results_list, keywords);
         #print "returning lists of courses...", results_list
         #pp = pprint.PrettyPrinter(indent=2)
-        #pp.pprint(results_list)
+        #pp.pprint(results_list)        
         return results_list
-        #else:
-            #return 
+
         
     # Returns the reviews for all past semesters of a given course.
     # Gives a list of dictionaries, each of which contains the info for
