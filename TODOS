@@ -3,8 +3,6 @@ could do in their spare time:
 
 /--------BUGS----------/
 
-**Scraping formats for distribution requirements and pdf stuff. So far, "na, npdf" doesn't seem to work.**
-
 **See folder cat/bugScreenshots for screenshots of bugs that need to be fixed. If fixed, don't delete the files, just note that it's resolved in the README**
 
 **FOR TESTING REVIEWS**
@@ -39,9 +37,6 @@ What about this thing that appears on some courses?
 The courses that are returned from the search need to be sorted.  If we want to be like the registrar, they should 
 be sorted first be subject, e.g. COS, and then stably sorted by number, e.g. 109. 
 
-Searching for "no pdf" "not pdfable" "not pdf-able" "pdf only" "pdfonly" and "nopdf" should all work as
-    expected.  Now only "no-pdf" and "pdf-only" work.
-    
 Should searching for "pdf" return pdf-only courses or all courses that are pdf-able (i.e. most courses)
 
 Searching by time should work.  Question: If a user searches an hour, say "11:00" or "11am" or "11AM" or "11:00 am" etc., should the search should return all classes that start anytime within that hour, or only classes that start exactly at that time?

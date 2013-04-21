@@ -7,6 +7,7 @@ from CatDB import CatDB
 from collections import OrderedDict
 
 DISTRIBUTION_AREAS = ['EM', 'EC', 'HA', 'LA', 'QR', 'SA', 'STN', 'STL']
+SUBJECTS = ['AAS',  'AFS',  'AMS',  'ANT',  'AOS',  'APC',  'ARA',  'ARC',  'ART',  'AST',  'ATL', 'BCS',  'CBE',  'CEE',  'CHI',  'CHM',  'CHV',  'CLA',  'CLG',  'COM',  'COS',  'CWR', 'CZE',  'DAN', 'EAP',  'EAS',  'ECO',  'ECS',  'EEB',  'EGR',  'ELE',  'ENE',  'ENG',  'ENV',  'EPS',  'FIN',  'FRE', 'FRS',  'GEO',  'GER',  'GHP', 'GLS',  'GSS',  'HEB',  'HIN',  'HIS',  'HLS',  'HOS',  'HUM',  'ISC',  'ITA',  'JDS',  'JPN',  'JRN',  'KOR',  'LAO',  'LAS',  'LAT',  'LIN',  'MAE',  'MAT',  'MED',  'MOD',  'MOG',  'MOL',  'MSE',  'MUS',  'NES',  'NEU',  'ORF',  'PAW',  'PER',  'PHI',  'PHY',  'PLS',  'POL',  'POP',  'POR',  'PSY',  'QCB',  'REL',  'RUS',  'SAS',  'SLA',  'SOC',  'SPA',  'STC',  'SWA',  'THR',  'TPP',  'TRA',  'TUR',  'URB',  'URD',  'VIS', 'WRI',  'WWS']
 
 def home(request):
     return render(request, "hello_world.html")
@@ -107,7 +108,7 @@ def term_name(term_no):
 def parse(db, text):
     tokens = text.upper().split()
     output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [], 'keywords': []}
-    previous = {}
+    previous = ''
     for token in tokens:
         # Match distribution requirement codes
         if token in DISTRIBUTION_AREAS:
@@ -115,31 +116,41 @@ def parse(db, text):
         elif token == 'ST':
             output['distribution'].extend(['STN', 'STL'])
         # Match subject codes
-        elif re.match('^[A-Z]{3}$', token):
+        #elif re.match('^[A-Z]{3}$', token):
+        elif token in SUBJECTS:
             output['subject'].append(token)
         # Match course numbers
+        elif re.match('^>[0-9]{3}$', token) or re.match('^>[0-9]{3}$', previous+token):
+            output['min_course_number'] = token[-3:] 
+        elif re.match('^<[0-9]{3}$', token) or re.match('^<[0-9]{3}$', previous+token):
+            output['max_course_number'] = token[-3:]
+        elif re.match('^>=[0-9]{3}$', token) or re.match('^>=[0-9]{3}$', previous+token):
+            output['min_course_number'] = str(int(token[-3:])-1)
+        elif re.match('^<=[0-9]{3}$', token) or re.match('^<=[0-9]{3}$', previous+token):
+            output['max_course_number'] = str(int(token[-3:])+1)
         elif re.match('^[0-9]{3}[A-Za-z]?$', token):
             output['course_number'].append(token)
-        elif re.match('^>[0-9]{3}$', token):
-            output['min_course_number'] = token[1:]
-        elif re.match('^<[0-9]{3}$', token):
-            output['max_course_number'] = token[1:]
-        elif re.match('^>=[0-9]{3}$', token):
-            output['min_course_number'] = str(int(token[2:])-1)
-        elif re.match('^<=[0-9]{3}$', token):
-            output['max_course_number'] = str(int(token[2:])+1)
+        
         # Match PDF criteria
-        elif re.match('^NO-AUDIT$', token):
+        elif re.match('^(NO-AUDIT|NA|NOAUDIT)$', token):
             output['pdf'].append('na')
-        elif re.match('^NO-PDF$', token):
+        elif re.match('^(NO-PDF|NOPDF|NPDF)$', token):
             output['pdf'].append('npdf')
-        elif re.match('^PDF-ONLY$', token):
+        elif re.match('^(PDF-ONLY|PDFONLY)$', token):
             output['pdf'].append('pdfonly')
+        elif re.match('^(PDF|PDFABLE|PDF-ABLE)$', token) and re.match('^(NO|NOT)$', previous):
+            output['pdf'].append('npdf')
+        elif re.match('^(AUDIT|A|AUDITABLE|AUDIT-ABLE)$', token) and re.match('^(NO|NOT)$', previous):
+            output['pdf'].append('na')
+
+        elif re.match('^(NO|NOT)$', token):
+            pass
         # Match professor names
         elif re.match('^[A-Z]+$', token):
             if db.get_professor(token).count() > 0:
                 output['professor_name'].append(token)
             else:
                 output['keywords'].append(token)
+        previous = token
     return output
     
