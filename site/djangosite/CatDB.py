@@ -98,16 +98,16 @@ class CatDB:
             if keywords is None:
                 return list_courses
             for q in keywords:
-                if (re.search(q, title)):
+                if (re.search(q.upper(), title)):
                     matchTitle = matchTitle + 1
-                if (re.search(q, courseDesc)):
+                if (re.search(q.upper(), courseDesc)):
                     matchDesc = matchDesc + 1
                     totalcount = totalcount + courseDesc.count(q)
-            # sleazy
+            # sleazy            
             totalscore = matchTitle*1000 + matchDesc*100 + totalcount
             course['score'] = totalscore; # dictionary of scores of courses
+            print totalscore
         # sort by score
-        #print 'hi'
         #print scores
         #for c in sorted(scores, key = scores.get, reverse = True):
             # Don't do this! The entries have been modified between getting them from the db
@@ -116,9 +116,9 @@ class CatDB:
         print '------------------------'
         print list_courses
         print '****************'
-        print sorted(list_courses, key=lambda course: course['score']);
+        print sorted(list_courses, key=lambda course: course['score'], reverse = True);
 
-        return sorted(list_courses, key=lambda course: course['score']);
+        return sorted(list_courses, key=lambda course: course['score'], reverse = True);
 
     """ Returns all courses that match all the given information
         course can be a dict with all this info; if it's provided, everything
