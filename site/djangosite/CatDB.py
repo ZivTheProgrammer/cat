@@ -89,8 +89,8 @@ class CatDB:
         if keywords == None:
             return list_courses;
         for course in list_courses:
-            courseDesc = course['description'].upper()
-            title = course['title'].upper()
+            courseDesc = course.get('description', '').upper() if course.get('description', None) else ''
+            title = course.get('title', '').upper() if course.get('title', None) else ''
             totalcount = 0
             matchDesc = 0
             matchTitle = 0
