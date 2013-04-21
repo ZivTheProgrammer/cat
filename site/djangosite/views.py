@@ -118,7 +118,7 @@ def parse(db, text):
         elif re.match('^[A-Z]{3}$', token):
             output['subject'].append(token)
         # Match course numbers
-        elif re.match('^[0-9]{3}$', token):
+        elif re.match('^[0-9]{3}[A-Za-z]?$', token):
             output['course_number'].append(token)
         elif re.match('^>[0-9]{3}$', token):
             output['min_course_number'] = token[1:]

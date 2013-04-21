@@ -113,10 +113,10 @@ class CatDB:
             # Don't do this! The entries have been modified between getting them from the db
             # and this ranking
             #courses_ranked.append(self.courseCol.find_one({'course_id': c}));
-        print '------------------------'
-        print list_courses
-        print '****************'
-        print sorted(list_courses, key=lambda course: course['score']);
+        #print '------------------------'
+        #print list_courses
+        #print '****************'
+        #print sorted(list_courses, key=lambda course: course['score']);
 
         return sorted(list_courses, key=lambda course: course['score']);
 
