@@ -12,7 +12,6 @@ function display(course_id) {
         var detail_id = "#detail_num_"+course_id;
         $(detail_id).addClass("detail_shown").removeClass("detail");//switchClass("detail", "detail_shown");
     }
-    $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true});
 }
 
 // Helper function: handles a click on a detail view's semester button.
@@ -203,7 +202,8 @@ $(document).ready(function() {
                 $("#results_div").empty().append( $( data ) );
                 
                 /* give the results divs a fancy scrollbar */
-                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true});
+                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
+                $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
                 
                 /* Enable showing cart courses */
                 $(".coursecart").click(function(ev){

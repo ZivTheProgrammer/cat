@@ -82,6 +82,44 @@ class CatDB:
             prof['name'] = re.compile(nameRegex, re.IGNORECASE)
         return self.profCol.find(prof)
 
+    def rank(self, list_courses, keywords):
+        # check how many keywords the course description contains
+        scores = {}
+        courses_ranked = []
+        if keywords == None:
+            return list_courses;
+        for course in list_courses:
+            courseDesc = course['description'].upper()
+            title = course['title'].upper()
+            totalcount = 0
+            matchDesc = 0
+            matchTitle = 0
+            totalscore = 0
+            if keywords is None:
+                return list_courses
+            for q in keywords:
+                if (re.search(q, title)):
+                    matchTitle = matchTitle + 1
+                if (re.search(q, courseDesc)):
+                    matchDesc = matchDesc + 1
+                    totalcount = totalcount + courseDesc.count(q)
+            # sleazy
+            totalscore = matchTitle*1000 + matchDesc*100 + totalcount
+            course['score'] = totalscore; # dictionary of scores of courses
+        # sort by score
+        #print 'hi'
+        #print scores
+        #for c in sorted(scores, key = scores.get, reverse = True):
+            # Don't do this! The entries have been modified between getting them from the db
+            # and this ranking
+            #courses_ranked.append(self.courseCol.find_one({'course_id': c}));
+        print '------------------------'
+        print list_courses
+        print '****************'
+        print sorted(list_courses, key=lambda course: course['score']);
+
+        return sorted(list_courses, key=lambda course: course['score']);
+
     """ Returns all courses that match all the given information
         course can be a dict with all this info; if it's provided, everything
         else is ignored, and it is passed to the search directly
@@ -101,33 +139,6 @@ class CatDB:
         would return whichever of MAT201, COS201 and ELE201 that exist,
         from every semester
     """
-    def rank(self, list_courses, keywords):
-        # check how many keywords the course description contains
-        scores = {}
-        courses_ranked = []
-        for course in list_courses:
-            courseDesc = course['description'].upper()
-            title = course['title'].upper()
-            totalcount = 0
-            matchDesc = 0
-            matchTitle = 0
-            totalscore = 0
-            if keywords is None:
-                return list_courses
-            for q in keywords:
-                if (re.search(q, title)):
-                    matchTitle = matchTitle + 1
-                if (re.search(q, courseDesc)):
-                    matchDesc = matchDesc + 1
-                    totalcount = totalcount + courseDesc.count(q)
-            # sleazy
-            totalscore = matchTitle*1000 + matchDesc*100 + totalcount
-            scores[course['course_id']] = totalscore; # dictionary of scores of courses
-        # sort by score
-        for c in sorted(scores, key = scores.get, reverse = True):
-            courses_ranked.append(self.courseCol.find_one({'course_id': c}));
-        return courses_ranked;
-
     def get_course(self, course=None, subject=None, course_number=None,
             min_course_number=None, max_course_number=None, professor_id=None,
             professor_name=None, term=None, min_term=None, max_term=None,
@@ -135,6 +146,7 @@ class CatDB:
             keywords=None, unique=True, time=None, day=None):
         print self.courseCol
         print self.db
+
         #TODO: make sure all of these are strings
         if course:
             return self.courseCol.find(course)
@@ -237,6 +249,7 @@ class CatDB:
                 results_list.append(c)
 
         if not unique:
+            #return results_list
             return self.rank(results_list, keywords);
         # Get the most recent semester of each course
         unique_courses = set()
@@ -258,20 +271,22 @@ class CatDB:
             i = bestYear.get('id', None)
             if i:
                 courseIDs.append(i)
-        #print courseIDs
+        #print 'ids:', courseIDs
         # Add a list of terms to each course
         results = self.courseCol.find({'_id': {'$in':courseIDs}})
         results_list = []
         for c in results:
             i = c['unique_course'];
             for d in uniqueCourses:
+                #print i, d['course']
                 if d['course'] == i:
                     c['all_terms'] = [x['term'] for x in d['years']]
+            #print c
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
         #if len(results_list) < 100: # Luke's hack to prevent returning every course in the DB. Need to improve.
         results_list = self.rank(results_list, keywords);
-        print "returning lists of courses...", results_list
+        #print "returning lists of courses...", results_list
         #pp = pprint.PrettyPrinter(indent=2)
         #pp.pprint(results_list)
         return results_list

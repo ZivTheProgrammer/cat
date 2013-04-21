@@ -10,6 +10,24 @@ could do in their spare time:
 **FOR TESTING REVIEWS**
 There's a freaky review for AAS 201, from 2006 for Robert Fredin, that's just "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" and it makes ICE look pretty bad.
 
+Multiple spinny wheels
+
+Button edges look funny
+
+Fonts
+
+Show crosslistings in results list
+
+top/bottom of scroll bar (are great!)
+
+shopping carts (are also nice...)
+
+Spaces in searches should be okay sometimes (e.g. "< 200", "pdf only" (see note in 'features'))
+
+Make the black less black.
+
+
+
 /------Features--------/
 I'm pretty sure a course can satisfy multiple distribution requirements.
   Are we returning a list for that? How's that working? It looks like the 
@@ -29,6 +47,10 @@ Should searching for "pdf" return pdf-only courses or all courses that are pdf-a
 Searching by time should work.  Question: If a user searches an hour, say "11:00" or "11am" or "11AM" or "11:00 am" etc., should the search should return all classes that start anytime within that hour, or only classes that start exactly at that time?
 --Any time within that hour. That's what the Registrar does.
 
+Distinguish between professors and preceptors. (This is a scraping issue first, then a display issue.)
+
+Database scraping: a few classes aren't getting added for some reason. In particular, CBE 504 (and a few others) for term 1132.
+
 /------Feepers---------/
 Need to format detail view and make it include:
    Links from professor names to contact info, eg:
@@ -38,6 +60,3 @@ Will it be possible to search by grade percentages, i.e. "<50% final" or "no ora
     just worked for finals, midterms, and papers, this would be /SUPER/ cool.  Some courses don't include this data, so they could
     just be ignored for this type of searches.
     
-Searches should let you use ">=" and "<=", as well as ">" and "<".   
-
-Fix numerical reviews to actually make sure the sections are labelled correctly.

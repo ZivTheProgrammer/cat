@@ -63,8 +63,11 @@ for term in terms.iter(ns + 'term'):
     try:
         fSub = urlopen(feed + '?term=' + termCode + "&subject=list")
     except:
-        print "***********Couldn't load term %s subject list************" % (term)
-        continue
+        try:
+            fSub = urlopen(feed + '?term=' + termCode + "&subject=list")
+        except:
+            print "***********Couldn't load term %s subject list************" % (term)
+            continue
     subjects = ET.parse(fSub)
     # Get data for each subject
     for sub in subjects.iter(ns + 'subject'):
@@ -74,8 +77,11 @@ for term in terms.iter(ns + 'term'):
         try:
             fCourse = urlopen(feed + "?term=" + termCode + "&subject=" + subCode)
         except:
-            print "***********Couldn't load term %s and subject %s************" % (termCode, subCode)
-            continue
+            try:
+                fCourse = urlopen(feed + "?term=" + termCode + "&subject=" + subCode)
+            except:
+                print "***********Couldn't load term %s and subject %s************" % (termCode, subCode)
+                continue
             
         courses = ET.parse(fCourse)
         parent_map = dict((c, p) for p in courses.getiterator() for c in p)
@@ -94,10 +100,11 @@ for term in terms.iter(ns + 'term'):
             entry['course_number'] = catNum[0].text
             # Check whether we already added this class (e.g. if it was crosslisted)
             # Presumably the term, dept and number uniquely identify it
-            print entry
+            #print entry
             if courseCol.find_one(entry):
                 # continue TODO: put this back
                 break
+            print entry['subject'], entry['course_number']
             
             entry['course_id'] = course.find(ns + 'course_id').text
             entry['title'] = course.find(ns + 'title').text
@@ -134,7 +141,11 @@ for term in terms.iter(ns + 'term'):
             if not entry['crosslistings']:
                 del entry['crosslistings']
             # Now get data from the registrar site
-            regData = scraper.scrape_id_term(entry['course_id'], entry['term'])
+            try:
+                regData = scraper.scrape_id_term(entry['course_id'], entry['term'])
+            except:
+                print "***********Couldn't load registrar data for term %s, subject %s, number %s************" % (termCode, subCode, entry['course_number'])
+
             #print regData
             """
             if regData.get('prereqs', None):
@@ -162,10 +173,10 @@ for term in terms.iter(ns + 'term'):
             entry['unique_course'] = entry['subject'] + entry['course_number']
             newId = courseCol.insert(entry)
             # Find in / add to the list of unique courses
-            print entry
-            print "New ID: ", newId
+            #print entry
+            #print "New ID: ", newId
             uniqueCourseCol.update({'course':entry['unique_course']}, {'$push' : {'years': {'id': newId, 'term':entry['term'], 'instructors':entry['instructors']}}}, upsert=True)
-            print uniqueCourseCol.find_one({'course' : entry['unique_course']})
+            #print uniqueCourseCol.find_one({'course' : entry['unique_course']})
 #            break
         
     break

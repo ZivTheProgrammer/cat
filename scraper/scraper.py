@@ -46,7 +46,9 @@ def clean(str):
 def get_course_details(soup):
     "Returns a dict of {courseid, area, title, descrip, prereqs}."
     area = clean(soup('strong')[1].findAllNext(text=True)[1])  # balanced on a pinhead
+    #print area
     pdf = clean(soup('strong')[1].findAllNext(text=True)[2])
+    #print pdf
     pdf_options = []
     if re.search("no audit|na", pdf, re.I):
         pdf_options.append("na")

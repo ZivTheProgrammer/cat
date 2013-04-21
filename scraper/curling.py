@@ -410,11 +410,13 @@ class Curler:
         link = self.currentsoup.find(isLink)
         if link == None or link.get('href') == None:
             print "Failed to get written data for course %s; couldn't find link" % coursenum
+            advicehtml = ''
         else:
             c = self.pycurler;
             effurl = getBaseURL(c.getinfo(pycurl.EFFECTIVE_URL))
             if effurl == None:
                 print "Failed to get written data for course %s due to bad URL resolving" % coursenum
+                advicehtml = ''
             else:
                 effurl = "%s%s" % (effurl, link.get('href'))
                 effurl = effurl.encode('ascii', 'replace')
@@ -423,8 +425,8 @@ class Curler:
                 advicehtml = self.gowait(c, False, True);
                 v( "Saving advice data")
                 #self.writefile(advicehtml, "%s_%s_a" % (coursenum, term))
-                print "Sending data to be parsed!"
-                self.p.parse_files(html, advicehtml, coursenum, term)
+        print "Sending data to be parsed!"
+        self.p.parse_files(html, advicehtml, coursenum, term)
 
         # Save the good set of form values to start from if we crash
         self.saveformvals()

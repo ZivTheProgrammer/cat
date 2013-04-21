@@ -167,7 +167,10 @@ class Parser:
                     question_name = self.QUESTIONS[q]
                     break
             if not question_name:
-                row = row.find_next_sibling("tr").find_next_sibling("tr")
+                try:
+                    row = row.find_next_sibling("tr").find_next_sibling("tr")
+                except:
+                    row = None
                 continue
             #print row
             #print 'row contains ', len(row.contents), 'objects'
@@ -180,11 +183,15 @@ class Parser:
                 cell = cell.find_next_sibling("td")
             cell = cell.find_next_sibling("td")
             mean = cell.string.strip()
-            row = row.find_next_sibling("tr").find_next_sibling("tr")
+            try:
+                row = row.find_next_sibling("tr").find_next_sibling("tr")
+            except:
+                row = None
+
             #print numbers, mean
             ratings[question_name] = numbers
             ratings[question_name + '_mean'] = mean
-        print ratings
+        #print ratings
 
 
         """overall_row = precepts_row.find_next("tr").find_next("tr")
@@ -204,14 +211,14 @@ find_next("td")
 #        entry['text_reviews'] = entry.['text_reviews'].append(text_ratings);
         print "searching for: ", courseNumber, courseDept, term
         courseCol.update({'term': term, 'course_number': courseNumber, 'subject': courseDept}, {'$set': {'review_Nums': ratings}})
-        print ratings
+        #print ratings
         entry = courseCol.find_one({'term':term, 'subject': courseDept, 'course_number': courseNumber}); # FIX??
         
         if (entry is None):
             print 'Course whose reviews you were trying to update is not found!'
         else:
             print 'Added reviews to the database!!!'
-            print entry;
+            #print entry;
         #print self.all_questions
 
     def parse_dir(self):
