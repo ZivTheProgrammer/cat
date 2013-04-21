@@ -116,7 +116,7 @@ class CatDB:
         print '****************'
         #print sorted(list_courses, key=lambda course: course['score'], reverse = True);
         
-        list_courses.sort(list_courses, key=lambda course: (course['subject'], course['course_number']))
+        list_courses = sorted(list_courses, key=lambda course: (course['subject'], course['course_number']))
         return sorted(list_courses, key=lambda course: course['score'], reverse = True);
 
     """ Returns all courses that match all the given information

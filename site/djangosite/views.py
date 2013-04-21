@@ -51,7 +51,8 @@ def search_results(request):
     for result in courses:
         result = annotate(db, result)
         if result['course_id'] in classified:
-            classified[result['course_id']]['source'] = 'both'
+            if classified[result['course_id']]['source'] == 'results':
+                classified[result['course_id']]['source'] = 'both'
         else:
             result['source'] = 'cart'
             classified[result['course_id']] = result
@@ -70,7 +71,9 @@ def get_semester(request):
 # Get a course's reviews and pass them back.
 def get_reviews(request):
     db = CatDB()
-    result = db.get_reviews(request.POST['course_id'])
+    course = db.get_course({"course_id": request.POST['course_id']})[0]
+    result = db.get_reviews(course['unique_course'])
+    print result
     return render(request, "get_reviews.html", {'result': result})
     
 # Add a course to the user's course cart.

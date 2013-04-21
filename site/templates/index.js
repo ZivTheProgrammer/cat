@@ -31,9 +31,24 @@ function load_semester(params) {
         $(detail_id+">.detail_sem_"+params[2]).switchClass("semester", "semester_shown");
     }
     /* Enable / disable course history selection buttons */ 
-    $(detail_id+">.semester_menu>button").removeAttr("disabled");
-    $(detail_id+">.semester_menu>.semester_"+params[1]+"_"+params[2]).attr("disabled", "disabled");
+ //   $(detail_id+">.semester_menu>button").removeAttr("disabled");
+ //   $(detail_id+">.semester_menu>.semester_"+params[1]+"_"+params[2]).attr("disabled", "disabled");
+}
 
+function load_reviews(course_id) {
+    var detail_id = "#detail_num_"+course_id;
+    /* Hide / show selected semester */
+    if ($(detail_id+">.detail_reviews").length == 0) {
+        $.post("/reviews/", $(detail_id+">.semester_menu>.reviews_form").serialize(), function( data ) {
+            $(detail_id).append(data);
+            $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
+            $(detail_id+">.detail_reviews").switchClass("semester", "semester_shown");
+        });
+    }
+    else {
+        $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
+        $(detail_id+">.detail_reviews").switchClass("semester", "semester_shown");
+    }
 }
 
 $(document).ready(function() {
@@ -50,6 +65,12 @@ $(document).ready(function() {
         e.preventDefault();
         var params = $(this).find("option:selected").attr('class').split('_');
         load_semester(params);
+    });
+    
+    $(".semester_menu>.reviews_form").submit(function(e) {
+        e.preventDefault();
+        var course_id = $(this).find("input[name=course_id]").attr('value');
+        load_reviews(course_id);
     });
 
     /*set behavior of remove from cart button. Also under search results */
@@ -224,6 +245,12 @@ $(document).ready(function() {
                     ev.preventDefault();
                     var params = $(this).find("option:selected").attr('class').split('_');
                     load_semester(params);
+                });
+                
+                $(".semester_menu>.reviews_form").submit(function(ev) {
+                    ev.preventDefault();
+                    var course_id = $(this).find("input[name=course_id]").attr('value');
+                    load_reviews(course_id);
                 });
                 
                 /* set the behavior of the "save course to cart button" */
