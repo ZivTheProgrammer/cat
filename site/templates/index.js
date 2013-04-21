@@ -20,7 +20,7 @@ function load_semester(params) {
     var detail_id = "#detail_num_"+params[1];
     /* Hide / show selected semester */
     if ($(detail_id+">.detail_sem_"+params[2]).length == 0) {
-        $.post("/semester/", {course_id: params[1], semester: params[2]}, function( data ) {
+        $.post("/semester/", $(detail_id+">.semester_menu>.term_selector").serialize(), function( data ) {
             $(detail_id).append(data);
             $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
             $(detail_id+">.detail_sem_"+params[2]).switchClass("semester", "semester_shown");
@@ -47,9 +47,9 @@ $(document).ready(function() {
     
     /* set the behavior of the "load semester button" */
     $(".semester_menu>.term_selector").submit(function(e) {
-	    e.preventDefault();
-	    var params = $(this.find("option:selected")).attr('class').split('_');
-	    load_semester(params);
+        e.preventDefault();
+        var params = $(this).find("option:selected").attr('class').split('_');
+        load_semester(params);
     });
 
     /*set behavior of remove from cart button. Also under search results */
@@ -220,10 +220,10 @@ $(document).ready(function() {
                 });
                 
                 /* set the behavior of the "load semester button" */
-                $(".semester_menu>term_selector").submit(function(ev) {
-			ev.preventDefault();
-			var params = $(this.find("option:selected")).attr('class').split('_');
-			load_semester(params);
+                $(".semester_menu>.term_selector").submit(function(ev) {
+                    ev.preventDefault();
+                    var params = $(this).find("option:selected").attr('class').split('_');
+                    load_semester(params);
                 });
                 
                 /* set the behavior of the "save course to cart button" */
