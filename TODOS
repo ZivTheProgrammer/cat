@@ -3,12 +3,32 @@ could do in their spare time:
 
 /--------BUGS----------/
 
+**Still not scraping all courses**
+
 **Scraping formats for distribution requirements and pdf stuff. So far, "na, npdf" doesn't seem to work.**
 
 **See folder cat/bugScreenshots for screenshots of bugs that need to be fixed. If fixed, don't delete the files, just note that it's resolved in the README**
 
 **FOR TESTING REVIEWS**
 There's a freaky review for AAS 201, from 2006 for Robert Fredin, that's just "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" and it makes ICE look pretty bad.
+
+Multiple spinny wheels
+
+Button edges look funny
+
+Fonts
+
+Show crosslistings in results list
+
+top/bottom of scroll bar (are great!)
+
+shopping carts (are also nice...)
+
+Spaces in searches should be okay sometimes (e.g. "< 200", "pdf only" (see note in 'features'))
+
+Make the black less black.
+
+
 
 /------Features--------/
 I'm pretty sure a course can satisfy multiple distribution requirements.
