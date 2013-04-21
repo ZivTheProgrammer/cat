@@ -140,6 +140,10 @@ padding:5px;
 background-color:rgba(0,0,0,0.9);
 }
 
+.course.course_old{
+background-color:rgba(100, 100, 100, 0.9);
+}
+
 .course:hover{
 background-color:rgba(255,49,00, 0.5);
 cursor:pointer;
