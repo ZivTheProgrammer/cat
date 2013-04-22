@@ -11,7 +11,7 @@ SUBJECT_AREAS = ["AAS", "AFS", "AMS", "ANT", "AOS", "APC", "ARA", "ARC", "ART", 
 DECAY_FACTOR = 0.5
 
 def home(request):
-    return render(request, "hello_world.html")
+    return HttpResponseRedirect("/index/")
 
 # Handle user login. Non-functional at the moment.    
 def login(request):
