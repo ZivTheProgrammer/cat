@@ -105,13 +105,19 @@ def annotate(db, semester):
         for term in semester['all_terms']:
             all_named_terms[term] = term_name(int(term))
         semester['all_named_terms'] = all_named_terms
-        # Add aggregated review data
-        for term in semester['all_terms']:
-            reviews = db.get_reviews(semester['course_id'])
-            current_weight = 1.0
-            total_weight = 0.0
-            for review in reviews:
-                current_weight = current_weight * DECAY_FACTOR
+    # Add aggregated review data
+    reviews = db.get_reviews(semester['unique_course'])
+    current_weight = 1.0
+    total_weight = 0.0
+    weighted_rating = 0.0
+    for review in reviews:
+        print review['review_Nums']
+        if 'overall_mean' in review['review_Nums']:
+            total_weight += current_weight
+            weighted_rating += float(review['review_Nums']['overall_mean']) * current_weight
+            current_weight = current_weight * DECAY_FACTOR
+    if total_weight > 0.0:
+        semester['overall_rating'] = weighted_rating / total_weight
     return semester
 
 def term_name(term_no):
