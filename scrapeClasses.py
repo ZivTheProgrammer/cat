@@ -72,6 +72,9 @@ for term in terms.iter(ns + 'term'):
     # Get data for each subject
     for sub in subjects.iter(ns + 'subject'):
         subCode = sub.find(ns + 'code').text
+        #print "\'" + subCode + "\', ",
+        #if subCode != "VIS" and subCode != "GLS":
+            #continue
         # Get all the courses for each subject
         sleep(.5)
         try:
@@ -145,6 +148,7 @@ for term in terms.iter(ns + 'term'):
                 regData = scraper.scrape_id_term(entry['course_id'], entry['term'])
             except:
                 print "***********Couldn't load registrar data for term %s, subject %s, number %s************" % (termCode, subCode, entry['course_number'])
+                continue
 
             #print regData
             """
