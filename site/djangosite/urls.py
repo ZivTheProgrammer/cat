@@ -12,6 +12,8 @@ urlpatterns = patterns('djangosite.views',
     url(r'^index/$', 'index', name='index'),
     url(r'^course/add/$', 'add_course_cart', name='add_course_cart'),
     url(r'^course/remove/$', 'remove_course_cart', name='remove_course_cart'),
+    url(r'^reviews/$', 'get_reviews', name='get_reviews'),
+
     
     # Examples:
     # url(r'^djangosite/', include('djangosite.foo.urls')),

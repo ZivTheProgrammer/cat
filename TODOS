@@ -3,6 +3,10 @@ could do in their spare time:
 
 /--------BUGS----------/
 
+**Still not scraping all courses**
+
+**Scraping formats for distribution requirements and pdf stuff. So far, "na, npdf" doesn't seem to work.**
+
 **See folder cat/bugScreenshots for screenshots of bugs that need to be fixed. If fixed, don't delete the files, just note that it's resolved in the README**
 
 **FOR TESTING REVIEWS**
@@ -24,7 +28,7 @@ Spaces in searches should be okay sometimes (e.g. "< 200", "pdf only" (see note 
 
 Make the black less black.
 
-
+Make scrollbar present always.
 
 /------Features--------/
 I'm pretty sure a course can satisfy multiple distribution requirements.
