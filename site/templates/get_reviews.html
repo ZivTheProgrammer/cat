@@ -1,10 +1,21 @@
 <div class="semester detail_reviews">
-{% for review in result %}
-    <ul>
-    {% for name, value in review.items %}
-        <li> {{ name }}: {{ value }} </li>
+    <div class = "detail_all_the_things">
+    {% for result in results %}
+        <div class = "detail_term"> {{ result.term_name }} </div>
+        <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
+        <div class = "detail_description">
+        {% for field, value in result.review_Nums.items %}
+            {{ field }}: {{ value }}<br>
+        {% empty %}
+            No data available for this semester.
+        {% endfor %}
+        </div>
+        <ul>
+        {% for entry in result.review_text %}
+            <li> {{ entry }} </li>
+        {% endfor %}
+        </ul>
+        <br>
     {% endfor %}
-    </ul>
-    <br>
-{% endfor %}
+    </div>
 </div>

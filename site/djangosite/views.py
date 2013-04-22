@@ -73,8 +73,13 @@ def get_reviews(request):
     db = CatDB()
     course = db.get_course({"course_id": request.POST['course_id']})[0]
     result = db.get_reviews(course['unique_course'])
-    print result
-    return render(request, "get_reviews.html", {'result': result})
+    # Do some annotating
+    for review in result:
+        review['term_name'] = term_name(int(review['term']))
+        review['profs'] = []
+        for instructor in review['instructors']:
+            review['profs'].append(db.get_professor(id_number=instructor)[0])
+    return render(request, "get_reviews.html", {'results': result})
     
 # Add a course to the user's course cart.
 def add_course_cart(request):
@@ -111,7 +116,6 @@ def annotate(db, semester):
     total_weight = 0.0
     weighted_rating = 0.0
     for review in reviews:
-        print review['review_Nums']
         if 'overall_mean' in review['review_Nums']:
             total_weight += current_weight
             weighted_rating += float(review['review_Nums']['overall_mean']) * current_weight
@@ -124,7 +128,7 @@ def term_name(term_no):
     if term_no % 10 == 4:
         return "Spring {:d}".format(1900 + term_no / 10)
     elif term_no % 10 == 2:
-        return"Fall {:d}".format(1899 + term_no / 10)
+        return "Fall {:d}".format(1899 + term_no / 10)
     elif term_no % 10 == 1:
         return "Summer {:d}".format(1899 + term_no / 10)
 
