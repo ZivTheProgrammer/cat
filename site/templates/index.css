@@ -57,6 +57,10 @@ html, body {
   border-right: 10px solid transparent;
 }
 
+.detail_ratings_numbers {
+    display:none;
+}
+
 .detail_all_the_things {
    font-family:Verdana,sans-serif;
    font-size:80%;
