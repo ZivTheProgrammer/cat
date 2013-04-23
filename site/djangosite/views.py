@@ -2,7 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from forms import *
 import CASClient
-import re
+import sys, os, urllib, re
 from CatDB import CatDB
 from collections import OrderedDict
 import HTMLParser
@@ -17,9 +17,18 @@ def home(request):
 
 # Handle user login. Non-functional at the moment.    
 def login(request):
-    C = CASClient.CASClient()
-    netid = C.Authenticate()
-    return HttpResponse(netid)
+    cas_url = "https://fed.princeton.edu/cas/"
+    service_url = urllib.quote(request.META['HTTP_HOST'] + request.META['PATH_INFO'])
+    if "ticket" in request.GET:
+        val_url = cas_url + "validate?service=" + service_url + '&ticket=' + urllib.quote(request.GET['ticket'])
+        r = urllib.urlopen(val_url).readlines() #returns 2 lines
+        if len(r) == 2 and re.match("yes", r[0]) != None:  
+            return HttpResponse(r[1].strip())
+        else:
+            return HttpResponse("Failed!")
+    else:
+        login_url = cas_url + 'login?service=' + service_url
+        return HttpResponseRedirect(login_url)
 
 # Base view for the site
 def index(request):
