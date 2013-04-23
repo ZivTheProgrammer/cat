@@ -59,13 +59,13 @@ html, body {
 
 .reviews_form {
   display:block;
-  float:right;
+  margin-left:430px;
 }
 
 .term_selector {
-  position:absolute;
   display:block;
   float:left;
+  z-index: 100;
 }
 
 .detail_ratings_numbers {
@@ -102,14 +102,15 @@ html, body {
 }
 
 .detail_description {
-    margin-top:5px;
+    display:none;
+    /*margin-top:5px;
     margin-right:10px;
     padding-left:3px;
     padding-right:3px;
     padding-bottom:3px;
     border-style:solid;
     border-width:1px;
-    border-color:rgb(193,193,193); 
+    border-color:rgb(193,193,193); */
 }
 
 #hide_advanced {
@@ -191,8 +192,6 @@ padding:5px;
 
 .semester_shown {
     display:block;
-    top:15px;
-    position:absolute;
 }
 
 .semester_menu{
@@ -512,3 +511,12 @@ color:white;
 #cart_list {
     width:800px;
 }
+
+.detail_ratings_plot {
+    position:absolute;
+    width: 500px;
+    height:500px;
+    background-color:white;
+}
+
+

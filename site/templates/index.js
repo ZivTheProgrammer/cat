@@ -12,7 +12,6 @@ function display(course_id) {
         var detail_id = "#detail_num_"+course_id;
         $(detail_id).addClass("detail_shown").removeClass("detail");//switchClass("detail", "detail_shown");
     }
-    $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
 }
 
 // Helper function: handles the post request to get a specific semester of a course.
@@ -42,7 +41,6 @@ function load_reviews(course_id) {
        var semester_id = $(detail_id+">.semester_menu>.term_selector>select>option:selected").attr("value");
        $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
        $(detail_id+">.detail_sem_"+semester_id).addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
-       $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
        $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
     }
     else {
@@ -53,16 +51,48 @@ function load_reviews(course_id) {
             $(detail_id).append(data);
             $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
             $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
-            $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
+            plot_review_data();
         });
     }
     else {
         $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
         $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
-        $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
+        plot_review_data();
     }
     $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Course Data");
     }
+}
+
+/* function to make the plots of the numerical review data */
+function plot_review_data() {
+    var data = [
+                {label:"Overall", data:[]}, 
+                {label:"Lectures", data:[]}
+               ];
+    var xmapping = [];
+    
+    /* iterate through all the past semesters of ratings */
+    var xval = 0;
+    var categories = {"overall_mean": 0, "lectures_mean":1};
+    $(".detail_reviews.semester_shown>.detail_ratings_numbers").children().each(function() {
+        /* iterate through all the ratings for that semester */
+        xmapping.push([ xval, $(this).children().first().text()]);
+        $(this).children().each(function() {
+            var itemarray = $(this).text().split(":");
+            if (itemarray[0] in categories) {
+                data[categories[itemarray[0]]]["data"].push([xval, itemarray[1]]);
+            }
+        });
+        xval = xval - 1;
+    });
+    
+    var options = {
+                    series: {
+                             lines: {show:true}
+                            },
+                     xaxis: {ticks: xmapping}
+                   };
+    $.plot($(".semester_shown").find(".detail_ratings_plot"), data, options);
 }
 
 /* function to make the spinner */
@@ -240,7 +270,6 @@ $(document).ready(function() {
         else if (!$(this).is(":checked")) {
             $(".course_old").css("display","none");
         }
-        $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
     });
     
     /* attach a submit handler to the form */
@@ -265,8 +294,8 @@ $(document).ready(function() {
                 if(!$("#omnibar_showold").is(":checked")) $(".course_old").css("display","none");
                 
                 /* give the results divs a fancy scrollbar */
-                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
-                $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
+                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
+                $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
                 
                 /* Enable showing cart courses */
                 $(".coursecart").click(function(ev){
