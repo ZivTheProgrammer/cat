@@ -52,6 +52,7 @@ function load_reviews(course_id) {
         $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
         $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
     }
+    $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Course Data");
 }
 
 $(document).ready(function() {
