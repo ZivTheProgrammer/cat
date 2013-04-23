@@ -7,7 +7,7 @@ from CatDB import CatDB
 from collections import OrderedDict
 import HTMLParser
 
-RATING_CATEGORIES = ['overall_mean', 'lectures_mean', 'precepts_mean']
+RATING_CATEGORIES = ['overall_mean', 'lectures_mean', 'precepts_mean', 'classes_mean', 'readings_mean']
 DISTRIBUTION_AREAS = ['EM', 'EC', 'HA', 'LA', 'QR', 'SA', 'STN', 'STL']
 SUBJECT_AREAS = ["AAS", "AFS", "AMS", "ANT", "AOS", "APC", "ARA", "ARC", "ART", "AST", "ATL", "BCS", "CBE", "CEE", "CHI", "CHM", "CHV", "CLA", "CLG", "COM", "COS", "CWR", "CZE", "DAN", "EAP", "EAS", "ECO", "ECS", "EEB", "EGR", "ELE", "ENE", "ENG", "ENV", "EPS", "FIN", "FRE", "FRS", "GEO", "GER", "GHP", "GLS", "GSS", "HEB", "HIN", "HIS", "HLS", "HOS", "HUM", "ISC", "ITA", "JDS", "JPN", "JRN", "KOR", "LAO", "LAS", "LAT", "LIN", "MAE", "MAT", "MED", "MOD", "MOG", "MOL", "MSE", "MUS", "NES", "NEU", "ORF", "PAW", "PER", "PHI", "PHY", "PLS", "POL", "POP", "POR", "PSY", "QCB", "REL", "RUS", "SAS", "SLA", "SOC", "SPA", "STC", "SWA", "THR", "TPP", "TRA", "TUR", "URB", "URD", "VIS", "WRI", "WWS"]
 DECAY_FACTOR = 0.5
@@ -140,6 +140,8 @@ def annotate(db, semester):
         for category in RATING_CATEGORIES:
             if category in review['review_Nums']:
                 weighted_rating[category] += float(review['review_Nums'][category]) * current_weight
+            else:
+                weighted_rating[category] -= 42.0 # large negative magic number
     if total_weight > 0.0:
         for category in RATING_CATEGORIES:
             if weighted_rating[category] > 0.0:
