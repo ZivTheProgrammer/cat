@@ -35,6 +35,8 @@ def login(request):
 
 # Base view for the site
 def index(request):
+    if not request.session.has_key('netid'):
+        return HttpResponseRedirect("/login/")
     classified = {}
     db = CatDB()
     student = db.get_student(request.session['netid'])
