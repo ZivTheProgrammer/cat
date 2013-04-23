@@ -59,13 +59,13 @@ html, body {
 
 .reviews_form {
   display:block;
-  float:right;
+  margin-left:430px;
 }
 
 .term_selector {
-  position:absolute;
   display:block;
   float:left;
+  clear:right;
 }
 
 .detail_ratings_numbers {
@@ -192,8 +192,6 @@ padding:5px;
 
 .semester_shown {
     display:block;
-    top:15px;
-    position:absolute;
 }
 
 .semester_menu{
@@ -202,7 +200,9 @@ padding:5px;
     right: 4px;
     border-radius: 4px;
     */
+    position:relative;
     display:inline;
+    height: 20px;
     background-color: #777777;
 }
 
