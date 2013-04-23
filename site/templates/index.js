@@ -14,7 +14,7 @@ function display(course_id) {
     }
 }
 
-// Helper function: handles a click on a detail view's semester button.
+// Helper function: handles the post request to get a specific semester of a course.
 // params[1] is the course id, params[2] is the term number
 function load_semester(params) {
     var detail_id = "#detail_num_"+params[1];
@@ -62,8 +62,7 @@ $(document).ready(function() {
     });
     
     /* set the behavior of the "load semester button" */
-    $(".semester_menu>.term_selector").submit(function(e) {
-        e.preventDefault();
+    $(".semester_menu>.term_selector>.term_dropdown").change(function() {
         var params = $(this).find("option:selected").attr('class').split('_');
         load_semester(params);
     });
@@ -243,8 +242,7 @@ $(document).ready(function() {
                 });
                 
                 /* set the behavior of the "load semester button" */
-                $(".semester_menu>.term_selector").submit(function(ev) {
-                    ev.preventDefault();
+                $(".semester_menu>.term_selector>.term_dropdown").change(function() {
                     var params = $(this).find("option:selected").attr('class').split('_');
                     load_semester(params);
                 });
