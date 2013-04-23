@@ -220,18 +220,21 @@ class CatDB:
                 profIDs = [str(c) for c in profIDs]
             else:
                 profIDs = [profIDs]
-            course['instructors'] = {'$in': profIDs}
+            course['$or'] = [{'instructors':{'$in': profIDs}}]
 
         if keywords: #keyword search
             descRegex = '.*('
             for kw in keywords:
                 if (kw.lower() not in self.words2ignore):
-                    descRegex = descRegex + ' ' + kw + '|'
-            descRegex = descRegex + 'zyvxz).*'
+                    descRegex = descRegex + kw + '|'
+            descRegex = descRegex + 'zyvxzzxzx).*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
+            course['title'] = course['description']
+            if '$or' not in course:
+                course['$or'] = []
+            course['$or'].extend([{'description':course.pop('description')}, {'title':course.pop('title')}])
+            print "regex: ", descRegex
 
-        if 'description' in course and 'instructors' in course:
-            course['$or'] = [{'description':course.pop('description')}, {'instructors':course.pop('instructors')}]
         
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
@@ -300,6 +303,7 @@ class CatDB:
         #print "returning lists of courses...", results_list
         #pp = pprint.PrettyPrinter(indent=2)
         #pp.pprint(results_list)        
+        #print results_list
         return results_list
 
         
