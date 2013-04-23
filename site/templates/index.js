@@ -38,6 +38,15 @@ function load_semester(params) {
 
 function load_reviews(course_id) {
     var detail_id = "#detail_num_"+course_id;
+    if ($(detail_id+">.detail_reviews").hasClass("semester_shown")) {
+       var semester_id = $(detail_id+">.semester_menu>.term_selector>select>option:selected").attr("value");
+       $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
+       $(detail_id+">.detail_sem_"+semester_id).addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+       $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
+       $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
+    }
+    else {
+	
     /* Hide / show selected semester */
     if ($(detail_id+">.detail_reviews").length == 0) {
         $.post("/reviews/", $(detail_id+">.semester_menu>.reviews_form").serialize(), function( data ) {
@@ -53,6 +62,7 @@ function load_reviews(course_id) {
         $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
     }
     $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Course Data");
+    }
 }
 
 /* function to make the spinner */
