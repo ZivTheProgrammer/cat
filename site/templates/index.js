@@ -190,6 +190,17 @@ $(document).ready(function() {
         $("#omnibar_input").submit();
     });
     
+    /* handle checking and unchecking the show old courses checkbox */
+    $("#omnibar_showold").change(function() {
+        /* handle if just checked */
+        if ($(this).is(":checked")) {
+            $(".course_old").css("display","");
+        }
+        else if (!$(this).is(":checked")) {
+            $(".course_old").css("display","none");
+        }
+    });
+    
     /* attach a submit handler to the form */
     $("#omnibar_form").submit(function(event) {
         /* stop form from submitting normally */
@@ -223,9 +234,12 @@ $(document).ready(function() {
                 /* put the data in the result div */
                 $("#results_div").empty().append( $( data ) );
                 
+                /* don't show old courses if the check box isn't checked */
+                if(!$("#omnibar_showold").is(":checked")) $(".course_old").css("display","none");
+                
                 /* give the results divs a fancy scrollbar */
-                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
-                $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
+                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true, maintainPosition:false, autoReinitialiseDelay:0});
+                $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true, maintainPosition:false, autoReinitialiseDelay:0});
                 
                 /* Enable showing cart courses */
                 $(".coursecart").click(function(ev){

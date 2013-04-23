@@ -460,6 +460,12 @@ color:white;
     margin-bottom:auto;
 }
 
+#showold_span {
+    position:absolute;
+    top:10px;
+    left:770px;
+}
+
 .savecourse_form>[type=submit]{
     background:url(/static/cart.png);
     background-size:contain;

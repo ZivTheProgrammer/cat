@@ -5,6 +5,9 @@
     {% if result.overall_mean %} Overall: {{result.overall_mean }} {% endif %}
     {% if result.lectures_mean %} Lectures: {{result.lectures_mean }} {% endif %}
     {% if result.precepts_mean %} Precepts: {{result.precepts_mean }} {% endif %}
+    {% if result.readings_mean %} Readings: {{result.readings_mean }} {% endif %}
+    {% if result.classes_mean %} Classes: {{result.classes_mean }} {% endif %}
+
     </div>
     <div class = "detail_title"> {{result.title}} </div>
     <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
