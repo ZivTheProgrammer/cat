@@ -55,6 +55,33 @@ function load_reviews(course_id) {
     $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Course Data");
 }
 
+/* function to make the spinner */
+function make_spinner() {
+        var opts = {
+        lines: 9, // The number of lines to draw
+        length: 5, // The length of each line
+        width: 4, // The line thickness
+        radius: 6, // The radius of the inner circle
+        corners: 1, // Corner roundness (0..1)
+        rotate: 0, // The rotation offset
+        direction: 1, // 1: clockwise, -1: counterclockwise
+        color: '#ff4900', // #rgb or #rrggbb
+        speed: 1, // Rounds per second
+        trail: 80, // Afterglow percentage
+        shadow: false, // Whether to render a shadow
+        hwaccel: false, // Whether to use hardware acceleration
+        className: 'spinner', // The CSS class to assign to the spinner
+        zIndex: 2e9, // The z-index (defaults to 2000000000)
+        top: 'auto', // Top position relative to parent in px
+        left: '260px' // Left position relative to parent in px
+    };
+    var target = document.getElementById('omnibar_form');
+    var spinner = new Spinner(opts).spin(target);
+    return spinner;
+}
+
+var spinner_on = false;
+
 $(document).ready(function() {
 
     /* Enable showing cart courses */
@@ -212,26 +239,11 @@ $(document).ready(function() {
         event.preventDefault();
         
         /* make the spinner */
-        var opts = {
-            lines: 9, // The number of lines to draw
-            length: 5, // The length of each line
-            width: 4, // The line thickness
-            radius: 6, // The radius of the inner circle
-            corners: 1, // Corner roundness (0..1)
-            rotate: 0, // The rotation offset
-            direction: 1, // 1: clockwise, -1: counterclockwise
-            color: '#ff4900', // #rgb or #rrggbb
-            speed: 1, // Rounds per second
-            trail: 80, // Afterglow percentage
-            shadow: false, // Whether to render a shadow
-            hwaccel: false, // Whether to use hardware acceleration
-            className: 'spinner', // The CSS class to assign to the spinner
-            zIndex: 2e9, // The z-index (defaults to 2000000000)
-            top: 'auto', // Top position relative to parent in px
-            left: '260px' // Left position relative to parent in px
-        };
-        var target = document.getElementById('omnibar_form');
-        var spinner = new Spinner(opts).spin(target);
+        var spinner;
+        if (!spinner_on) {
+            spinner = make_spinner();
+            spinner_on = true;
+        }
         
         /* send the data using post */
         var posting = $.post("/results/", $("#omnibar_form").serialize(), 
@@ -310,7 +322,10 @@ $(document).ready(function() {
                 }); 
                 
                 //stop the spinner 
-                spinner.stop();
+                if (spinner_on) {
+                    spinner.stop();
+                    spinner_on = false;
+                }
             });
     });
 });
