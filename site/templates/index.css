@@ -57,6 +57,17 @@ html, body {
   border-right: 10px solid transparent;
 }
 
+.reviews_form {
+  display:block;
+  float:right;
+}
+
+.term_selector {
+  position:absolute;
+  display:block;
+  float:left;
+}
+
 .detail_ratings_numbers {
     display:none;
 }
@@ -180,7 +191,9 @@ padding:5px;
 }
 
 .semester_shown {
-	display:block;
+    display:block;
+    top:15px;
+    position:absolute;
 }
 
 .semester_menu{
