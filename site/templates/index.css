@@ -65,7 +65,7 @@ html, body {
 .term_selector {
   display:block;
   float:left;
-  clear:right;
+  z-index: 100;
 }
 
 .detail_ratings_numbers {
@@ -200,9 +200,7 @@ padding:5px;
     right: 4px;
     border-radius: 4px;
     */
-    position:relative;
     display:inline;
-    height: 20px;
     background-color: #777777;
 }
 
