@@ -18,12 +18,15 @@ def home(request):
 # Handle user login. Non-functional at the moment.    
 def login(request):
     cas_url = "https://fed.princeton.edu/cas/"
-    service_url = urllib.quote(request.META['HTTP_HOST'] + request.META['PATH_INFO'])
+    service_url = 'http://' + urllib.quote(request.META['HTTP_HOST'] + request.META['PATH_INFO'])
+    service_url = re.sub(r'ticket=[^&]*&?', '', service_url)
+    service_url = re.sub(r'\?&?$|&$', '', service_url)
     if "ticket" in request.GET:
         val_url = cas_url + "validate?service=" + service_url + '&ticket=' + urllib.quote(request.GET['ticket'])
         r = urllib.urlopen(val_url).readlines() #returns 2 lines
-        if len(r) == 2 and re.match("yes", r[0]) != None:  
-            return HttpResponse(r[1].strip())
+        if len(r) == 2 and re.match("yes", r[0]) != None:
+            request.session['netid'] = r[1].strip()
+            return HttpResponseRedirect("/index/")
         else:
             return HttpResponse("Failed!")
     else:
@@ -34,14 +37,15 @@ def login(request):
 def index(request):
     classified = {}
     db = CatDB()
-    student = db.get_student("bbaggins")
+    student = db.get_student(request.session['netid'])
     courses = student.get('courseList', [])
     courses = db.get_course(course_id = courses)
     for result in courses:
         result = annotate(db, result)
         result['source'] = 'cart'
         classified[result['course_id']] = result
-    return render(request, "index.html", {'distrib': DISTRIBUTION_AREAS, 'courses': courses, 'results': classified})
+    return render(request, "index.html", {'distrib': DISTRIBUTION_AREAS, 'courses': courses, 
+        'results': classified, 'netid': request.session['netid']})
 
 # Get search results and pass them back to the search page.
 def search_results(request):
@@ -56,7 +60,7 @@ def search_results(request):
         result['source'] = 'results'
         classified[result['course_id']] = result
     # Load courses in cart
-    student = db.get_student("bbaggins")
+    student = db.get_student(request.session['netid'])
     list = student.get('courseList', [])
     courses = db.get_course(course_id = list)
     for result in courses:
@@ -95,13 +99,13 @@ def get_reviews(request):
 # Add a course to the user's course cart.
 def add_course_cart(request):
     db = CatDB()
-    db.add_course("bbaggins", request.POST['course_id'])
+    db.add_course(request.session['netid'], request.POST['course_id'])
     return render(request, "cart_course.html", {'course_id': request.POST['course_id'], 'course_name': request.POST['course_code']})
     
 # Remove a course from the user's course cart.  
 def remove_course_cart(request):
     db = CatDB()
-    db.remove_course("bbaggins", request.POST['course_id'])
+    db.remove_course(request.session['netid'], request.POST['course_id'])
     return HttpResponse("Success") #Shouldn't need to return anything
 
 # Helper function to add information to a semester of a course.
