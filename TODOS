@@ -24,8 +24,6 @@ top/bottom of scroll bar (are great!)
 
 shopping carts (are also nice...)
 
-Spaces in searches should be okay sometimes (e.g. "< 200", "pdf only" (see note in 'features'))
-
 Make the black less black.
 
 Make scrollbar present always.
@@ -47,6 +45,8 @@ Searching by time should work.  Question: If a user searches an hour, say "11:00
 --Any time within that hour. That's what the Registrar does.
 
 Distinguish between professors and preceptors. (This is a scraping issue first, then a display issue.)
+
+Can we make it so that if there is only one search result (especially if I search for a specific course, e.g. "COS 333"), it gets opened up on the right side automatically?
 
 Database scraping: a few classes aren't getting added for some reason. In particular, CBE 504 (and a few others) for term 1132.
 

@@ -176,8 +176,8 @@ def parse(db, text):
         elif re.match('^[A-Z]+$', token):
             if db.get_professor(token).count() > 0:
                 output['professor_name'].append(token)
-            else:
-                output['keywords'].append(token)
+            # Also use as a keyword
+            output['keywords'].append(token)
         previous = token
     return output
     

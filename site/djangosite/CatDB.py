@@ -212,15 +212,15 @@ class CatDB:
                 for p in allProfs:
                     profIDs.append(p['id'])
 
+        if distribution:
+                course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
+
         if profIDs:
             if isinstance(profIDs, list):
                 profIDs = [str(c) for c in profIDs]
             else:
                 profIDs = [profIDs]
             course['instructors'] = {'$in': profIDs}
-
-        if distribution:
-                course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
 
         if keywords: #keyword search
             descRegex = '.*('
@@ -229,6 +229,9 @@ class CatDB:
                     descRegex = descRegex + ' ' + kw + '|'
             descRegex = descRegex + 'slkfjeiwenvnuhfguhew).*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
+
+        if 'description' in course and 'instructors' in course:
+            course['$or'] = [{'description':course.pop('description')}, {'instructors':course.pop('instructors')}]
         
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
@@ -237,7 +240,7 @@ class CatDB:
         if unique_course:
             course['unique_course'] = {'$in': unique_course if isinstance(unique_course, list) else [unique_course]}
             
-        #print "search query: ",  course
+        print "search query: ",  course
         if not course:
             return []
         results = self.courseCol.find(course)
