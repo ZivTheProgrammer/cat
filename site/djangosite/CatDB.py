@@ -169,7 +169,7 @@ class CatDB:
                     regex = regex +  "(t[^h])|"
                 else:
                     regex = regex + d + "|"
-            regex = regex + "HULALBALOL).*"
+            regex = regex + "ZYX).*"
             course['classes'] =  { 
                 '$elemMatch': {
                     'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
@@ -227,7 +227,7 @@ class CatDB:
             for kw in keywords:
                 if (kw.lower() not in self.words2ignore):
                     descRegex = descRegex + ' ' + kw + '|'
-            descRegex = descRegex + 'slkfjeiwenvnuhfguhew).*'
+            descRegex = descRegex + 'zyvxz).*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
 
         if 'description' in course and 'instructors' in course:
