@@ -102,15 +102,14 @@ html, body {
 }
 
 .detail_description {
-    display:none;
-    /*margin-top:5px;
+    margin-top:5px;
     margin-right:10px;
     padding-left:3px;
     padding-right:3px;
     padding-bottom:3px;
     border-style:solid;
     border-width:1px;
-    border-color:rgb(193,193,193); */
+    border-color:rgb(193,193,193);
 }
 
 #hide_advanced {
