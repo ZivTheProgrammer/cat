@@ -12,9 +12,10 @@ function display(course_id) {
         var detail_id = "#detail_num_"+course_id;
         $(detail_id).addClass("detail_shown").removeClass("detail");//switchClass("detail", "detail_shown");
     }
+    $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
 }
 
-// Helper function: handles a click on a detail view's semester button.
+// Helper function: handles the post request to get a specific semester of a course.
 // params[1] is the course id, params[2] is the term number
 function load_semester(params) {
     var detail_id = "#detail_num_"+params[1];
@@ -22,13 +23,13 @@ function load_semester(params) {
     if ($(detail_id+">.detail_sem_"+params[2]).length == 0) {
         $.post("/semester/", $(detail_id+">.semester_menu>.term_selector").serialize(), function( data ) {
             $(detail_id).append(data);
-            $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
-            $(detail_id+">.detail_sem_"+params[2]).switchClass("semester", "semester_shown");
+            $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //switchClass("semester_shown", "semester");
+            $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester"); //switchClass("semester", "semester_shown");
         });
     }
     else {
-        $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
-        $(detail_id+">.detail_sem_"+params[2]).switchClass("semester", "semester_shown");
+        $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
+        $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
     }
     /* Enable / disable course history selection buttons */ 
  //   $(detail_id+">.semester_menu>button").removeAttr("disabled");
@@ -41,13 +42,15 @@ function load_reviews(course_id) {
     if ($(detail_id+">.detail_reviews").length == 0) {
         $.post("/reviews/", $(detail_id+">.semester_menu>.reviews_form").serialize(), function( data ) {
             $(detail_id).append(data);
-            $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
-            $(detail_id+">.detail_reviews").switchClass("semester", "semester_shown");
+            $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
+            $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+            $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
         });
     }
     else {
-        $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
-        $(detail_id+">.detail_reviews").switchClass("semester", "semester_shown");
+        $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
+        $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+        $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
     }
 }
 
@@ -62,8 +65,7 @@ $(document).ready(function() {
     });
     
     /* set the behavior of the "load semester button" */
-    $(".semester_menu>.term_selector").submit(function(e) {
-        e.preventDefault();
+    $(".semester_menu>.term_selector>.term_dropdown").change(function() {
         var params = $(this).find("option:selected").attr('class').split('_');
         load_semester(params);
     });
@@ -200,6 +202,7 @@ $(document).ready(function() {
         else if (!$(this).is(":checked")) {
             $(".course_old").css("display","none");
         }
+        $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
     });
     
     /* attach a submit handler to the form */
@@ -239,8 +242,8 @@ $(document).ready(function() {
                 if(!$("#omnibar_showold").is(":checked")) $(".course_old").css("display","none");
                 
                 /* give the results divs a fancy scrollbar */
-                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true, maintainPosition:false, autoReinitialiseDelay:0});
-                $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true, maintainPosition:false, autoReinitialiseDelay:0});
+                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
+                $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, maintainPosition:false});
                 
                 /* Enable showing cart courses */
                 $(".coursecart").click(function(ev){
@@ -257,8 +260,7 @@ $(document).ready(function() {
                 });
                 
                 /* set the behavior of the "load semester button" */
-                $(".semester_menu>.term_selector").submit(function(ev) {
-                    ev.preventDefault();
+                $(".semester_menu>.term_selector>.term_dropdown").change(function() {
                     var params = $(this).find("option:selected").attr('class').split('_');
                     load_semester(params);
                 });
