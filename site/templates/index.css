@@ -236,6 +236,10 @@ div{
     cursor:pointer;
 }
 
+.coursecart:hover {
+    cursor:pointer;
+}
+
 .coursecart:hover, #show_advanced:hover,  #show_analytics:hover {
  background-image: none;
  background-color:rgba(255,49,0,0.5);

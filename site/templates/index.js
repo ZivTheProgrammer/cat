@@ -54,7 +54,8 @@ function load_reviews(course_id) {
 $(document).ready(function() {
 
     /* Enable showing cart courses */
-    $(".coursecart").click(function(){
+    $(".coursecart").click(function(ev){
+        if ($(ev.target).attr("type") == "submit") return;
         var course_id = this.id.split('_')[2];
         $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
         display(course_id);
@@ -229,6 +230,7 @@ $(document).ready(function() {
                 
                 /* Enable showing cart courses */
                 $(".coursecart").click(function(ev){
+                    if ($(ev.target).attr("type") == "submit") return;
                     var course_id = this.id.split('_')[2];
                     display(course_id);
                 });
@@ -263,7 +265,8 @@ $(document).ready(function() {
                         $("#cart_list").append(data);
                         
                         /* redisplay course information when user selects it in his/her cart */
-                        $(".coursecart").click(function(){
+                        $(".coursecart").click(function(ev){
+                            if ($(ev.target).attr("type") == "submit") return;
                             var course_id = this.id.split('_')[2];
                             $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
                             display(course_id);
