@@ -5,7 +5,9 @@ import CASClient
 import re
 from CatDB import CatDB
 from collections import OrderedDict
+import HTMLParser
 
+RATING_CATEGORIES = ['overall_mean', 'lectures_mean', 'precepts_mean']
 DISTRIBUTION_AREAS = ['EM', 'EC', 'HA', 'LA', 'QR', 'SA', 'STN', 'STL']
 SUBJECT_AREAS = ["AAS", "AFS", "AMS", "ANT", "AOS", "APC", "ARA", "ARC", "ART", "AST", "ATL", "BCS", "CBE", "CEE", "CHI", "CHM", "CHV", "CLA", "CLG", "COM", "COS", "CWR", "CZE", "DAN", "EAP", "EAS", "ECO", "ECS", "EEB", "EGR", "ELE", "ENE", "ENG", "ENV", "EPS", "FIN", "FRE", "FRS", "GEO", "GER", "GHP", "GLS", "GSS", "HEB", "HIN", "HIS", "HLS", "HOS", "HUM", "ISC", "ITA", "JDS", "JPN", "JRN", "KOR", "LAO", "LAS", "LAT", "LIN", "MAE", "MAT", "MED", "MOD", "MOG", "MOL", "MSE", "MUS", "NES", "NEU", "ORF", "PAW", "PER", "PHI", "PHY", "PLS", "POL", "POP", "POR", "PSY", "QCB", "REL", "RUS", "SAS", "SLA", "SOC", "SPA", "STC", "SWA", "THR", "TPP", "TRA", "TUR", "URB", "URD", "VIS", "WRI", "WWS"]
 DECAY_FACTOR = 0.5
@@ -92,9 +94,18 @@ def remove_course_cart(request):
     db = CatDB()
     db.remove_course("bbaggins", request.POST['course_id'])
     return HttpResponse("Success") #Shouldn't need to return anything
-    
+
 # Helper function to add information to a semester of a course.
 def annotate(db, semester):
+    # Unescape html characters
+    parser = HTMLParser.HTMLParser()
+    regex = re.compile(r'<.*?>')
+    if 'description' in semester:
+        semester['description'] = regex.sub('', parser.unescape(semester['description']))
+    if 'readings' in semester:
+        for reading in semester['readings']:
+            for key in reading:
+                reading[key] = parser.unescape(reading[key])
     # Add instructor information
     if 'instructors' in semester:
         semester['profs'] = []
@@ -113,15 +124,26 @@ def annotate(db, semester):
     # Add aggregated review data
     reviews = db.get_reviews(semester['unique_course'])
     current_weight = 1.0
-    total_weight = 0.0
-    weighted_rating = 0.0
+    total_weight = 0.0 
+    weighted_rating = dict((category, 0.0) for category in RATING_CATEGORIES)
     for review in reviews:
-        if 'overall_mean' in review['review_Nums']:
-            total_weight += current_weight
-            weighted_rating += float(review['review_Nums']['overall_mean']) * current_weight
-            current_weight = current_weight * DECAY_FACTOR
+        # Skip reviews for terms later than the one being viewed
+        if int(review['term']) > int(semester['term']):
+            continue
+        # Skip terms that don't have any reviews
+        if not review['review_Nums']:
+            continue
+        # Update weights
+        current_weight = current_weight * DECAY_FACTOR 
+        total_weight += current_weight
+        # Add up ratings by category
+        for category in RATING_CATEGORIES:
+            if category in review['review_Nums']:
+                weighted_rating[category] += float(review['review_Nums'][category]) * current_weight
     if total_weight > 0.0:
-        semester['overall_rating'] = weighted_rating / total_weight
+        for category in RATING_CATEGORIES:
+            if weighted_rating[category] > 0.0:
+                semester[category] = "{0:.2f}".format(weighted_rating[category] / total_weight)
     return semester
 
 def term_name(term_no):
