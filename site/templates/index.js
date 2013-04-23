@@ -239,8 +239,8 @@ $(document).ready(function() {
                 if(!$("#omnibar_showold").is(":checked")) $(".course_old").css("display","none");
                 
                 /* give the results divs a fancy scrollbar */
-                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
-                $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
+                $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true, maintainPosition:false, autoReinitialiseDelay:0});
+                $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true, maintainPosition:false, autoReinitialiseDelay:0});
                 
                 /* Enable showing cart courses */
                 $(".coursecart").click(function(ev){
