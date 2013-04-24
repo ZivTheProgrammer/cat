@@ -106,6 +106,7 @@ class CatDB:
             # sleazy            
             totalscore = matchTitle*1000 + matchDesc*100 + totalcount
             course['score'] = totalscore; # dictionary of scores of courses
+            print totalscore
         # sort by score
         #for c in sorted(scores, key = scores.get, reverse = True):
             # Don't do this! The entries have been modified between getting them from the db
@@ -116,7 +117,7 @@ class CatDB:
         print '****************'
         #print sorted(list_courses, key=lambda course: course['score'], reverse = True);
         
-        list_courses.sort(list_courses, key=lambda course: (course['subject'], course['course_number']))
+        list_courses = sorted(list_courses, key=lambda course: (course['subject'], course['course_number']))
         return sorted(list_courses, key=lambda course: course['score'], reverse = True);
 
     """ Returns all courses that match all the given information
@@ -226,10 +227,12 @@ class CatDB:
             descRegex = '.*('
             for kw in keywords:
                 if (kw.lower() not in self.words2ignore):
-                    descRegex = descRegex + ' ' + kw + '|'
+                    descRegex = descRegex + kw + '|'
             descRegex = descRegex + 'slkfjeiwenvnuhfguhew).*'
-            course['description'] = re.compile(descRegex, re.IGNORECASE)
-        
+            print descRegex
+            course['$or'] = [{'title': re.compile(descRegex, re.IGNORECASE)},
+                             {'description': re.compile(descRegex, re.IGNORECASE)}]
+            
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
         if course_id:
@@ -237,7 +240,7 @@ class CatDB:
         if unique_course:
             course['unique_course'] = {'$in': unique_course if isinstance(unique_course, list) else [unique_course]}
             
-        #print "search query: ",  course
+        print "search query: ",  course
         if not course:
             return []
         results = self.courseCol.find(course)
