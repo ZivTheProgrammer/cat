@@ -14,42 +14,136 @@ function display(course_id) {
     }
 }
 
-// Helper function: handles a click on a detail view's semester button.
+// Helper function: handles the post request to get a specific semester of a course.
 // params[1] is the course id, params[2] is the term number
 function load_semester(params) {
     var detail_id = "#detail_num_"+params[1];
     /* Hide / show selected semester */
     if ($(detail_id+">.detail_sem_"+params[2]).length == 0) {
-        $.post("/semester/", {course_id: params[1], semester: params[2]}, function( data ) {
+        $.post("/semester/", $(detail_id+">.semester_menu>.term_selector").serialize(), function( data ) {
             $(detail_id).append(data);
-            $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
-            $(detail_id+">.detail_sem_"+params[2]).switchClass("semester", "semester_shown");
+            $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //switchClass("semester_shown", "semester");
+            $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester"); //switchClass("semester", "semester_shown");
+            $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
         });
     }
     else {
-        $(detail_id+">.semester_shown").switchClass("semester_shown", "semester");
-        $(detail_id+">.detail_sem_"+params[2]).switchClass("semester", "semester_shown");
+        $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
+        $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+        $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
     }
     /* Enable / disable course history selection buttons */ 
-    $(detail_id+">.semester_menu>button").removeAttr("disabled");
-    $(detail_id+">.semester_menu>.semester_"+params[1]+"_"+params[2]).attr("disabled", "disabled");
-
+ //   $(detail_id+">.semester_menu>button").removeAttr("disabled");
+ //   $(detail_id+">.semester_menu>.semester_"+params[1]+"_"+params[2]).attr("disabled", "disabled");
 }
+
+function load_reviews(course_id) {
+    var detail_id = "#detail_num_"+course_id;
+    if ($(detail_id+">.detail_reviews").hasClass("semester_shown")) {
+       var semester_id = $(detail_id+">.semester_menu>.term_selector>select>option:selected").attr("value");
+       $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
+       $(detail_id+">.detail_sem_"+semester_id).addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+       $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
+    }
+    else {
+	
+    /* Hide / show selected semester */
+    if ($(detail_id+">.detail_reviews").length == 0) {
+        $.post("/reviews/", $(detail_id+">.semester_menu>.reviews_form").serialize(), function( data ) {
+            $(detail_id).append(data);
+            $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
+            $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+            plot_review_data();
+        });
+    }
+    else {
+        $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
+        $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+        plot_review_data();
+    }
+    $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Course Data");
+    }
+}
+
+/* function to make the plots of the numerical review data */
+function plot_review_data() {
+    var data = [
+                {label:"Overall", data:[]}, 
+                {label:"Lectures", data:[]}
+               ];
+    var xmapping = [];
+    
+    /* iterate through all the past semesters of ratings */
+    var xval = 0;
+    var categories = {"overall_mean": 0, "lectures_mean":1};
+    $(".detail_reviews.semester_shown>.detail_ratings_numbers").children().each(function() {
+        /* iterate through all the ratings for that semester */
+        xmapping.push([ xval, $(this).children().first().text()]);
+        $(this).children().each(function() {
+            var itemarray = $(this).text().split(":");
+            if (itemarray[0] in categories) {
+                data[categories[itemarray[0]]]["data"].push([xval, itemarray[1]]);
+            }
+        });
+        xval = xval - 1;
+    });
+    
+    var options = {
+                    series: {
+                             lines: {show:true}
+                            },
+                     xaxis: {ticks: xmapping}
+                   };
+    $.plot($(".detail_shown").find(".detail_ratings_plot"), data, options);
+}
+
+/* function to make the spinner */
+function make_spinner() {
+        var opts = {
+        lines: 9, // The number of lines to draw
+        length: 5, // The length of each line
+        width: 4, // The line thickness
+        radius: 6, // The radius of the inner circle
+        corners: 1, // Corner roundness (0..1)
+        rotate: 0, // The rotation offset
+        direction: 1, // 1: clockwise, -1: counterclockwise
+        color: '#ff4900', // #rgb or #rrggbb
+        speed: 1, // Rounds per second
+        trail: 80, // Afterglow percentage
+        shadow: false, // Whether to render a shadow
+        hwaccel: false, // Whether to use hardware acceleration
+        className: 'spinner', // The CSS class to assign to the spinner
+        zIndex: 2e9, // The z-index (defaults to 2000000000)
+        top: 'auto', // Top position relative to parent in px
+        left: '260px' // Left position relative to parent in px
+    };
+    var target = document.getElementById('omnibar_form');
+    var spinner = new Spinner(opts).spin(target);
+    return spinner;
+}
+
+var spinner_on = false;
 
 $(document).ready(function() {
 
     /* Enable showing cart courses */
-    $(".coursecart").click(function(){
+    $(".coursecart").click(function(ev){
+        if ($(ev.target).attr("type") == "submit") return;
         var course_id = this.id.split('_')[2];
         $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
         display(course_id);
     });
     
     /* set the behavior of the "load semester button" */
-    $(".semester_menu>.term_selector").submit(function(e) {
-	    e.preventDefault();
-	    var params = $(this.find("option:selected")).attr('class').split('_');
-	    load_semester(params);
+    $(".semester_menu>.term_selector>.term_dropdown").change(function() {
+        var params = $(this).find("option:selected").attr('class').split('_');
+        load_semester(params);
+    });
+    
+    $(".semester_menu>.reviews_form").submit(function(e) {
+        e.preventDefault();
+        var course_id = $(this).find("input[name=course_id]").attr('value');
+        load_reviews(course_id);
     });
 
     /*set behavior of remove from cart button. Also under search results */
@@ -169,32 +263,28 @@ $(document).ready(function() {
         $("#omnibar_input").submit();
     });
     
+    /* handle checking and unchecking the show old courses checkbox */
+    $("#omnibar_showold").change(function() {
+        /* handle if just checked */
+        if ($(this).is(":checked")) {
+            $(".course_old").css("display","");
+        }
+        else if (!$(this).is(":checked")) {
+            $(".course_old").css("display","none");
+        }
+    });
+    
     /* attach a submit handler to the form */
     $("#omnibar_form").submit(function(event) {
         /* stop form from submitting normally */
         event.preventDefault();
         
         /* make the spinner */
-        var opts = {
-            lines: 9, // The number of lines to draw
-            length: 5, // The length of each line
-            width: 4, // The line thickness
-            radius: 6, // The radius of the inner circle
-            corners: 1, // Corner roundness (0..1)
-            rotate: 0, // The rotation offset
-            direction: 1, // 1: clockwise, -1: counterclockwise
-            color: '#ff4900', // #rgb or #rrggbb
-            speed: 1, // Rounds per second
-            trail: 80, // Afterglow percentage
-            shadow: false, // Whether to render a shadow
-            hwaccel: false, // Whether to use hardware acceleration
-            className: 'spinner', // The CSS class to assign to the spinner
-            zIndex: 2e9, // The z-index (defaults to 2000000000)
-            top: 'auto', // Top position relative to parent in px
-            left: '260px' // Left position relative to parent in px
-        };
-        var target = document.getElementById('omnibar_form');
-        var spinner = new Spinner(opts).spin(target);
+        var spinner;
+        if (!spinner_on) {
+            spinner = make_spinner();
+            spinner_on = true;
+        }
         
         /* send the data using post */
         var posting = $.post("/results/", $("#omnibar_form").serialize(), 
@@ -202,12 +292,16 @@ $(document).ready(function() {
                 /* put the data in the result div */
                 $("#results_div").empty().append( $( data ) );
                 
+                /* don't show old courses if the check box isn't checked */
+                if(!$("#omnibar_showold").is(":checked")) $(".course_old").css("display","none");
+                
                 /* give the results divs a fancy scrollbar */
                 $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
                 $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
                 
                 /* Enable showing cart courses */
                 $(".coursecart").click(function(ev){
+                    if ($(ev.target).attr("type") == "submit") return;
                     var course_id = this.id.split('_')[2];
                     display(course_id);
                 });
@@ -220,10 +314,15 @@ $(document).ready(function() {
                 });
                 
                 /* set the behavior of the "load semester button" */
-                $(".semester_menu>term_selector").submit(function(ev) {
-			ev.preventDefault();
-			var params = $(this.find("option:selected")).attr('class').split('_');
-			load_semester(params);
+                $(".semester_menu>.term_selector>.term_dropdown").change(function() {
+                    var params = $(this).find("option:selected").attr('class').split('_');
+                    load_semester(params);
+                });
+                
+                $(".semester_menu>.reviews_form").submit(function(ev) {
+                    ev.preventDefault();
+                    var course_id = $(this).find("input[name=course_id]").attr('value');
+                    load_reviews(course_id);
                 });
                 
                 /* set the behavior of the "save course to cart button" */
@@ -236,7 +335,8 @@ $(document).ready(function() {
                         $("#cart_list").append(data);
                         
                         /* redisplay course information when user selects it in his/her cart */
-                        $(".coursecart").click(function(){
+                        $(".coursecart").click(function(ev){
+                            if ($(ev.target).attr("type") == "submit") return;
                             var course_id = this.id.split('_')[2];
                             $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
                             display(course_id);
@@ -263,7 +363,10 @@ $(document).ready(function() {
                 }); 
                 
                 //stop the spinner 
-                spinner.stop();
+                if (spinner_on) {
+                    spinner.stop();
+                    spinner_on = false;
+                }
             });
     });
 });

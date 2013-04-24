@@ -52,11 +52,11 @@ class Parser:
 
     QUESTIONS = {
             re.compile("overall quality of the lectures", re.I) : "lectures",
-            re.compile("overall quality of the [written|writing] assignments", re.I): "assignments",
+            re.compile("overall quality of the (written|writing) assignments", re.I): "assignments",
             re.compile("overall quality of the readings", re.I): "readings",
             re.compile("overall quality of the precepts", re.I): "precepts",
             re.compile("overall quality of the classes", re.I): "classes",
-            re.compile("overall quality of the [course|writing seminar]", re.I): "overall"
+            re.compile("overall quality of the (course|writing seminar)", re.I): "overall"
             }
     all_questions = set()
 

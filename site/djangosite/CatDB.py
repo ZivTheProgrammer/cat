@@ -112,7 +112,7 @@ class CatDB:
             # Don't do this! The entries have been modified between getting them from the db
             # and this ranking
             #courses_ranked.append(self.courseCol.find_one({'course_id': c}));
-        print '------------------------'
+        #print '------------------------'
         #print list_courses
         print '****************'
         #print sorted(list_courses, key=lambda course: course['score'], reverse = True);
@@ -170,7 +170,7 @@ class CatDB:
                     regex = regex +  "(t[^h])|"
                 else:
                     regex = regex + d + "|"
-            regex = regex + "HULALBALOL).*"
+            regex = regex + "ZYX).*"
             course['classes'] =  { 
                 '$elemMatch': {
                     'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
@@ -213,26 +213,32 @@ class CatDB:
                 for p in allProfs:
                     profIDs.append(p['id'])
 
+        if distribution:
+                course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
+
         if profIDs:
             if isinstance(profIDs, list):
                 profIDs = [str(c) for c in profIDs]
             else:
                 profIDs = [profIDs]
-            course['instructors'] = {'$in': profIDs}
-
-        if distribution:
-                course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
+            course['$or'] = [{'instructors':{'$in': profIDs}}]
 
         if keywords: #keyword search
             descRegex = '.*('
             for kw in keywords:
                 if (kw.lower() not in self.words2ignore):
                     descRegex = descRegex + kw + '|'
-            descRegex = descRegex + 'slkfjeiwenvnuhfguhew).*'
-            print descRegex
-            course['$or'] = [{'title': re.compile(descRegex, re.IGNORECASE)},
-                             {'description': re.compile(descRegex, re.IGNORECASE)}]
-            
+
+            descRegex = descRegex + 'zyvxzzxzx).*'
+            course['description'] = re.compile(descRegex, re.IGNORECASE)
+            course['title'] = course['description']
+            if '$or' not in course:
+                course['$or'] = []
+            course['$or'].extend([{'description':course.pop('description')}, {'title':course.pop('title')}])
+            print "regex: ", descRegex
+
+        
+>>>>>>> 7519e8907a18f924769f4a079340fe1fd398ad7e
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
         if course_id:
@@ -300,6 +306,7 @@ class CatDB:
         #print "returning lists of courses...", results_list
         #pp = pprint.PrettyPrinter(indent=2)
         #pp.pprint(results_list)        
+        #print results_list
         return results_list
 
         

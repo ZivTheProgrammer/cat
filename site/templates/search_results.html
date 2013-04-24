@@ -4,7 +4,7 @@
         <ul id="search_results_list">
             {% for course_id, result in results.items %}
                 {% if result.source != 'cart' %}
-                <li class="course{% if result.term != '1142' %} course_old{%endif%}" id="result_num_{{course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}} </br> 
+                <li class="course{% if result.term != '1142' %} course_old{%endif%}" id="result_num_{{course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}}</br> 
                     <span class="sub_span"> {% include "prof_snippet.html" %}</span>                   
                     <form class="savecourse_form" id="save_{{course_id}}"> {% csrf_token %}
                         <input type="hidden" name="course_id" value="{{course_id}}">
@@ -23,17 +23,18 @@
         {% for course_id, result in results.items %}
         <div class = "detail" id="detail_num_{{course_id}}">
             <div class = "semester_menu"> 
-	        <form class="term_selector">
-		  <select class="term_dropdown">
-                    {% for term, term_name in result.all_named_terms.items %}
-                       <option class="semester_{{course_id}}_{{term}}"> {{term_name}} </option>
-                    {% endfor %}
-		  </select>
-		  <input class="term_selector_input" type="submit" value="Go!"></input>
+                <form class="term_selector">{% csrf_token %}
+                    <select name="semester" class="term_dropdown">
+                        {% for term, term_name in result.all_named_terms.items %}
+                           <option class="semester_{{course_id}}_{{term}}" value="{{term}}"> {{term_name}} </option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" name="course_id" value="{{course_id}}"></input>
                 </form>
-		<form class="reviews_form">
-		  <input type="submit" value="See Reviews"></input>
-		</form>
+                <form class="reviews_form">{% csrf_token %}
+                  <input type="submit" value="See Reviews"></input>
+                  <input type="hidden" name="course_id" value="{{course_id}}"></input>
+                </form>
             </div>
             <div class = "semester_shown detail_sem_{{result.term}}">
                 {% include "semester.html" %}
