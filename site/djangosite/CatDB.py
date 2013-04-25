@@ -10,6 +10,8 @@ import pprint
         db.getProfessorInfo(name='Kernighan')
 """
 
+CURRENT_SEMESTER = '1142'
+
 class CatDB:
 
     words2ignore = ['the', 'be', 'to', 'of', u'and', 'a', 'in', 'that', 'have', 'i', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'there'];
@@ -155,7 +157,8 @@ class CatDB:
         if time:
             course['classes'] =  { 
                 '$elemMatch': {
-                    'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
+                    'section': re.compile('[LCS].*', re.I),
+                    #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
                     'starttime': time
                     }
                 }
@@ -172,7 +175,8 @@ class CatDB:
             regex = regex + "ZYX).*"
             course['classes'] =  { 
                 '$elemMatch': {
-                    'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
+                    #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
+                    'section': re.compile('[LCS].*', re.I),
                     'days': re.compile(regex, re.IGNORECASE)  #{'$in': day}
                     }
                 }
@@ -212,23 +216,29 @@ class CatDB:
                 for p in allProfs:
                     profIDs.append(p['id'])
 
+        if distribution:
+                course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
+
         if profIDs:
             if isinstance(profIDs, list):
                 profIDs = [str(c) for c in profIDs]
             else:
                 profIDs = [profIDs]
-            course['instructors'] = {'$in': profIDs}
-
-        if distribution:
-                course['distribution'] = {'$in': distribution if isinstance(distribution, list) else [distribution] }
+            course['$or'] = [{'instructors':{'$in': profIDs}}]
 
         if keywords: #keyword search
             descRegex = '.*('
             for kw in keywords:
                 if (kw.lower() not in self.words2ignore):
-                    descRegex = descRegex + ' ' + kw + '|'
-            descRegex = descRegex + 'zyvxz).*'
+                    descRegex = descRegex + kw + '|'
+            descRegex = descRegex + 'zyvxzzxzx).*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
+            course['title'] = course['description']
+            if '$or' not in course:
+                course['$or'] = []
+            course['$or'].extend([{'description':course.pop('description')}, {'title':course.pop('title')}])
+            print "regex: ", descRegex
+
         
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
@@ -237,7 +247,7 @@ class CatDB:
         if unique_course:
             course['unique_course'] = {'$in': unique_course if isinstance(unique_course, list) else [unique_course]}
             
-        #print "search query: ",  course
+        print "search query: ",  course
         if not course:
             return []
         results = self.courseCol.find(course)
@@ -288,7 +298,7 @@ class CatDB:
             for d in uniqueCourses:
                 #print i, d['course']
                 if d['course'] == i:
-                    c['all_terms'] = [x['term'] for x in d['years']]
+                    c['all_terms'] = sorted([x['term'] for x in d['years']], reverse=True)
             #print c
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
@@ -297,6 +307,7 @@ class CatDB:
         #print "returning lists of courses...", results_list
         #pp = pprint.PrettyPrinter(indent=2)
         #pp.pprint(results_list)        
+        #print results_list
         return results_list
 
         

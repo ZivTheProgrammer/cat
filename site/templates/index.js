@@ -24,11 +24,13 @@ function load_semester(params) {
             $(detail_id).append(data);
             $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //switchClass("semester_shown", "semester");
             $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester"); //switchClass("semester", "semester_shown");
+            $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
         });
     }
     else {
         $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
         $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+        $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
     }
     /* Enable / disable course history selection buttons */ 
  //   $(detail_id+">.semester_menu>button").removeAttr("disabled");
@@ -92,7 +94,7 @@ function plot_review_data() {
                             },
                      xaxis: {ticks: xmapping}
                    };
-    $.plot($(".semester_shown").find(".detail_ratings_plot"), data, options);
+    $.plot($(".detail_shown").find(".detail_ratings_plot"), data, options);
 }
 
 /* function to make the spinner */
