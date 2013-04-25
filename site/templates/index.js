@@ -123,6 +123,7 @@ function make_spinner() {
 }
 
 var spinner_on = false;
+var old_search = "";
 
 $(document).ready(function() {
 
@@ -280,12 +281,9 @@ $(document).ready(function() {
         /* stop form from submitting normally */
         event.preventDefault();
         
-        /* If the request hasn't changed, don't re-send it */
-        if ($("#omnibar_previous").text() == $("#omnibar_input").val())
-            return;
-        /* If the request has changed (or is the first one), save it in
-         * a hidden form input */
-        $("#omnibar_previous").text($("#omnibar_input").val());
+        /* Prevent spamming repeat requests */
+        if ($("#omnibar_input").val().trim() == old_search) { return; }
+        old_search = $("#omnibar_input").val().trim();
 
         /* make the spinner */
         var spinner;
@@ -369,6 +367,15 @@ $(document).ready(function() {
                         });
                     });
                 }); 
+                
+                //if only one course is returned, display the information
+                if ($("#search_results_list li").length == 1) {
+                    if (!$("#search_results_list li").hasClass("course_old") || $("#omnibar_showold").is(":checked")) {
+                        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
+                        var course_id = $("#search_results_list li").attr('id').split('_')[2];
+                        display(course_id);
+                    }                        
+                }
                 
                 //stop the spinner 
                 if (spinner_on) {
