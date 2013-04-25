@@ -3,8 +3,6 @@ could do in their spare time:
 
 /--------BUGS----------/
 
-**AHH SAME SCROLLING BUG WITH THE GRADIENT FIX THIS NAUWGH!!!**
-
 **If you delete the text in the search field, stop the search?**
 
 **searching 'npdf' returns ART 260, which is not npdf**
@@ -73,3 +71,4 @@ Will it be possible to search by grade percentages, i.e. "<50% final" or "no ora
     
 /-----COMPLETED--------/
 **Should not be able to spam requests if search hasn't changed**
+**AHH SAME SCROLLING BUG WITH THE GRADIENT FIX THIS NAUWGH!!!**
