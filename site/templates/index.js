@@ -127,6 +127,10 @@ var old_search = "";
 
 $(document).ready(function() {
 
+    /* Alert welcome message */ 
+    $('body').append('<div id="alert">' + $('#welcome').text() + '</div>');
+    $('#alert').fadeOut(5000);
+
     /* Enable showing cart courses */
     $(".coursecart").click(function(ev){
         if ($(ev.target).attr("type") == "submit") return;

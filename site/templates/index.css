@@ -12,6 +12,19 @@ html, body {
     background-attachment:fixed;
 }
 
+#alert {
+   position:fixed;
+   width: 200px;
+   height: 100px;
+   background-color:orange;
+   top:100px;
+   left:100px;
+}
+
+#welcome {
+  display:none;
+}
+
 #omnibar_div:before {
   content: '';
   position: absolute;
