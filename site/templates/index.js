@@ -362,6 +362,15 @@ $(document).ready(function() {
                     });
                 }); 
                 
+                //if only one course is returned, display the information
+                if ($("#search_results_list li").length == 1) {
+                    if (!$("#search_results_list li").hasClass("course_old") || $("#omnibar_showold").is(":checked")) {
+                        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
+                        var course_id = $("#search_results_list li").attr('id').split('_')[2];
+                        display(course_id);
+                    }                        
+                }
+                
                 //stop the spinner 
                 if (spinner_on) {
                     spinner.stop();
