@@ -3,7 +3,7 @@ could do in their spare time:
 
 /--------BUGS----------/
 
-**Should not be able to spam requests if search hasn't changed**
+**AHH SAME SCROLLING BUG WITH THE GRADIENT FIX THIS NAUWGH!!!**
 
 **If you delete the text in the search field, stop the search?**
 
@@ -70,3 +70,5 @@ Will it be possible to search by grade percentages, i.e. "<50% final" or "no ora
     just worked for finals, midterms, and papers, this would be /SUPER/ cool.  Some courses don't include this data, so they could
     just be ignored for this type of searches.
     
+/-----COMPLETED--------/
+**Should not be able to spam requests if search hasn't changed**

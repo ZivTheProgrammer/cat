@@ -140,6 +140,7 @@ $(document).ready(function() {
         load_semester(params);
     });
     
+    /* Load reviews */
     $(".semester_menu>.reviews_form").submit(function(e) {
         e.preventDefault();
         var course_id = $(this).find("input[name=course_id]").attr('value');
@@ -279,6 +280,13 @@ $(document).ready(function() {
         /* stop form from submitting normally */
         event.preventDefault();
         
+        /* If the request hasn't changed, don't re-send it */
+        if ($("#omnibar_previous").text() == $("#omnibar_input").val())
+            return;
+        /* If the request has changed (or is the first one), save it in
+         * a hidden form input */
+        $("#omnibar_previous").text($("#omnibar_input").val());
+
         /* make the spinner */
         var spinner;
         if (!spinner_on) {
