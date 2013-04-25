@@ -3,6 +3,10 @@ could do in their spare time:
 
 /--------BUGS----------/
 
+**searching 'npdf' returns ART 260, which is not npdf**
+
+**Put pdf options in Advanced Search**
+
 **ENG 201 has been offered in past semesters, not showing**
 
 ** Hey Natalie, I really like how COM 318 looks, specially that little question mark in Bola?o that's in the
@@ -10,7 +14,7 @@ database. Good job!**
 
 **Still not scraping all courses**
 
-**Scraping formats for distribution requirements and pdf stuff. So far, "na, npdf" doesn't seem to work.**
+Fixed? **Scraping formats for distribution requirements and pdf stuff. So far, "na, npdf" doesn't seem to work.**
 
 **See folder cat/bugScreenshots for screenshots of bugs that need to be fixed. If fixed, don't delete the files, just note that it's resolved in the README**
 
