@@ -123,6 +123,7 @@ function make_spinner() {
 }
 
 var spinner_on = false;
+var old_search = "";
 
 $(document).ready(function() {
 
@@ -278,6 +279,9 @@ $(document).ready(function() {
     $("#omnibar_form").submit(function(event) {
         /* stop form from submitting normally */
         event.preventDefault();
+        
+        if ($("#omnibar_input").val().trim() == old_search) { return; }
+        old_search = $("#omnibar_input").val().trim();
         
         /* make the spinner */
         var spinner;
