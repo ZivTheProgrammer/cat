@@ -31,6 +31,10 @@ Make the black less black.
 
 Make scrollbar present always.
 
+Add a logout button.
+
+On the drop-down of semesters- make sure they are in chronological order. Most are now, I think since that's how they're in the database. (I can also make sure they stay sorted in the db, if that's
+
 /------Features--------/
 I'm pretty sure a course can satisfy multiple distribution requirements.
   Are we returning a list for that? How's that working? It looks like the 

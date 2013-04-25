@@ -10,6 +10,8 @@ import pprint
         db.getProfessorInfo(name='Kernighan')
 """
 
+CURRENT_SEMESTER = '1142'
+
 class CatDB:
 
     words2ignore = ['the', 'be', 'to', 'of', u'and', 'a', 'in', 'that', 'have', 'i', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'there'];
@@ -155,7 +157,8 @@ class CatDB:
         if time:
             course['classes'] =  { 
                 '$elemMatch': {
-                    'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
+                    'section': re.compile('[LCS].*', re.I),
+                    #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
                     'starttime': time
                     }
                 }
@@ -172,7 +175,8 @@ class CatDB:
             regex = regex + "ZYX).*"
             course['classes'] =  { 
                 '$elemMatch': {
-                    'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
+                    #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
+                    'section': re.compile('[LCS].*', re.I),
                     'days': re.compile(regex, re.IGNORECASE)  #{'$in': day}
                     }
                 }
@@ -294,7 +298,7 @@ class CatDB:
             for d in uniqueCourses:
                 #print i, d['course']
                 if d['course'] == i:
-                    c['all_terms'] = [x['term'] for x in d['years']]
+                    c['all_terms'] = sorted([x['term'] for x in d['years']], reverse=True)
             #print c
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
