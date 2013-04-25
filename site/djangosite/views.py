@@ -172,6 +172,7 @@ def term_name(term_no):
         return "Summer {:d}".format(1899 + term_no / 10)
 
 # Helper function to interpret the OMNIBAR(tm).
+# Note: standalone 'pdf' gets completely ignored unless immediately followed by 'only'
 def parse(db, text):
     tokens = text.upper().split()
     output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [], 'keywords': []}
@@ -204,18 +205,21 @@ def parse(db, text):
             output['pdf'].append('npdf')
         elif re.match('^(PDF-ONLY|PDFONLY)$', token):
             output['pdf'].append('pdfonly')
+        # Only works if standalone 'pdf' gets ignored
+        elif re.match('^ONLY$', token) and re.match('^PDF$', previous):
+            output['pdf'].append('pdfonly')
         elif re.match('^(PDF|PDFABLE|PDF-ABLE)$', token) and re.match('^(NO|NOT)$', previous):
             output['pdf'].append('npdf')
         elif re.match('^(AUDIT|A|AUDITABLE|AUDIT-ABLE)$', token) and re.match('^(NO|NOT)$', previous):
             output['pdf'].append('na')
 
-        elif re.match('^(NO|NOT)$', token):
+        elif re.match('^(NO|NOT|PDF)$', token):
             pass
-        # Match professor names
+        # Match professor names / general keywords
         elif re.match('^[A-Z]+$', token):
             if db.get_professor(token).count() > 0:
                 output['professor_name'].append(token)
-            # Also use as a keyword
+            # (professor names get used as keywords as well)
             output['keywords'].append(token)
         previous = token
     return output
