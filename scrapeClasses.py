@@ -72,8 +72,8 @@ for term in terms.iter(ns + 'term'):
     # Get data for each subject
     for sub in subjects.iter(ns + 'subject'):
         subCode = sub.find(ns + 'code').text
-        if subCode != "MAT" and subCode != "GLS":
-            continue
+        #if subCode != "MAT" and subCode != "GLS":
+        #    continue
         # Get all the courses for each subject
         sleep(.5)
         try:
