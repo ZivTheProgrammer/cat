@@ -3,6 +3,8 @@ could do in their spare time:
 
 /--------BUGS----------/
 
+**ENG 201 has been offered in past semesters, not showing**
+
 ** Hey Natalie, I really like how COM 318 looks, specially that little question mark in Bola?o that's in the
 database. Good job!**
 
@@ -14,10 +16,6 @@ database. Good job!**
 
 **FOR TESTING REVIEWS**
 There's a freaky review for AAS 201, from 2006 for Robert Fredin, that's just "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" and it makes ICE look pretty bad.
-
-Multiple spinny wheels
-
-Button edges look funny
 
 Fonts
 
@@ -34,9 +32,7 @@ Make the black less black.
 Make scrollbar present always.
 
 /------Features--------/
-I'm pretty sure a course can satisfy multiple distribution requirements.
-  Are we returning a list for that? How's that working? It looks like the 
-  Django code only checks for one, but I could be reading it wrong.
+Include class number. The thing you need to enter on SCORE to find the stupid course.
 
 What about this thing that appears on some courses?
      ENROLLMENT BY APPLICATION OR INTERVIEW. DEPARTMENTAL PERMISSION REQUIRED.
