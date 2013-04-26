@@ -108,6 +108,7 @@ class CatDB:
             # sleazy            
             totalscore = matchTitle*1000 + matchDesc*100 + totalcount
             course['score'] = totalscore; # dictionary of scores of courses
+            print totalscore
         # sort by score
         #for c in sorted(scores, key = scores.get, reverse = True):
             # Don't do this! The entries have been modified between getting them from the db
@@ -115,9 +116,9 @@ class CatDB:
             #courses_ranked.append(self.courseCol.find_one({'course_id': c}));
         #print '------------------------'
         #print list_courses
-        #print '****************'
-        #print sorted(list_courses, key=lambda course: course['score']);
-
+        print '****************'
+        #print sorted(list_courses, key=lambda course: course['score'], reverse = True);
+        
         list_courses = sorted(list_courses, key=lambda course: (course['subject'], course['course_number']))
         return sorted(list_courses, key=lambda course: course['score'], reverse = True);
 
@@ -155,11 +156,13 @@ class CatDB:
             course = {}
             
         if time:
+            if not isinstance(time, list):
+                time = [time]
+            course['term'] = CURRENT_SEMESTER
             course['classes'] =  { 
                 '$elemMatch': {
                     'section': re.compile('[LCS].*', re.I),
-                    #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
-                    'starttime': time
+                    'starttime': {'$in': time},
                     }
                 }
             
@@ -173,6 +176,7 @@ class CatDB:
                 else:
                     regex = regex + d + "|"
             regex = regex + "ZYX).*"
+            course['term'] = CURRENT_SEMESTER
             course['classes'] =  { 
                 '$elemMatch': {
                     #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
@@ -231,6 +235,7 @@ class CatDB:
             for kw in keywords:
                 if (kw.lower() not in self.words2ignore):
                     descRegex = descRegex + kw + '|'
+
             descRegex = descRegex + 'zyvxzzxzx).*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
             course['title'] = course['description']
@@ -239,7 +244,6 @@ class CatDB:
             course['$or'].extend([{'description':course.pop('description')}, {'title':course.pop('title')}])
             print "regex: ", descRegex
 
-        
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
         if course_id:
