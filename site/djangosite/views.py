@@ -228,13 +228,13 @@ def parse(db, text):
                         t_last = True
                     else:
                         output['day'].append(letter)
-                        
+            print output['day']            
         # Match professor names / general keywords
         elif re.match('^[A-Z]+$', token):
             if db.get_professor(token).count() > 0:
                 output['professor_name'].append(token)
             # (professor names get used as keywords as well)
-            elif re.match('^[A-Z]{3,}$')
+            elif re.match('^[A-Z]{3,}$', token):
                 output['keywords'].append(token)
         previous = token
     return output
