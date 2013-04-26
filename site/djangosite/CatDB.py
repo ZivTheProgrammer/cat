@@ -156,11 +156,13 @@ class CatDB:
             course = {}
             
         if time:
+            if not isinstance(time, list):
+                time = [time]
+            course['term'] = CURRENT_SEMESTER
             course['classes'] =  { 
                 '$elemMatch': {
                     'section': re.compile('[LCS].*', re.I),
-                    #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
-                    'starttime': time
+                    'starttime': {'$in': time},
                     }
                 }
             
@@ -174,6 +176,7 @@ class CatDB:
                 else:
                     regex = regex + d + "|"
             regex = regex + "ZYX).*"
+            course['term'] = CURRENT_SEMESTER
             course['classes'] =  { 
                 '$elemMatch': {
                     #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
@@ -241,8 +244,6 @@ class CatDB:
             course['$or'].extend([{'description':course.pop('description')}, {'title':course.pop('title')}])
             print "regex: ", descRegex
 
-        
->>>>>>> 7519e8907a18f924769f4a079340fe1fd398ad7e
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
         if course_id:
