@@ -175,7 +175,7 @@ def term_name(term_no):
 # Note: standalone 'pdf' gets completely ignored unless immediately followed by 'only'
 def parse(db, text):
     tokens = text.upper().split()
-    output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [], 'keywords': []}
+    output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [], 'keywords': [], 'day': []}
     previous = ''
     for token in tokens:
         # Match distribution requirement codes
@@ -197,7 +197,6 @@ def parse(db, text):
             output['max_course_number'] = str(int(token[-3:])+1)
         elif re.match('^[0-9]{3}[A-Za-z]?$', token):
             output['course_number'].append(token)
-        
         # Match PDF criteria
         elif re.match('^(NO-AUDIT|NA|NOAUDIT)$', token):
             output['pdf'].append('na')
@@ -212,15 +211,31 @@ def parse(db, text):
             output['pdf'].append('npdf')
         elif re.match('^(AUDIT|A|AUDITABLE|AUDIT-ABLE)$', token) and re.match('^(NO|NOT)$', previous):
             output['pdf'].append('na')
-
         elif re.match('^(NO|NOT|PDF)$', token):
             pass
+        # Capture day-of-the-week abbreviations
+        elif re.match('^(M)?(T)?(W)?(TH)?(F)?$', token):
+            t_last = False
+            for letter in token:
+                if t_last:
+                    if letter == "H":
+                        output['day'].append('TH')
+                    else:
+                        output['day'].append('T')
+                    t_last = False
+                else:
+                    if letter == "T":
+                        t_last = True
+                    else:
+                        output['day'].append(letter)
+            print output['day']            
         # Match professor names / general keywords
         elif re.match('^[A-Z]+$', token):
             if db.get_professor(token).count() > 0:
                 output['professor_name'].append(token)
             # (professor names get used as keywords as well)
-            output['keywords'].append(token)
+            elif re.match('^[A-Z]{3,}$', token):
+                output['keywords'].append(token)
         previous = token
     return output
     
