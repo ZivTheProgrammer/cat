@@ -3,8 +3,6 @@ could do in their spare time:
 
 /--------BUGS----------/
 
-**Should not be able to spam requests if search hasn't changed**
-
 **If you delete the text in the search field, stop the search?**
 
 **searching 'npdf' returns ART 260, which is not npdf**
@@ -59,9 +57,6 @@ Searching by time should work.  Question: If a user searches an hour, say "11:00
 
 Distinguish between professors and preceptors. (This is a scraping issue first, then a display issue.)
 
-Can we make it so that if there is only one search result (especially if I search for a specific course, e.g. "COS 333"), it gets opened up on the right side automatically?
-FIXED
-
 Database scraping: a few classes aren't getting added for some reason. In particular, CBE 504 (and a few others) for term 1132.
 
 /------Feepers---------/
@@ -73,3 +68,7 @@ Will it be possible to search by grade percentages, i.e. "<50% final" or "no ora
     just worked for finals, midterms, and papers, this would be /SUPER/ cool.  Some courses don't include this data, so they could
     just be ignored for this type of searches.
     
+/-----COMPLETED--------/
+**Should not be able to spam requests if search hasn't changed**
+**AHH SAME SCROLLING BUG WITH THE GRADIENT FIX THIS NAUWGH!!!**
+**Can we make it so that if there is only one search result (especially if I search for a specific course, e.g. "COS 333"), it gets opened up on the right side automatically?**

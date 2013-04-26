@@ -123,8 +123,13 @@ function make_spinner() {
 }
 
 var spinner_on = false;
+var old_search = "";
 
 $(document).ready(function() {
+
+    /* Alert welcome message */ 
+    $('body').append('<div id="alert">' + $('#welcome').text() + '</div>');
+    $('#alert').fadeOut(5000);
 
     /* Enable showing cart courses */
     $(".coursecart").click(function(ev){
@@ -140,6 +145,7 @@ $(document).ready(function() {
         load_semester(params);
     });
     
+    /* Load reviews */
     $(".semester_menu>.reviews_form").submit(function(e) {
         e.preventDefault();
         var course_id = $(this).find("input[name=course_id]").attr('value');
@@ -279,6 +285,10 @@ $(document).ready(function() {
         /* stop form from submitting normally */
         event.preventDefault();
         
+        /* Prevent spamming repeat requests */
+        if ($("#omnibar_input").val().trim() == old_search) { return; }
+        old_search = $("#omnibar_input").val().trim();
+
         /* make the spinner */
         var spinner;
         if (!spinner_on) {
