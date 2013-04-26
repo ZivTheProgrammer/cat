@@ -197,7 +197,6 @@ def parse(db, text):
             output['max_course_number'] = str(int(token[-3:])+1)
         elif re.match('^[0-9]{3}[A-Za-z]?$', token):
             output['course_number'].append(token)
-        
         # Match PDF criteria
         elif re.match('^(NO-AUDIT|NA|NOAUDIT)$', token):
             output['pdf'].append('na')
@@ -220,7 +219,8 @@ def parse(db, text):
             if db.get_professor(token).count() > 0:
                 output['professor_name'].append(token)
             # (professor names get used as keywords as well)
-            output['keywords'].append(token)
+            elif re.match('^[A-Z]{3,}$')
+                output['keywords'].append(token)
         previous = token
     return output
     
