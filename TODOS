@@ -3,6 +3,8 @@ could do in their spare time:
 
 /--------BUGS----------/
 
+**Get rid of empty reviews**
+
 **If you delete the text in the search field, stop the search?**
 
 **searching 'npdf' returns ART 260, which is not npdf**
@@ -13,10 +15,12 @@ could do in their spare time:
 
 ** Hey Natalie, I really like how COM 318 looks, specially that little question mark in Bola?o that's in the
 database. Good job!**
+    Thanks! It's the same way on the OIT webfeed, so that's not really my fault...
 
-**Still not scraping all courses**
+**Still not scraping all courses** We are now!
 
 Fixed? **Scraping formats for distribution requirements and pdf stuff. So far, "na, npdf" doesn't seem to work.**
+    Any specific examples?
 
 **See folder cat/bugScreenshots for screenshots of bugs that need to be fixed. If fixed, don't delete the files, just note that it's resolved in the README**
 
