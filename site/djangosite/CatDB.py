@@ -80,7 +80,7 @@ class CatDB:
         if id_number:
             prof['id'] = id_number
         if name: # regex to search for parts of names
-            nameRegex = '.*' + string.join(name.split(), '.*') + '.*'
+            nameRegex = '.*(^|\s)' + string.join(name.split(), '.*') + '.*'
             prof['name'] = re.compile(nameRegex, re.IGNORECASE)
         return self.profCol.find(prof)
 
