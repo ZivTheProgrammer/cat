@@ -72,9 +72,8 @@ for term in terms.iter(ns + 'term'):
     # Get data for each subject
     for sub in subjects.iter(ns + 'subject'):
         subCode = sub.find(ns + 'code').text
-        #print "\'" + subCode + "\', ",
-        #if subCode != "VIS" and subCode != "GLS":
-            #continue
+        #if subCode != "MAT" and subCode != "GLS":
+        #    continue
         # Get all the courses for each subject
         sleep(.5)
         try:
@@ -105,8 +104,8 @@ for term in terms.iter(ns + 'term'):
             # Presumably the term, dept and number uniquely identify it
             #print entry
             if courseCol.find_one(entry):
-                # continue TODO: put this back
-                break
+                continue #TODO: put this back
+                #break
             print entry['subject'], entry['course_number']
             
             entry['course_id'] = course.find(ns + 'course_id').text

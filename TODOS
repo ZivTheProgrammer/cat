@@ -3,21 +3,25 @@ could do in their spare time:
 
 /--------BUGS----------/
 
+**If you delete the text in the search field, stop the search?**
+
+**searching 'npdf' returns ART 260, which is not npdf**
+
+**Put pdf options in Advanced Search**
+
+**ENG 201 has been offered in past semesters, not showing**
+
 ** Hey Natalie, I really like how COM 318 looks, specially that little question mark in Bola?o that's in the
 database. Good job!**
 
 **Still not scraping all courses**
 
-**Scraping formats for distribution requirements and pdf stuff. So far, "na, npdf" doesn't seem to work.**
+Fixed? **Scraping formats for distribution requirements and pdf stuff. So far, "na, npdf" doesn't seem to work.**
 
 **See folder cat/bugScreenshots for screenshots of bugs that need to be fixed. If fixed, don't delete the files, just note that it's resolved in the README**
 
 **FOR TESTING REVIEWS**
 There's a freaky review for AAS 201, from 2006 for Robert Fredin, that's just "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" and it makes ICE look pretty bad.
-
-Multiple spinny wheels
-
-Button edges look funny
 
 Fonts
 
@@ -31,10 +35,12 @@ Make the black less black.
 
 Make scrollbar present always.
 
+Add a logout button.
+
+On the drop-down of semesters- make sure they are in chronological order. Most are now, I think since that's how they're in the database. (I can also make sure they stay sorted in the db, if that's
+
 /------Features--------/
-I'm pretty sure a course can satisfy multiple distribution requirements.
-  Are we returning a list for that? How's that working? It looks like the 
-  Django code only checks for one, but I could be reading it wrong.
+Include class number. The thing you need to enter on SCORE to find the stupid course.
 
 What about this thing that appears on some courses?
      ENROLLMENT BY APPLICATION OR INTERVIEW. DEPARTMENTAL PERMISSION REQUIRED.
@@ -50,6 +56,7 @@ Searching by time should work.  Question: If a user searches an hour, say "11:00
 Distinguish between professors and preceptors. (This is a scraping issue first, then a display issue.)
 
 Can we make it so that if there is only one search result (especially if I search for a specific course, e.g. "COS 333"), it gets opened up on the right side automatically?
+FIXED
 
 Database scraping: a few classes aren't getting added for some reason. In particular, CBE 504 (and a few others) for term 1132.
 
@@ -62,3 +69,6 @@ Will it be possible to search by grade percentages, i.e. "<50% final" or "no ora
     just worked for finals, midterms, and papers, this would be /SUPER/ cool.  Some courses don't include this data, so they could
     just be ignored for this type of searches.
     
+/-----COMPLETED--------/
+**Should not be able to spam requests if search hasn't changed**
+**AHH SAME SCROLLING BUG WITH THE GRADIENT FIX THIS NAUWGH!!!**

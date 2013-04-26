@@ -8,9 +8,21 @@ html, body {
     background-image: -webkit-linear-gradient(top, #ffc579, #FFFFFF);
     background-image: -o-linear-gradient(top, #ffc579, #FFFFFF);
     background-image: linear-gradient(top, #ffc579, #FFFFFF);
-    /*background-image:url(/static/Escher.jpg);
     background-repeat:no-repeat;
-    background-size:cover;*/
+    background-attachment:fixed;
+}
+
+#alert {
+   position:fixed;
+   width: 200px;
+   height: 100px;
+   background-color:orange;
+   top:100px;
+   left:100px;
+}
+
+#welcome {
+  display:none;
 }
 
 #omnibar_div:before {
