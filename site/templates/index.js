@@ -252,6 +252,10 @@ $(document).ready(function() {
         boxes.each(function(){
             input += " " + $(this).val();
         });
+        boxes = $("input[name=pdfonly]:checked");
+        boxes.each(function(){
+            input += " " + $(this).val();
+        });
         if ($("#advanced_keyword").val().trim().length != 0) {
             input += " " + $("#advanced_keyword").val();
         }
