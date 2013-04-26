@@ -94,7 +94,7 @@ function plot_review_data() {
                             },
                      xaxis: {ticks: xmapping}
                    };
-    $.plot($(".detail_shown").find(".detail_ratings_plot"), data, options);
+    //$.plot($(".detail_shown").find(".detail_ratings_plot"), data, options);
 }
 
 /* function to make the spinner */
@@ -249,6 +249,10 @@ $(document).ready(function() {
             input += " " + $(this).val();
         });
         boxes = $("input[name=dist]:checked");
+        boxes.each(function(){
+            input += " " + $(this).val();
+        });
+        boxes = $("input[name=pdfonly]:checked");
         boxes.each(function(){
             input += " " + $(this).val();
         });
