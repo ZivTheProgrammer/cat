@@ -10,10 +10,8 @@ html, body {
     background-image: linear-gradient(top, #ffc579, #FFFFFF);
     background-repeat:no-repeat;
     background-attachment:fixed;
-    /*
-    background-image:url('/static/picture.jpg');
+    background-image:url('/static/RockyWalk.jpg');
     background-size:cover;
-    /*
 }
 
 #alert {
