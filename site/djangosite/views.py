@@ -33,6 +33,10 @@ def login(request):
         login_url = cas_url + 'login?service=' + service_url
         return HttpResponseRedirect(login_url)
 
+def logout(request):
+    del request.session['netid']
+    return HttpResponseRedirect("https://fed.princeton.edu/cas/logout")
+        
 # Base view for the site
 def index(request):
     if not request.session.has_key('netid'):
