@@ -5,73 +5,74 @@
         <style> p {width: 800px;} </style>
     </head>
     <body>
-        <h2> "CAT" (Course Aggregator Tool) Project Timeline </h2>
+        <h2> "CAT" (Course Aggregator Tool) Project Timeline 2013</h2>
 
-<p> Noah Apthorpe Garrett Disco Luke Paulsen Jocelyn Tang Natalie Weires </p>
-
-<p> 2/17 First group meeting. Discussed different project ideas. </p>
-
-<p> 2/19 Lunch with Prof. Kernighan. Decided on the course aggregator / timeline project. </p>
-
+<p> Garrett Disco, Noah Apthorpe, Luke Paulsen, Jocelyn Tang, Natalie Weires </p>
+<hr/>
+<p> 2/17 First group meeting. Discussed project ideas. </p>
+<hr/>
+<p> 2/19 Lunch with Prof. Kernighan. Decided on building a web app course aggregator / timeline project. </p>
+<hr/>
 <p> 2/24 Second meeting. Decided on basic features of "CAT". CAT will display the history of a course, with each instance of the course as some kind of unit. Information we will display for each instance: course reviews (including ratings in each category); professor; size; book expenses. Classes will also be searchable and rankable with this data. Discussed some practical issues of doing this (scraping registrar site, maintaining course info in database dealing with writing sems / changing course numbers, etc.). Tentatively decided to use Django + Mongo on backend and host on AWS. Plan for the following week: set up Github, set up & start design doc, prepare for meeting with Kernighan, and get in contact with OIT and/or Registrar. </p>
-
+<hr/>
 <p> 2/25 Github up (lpaulsen333/cat) and working. Group members added.</p>
-
+<hr/>
 <p> 2/28 Design document posted on Github.</p>
-
+<hr/>
 <p> 3/3 Third meeting. Produced Overview and Milestones sections of the design document. Determined the "core" of what the project is about (making it easy for students to search, visualize, and compare information about courses). Established basic plan for working on the project. Discussed details of backend setup.</p>
-
+<hr/>
 <p> 3/9 Minimal "Hello World" Django site posted on Github (can be run on localhost).</p>
-
+<hr/>
 <p> 3/10 Fourth meeting. Produced Functionality, Design, and Risks sections of the design document. Developed basic design for frontend: based on "boxes" each displaying course data for a particular semester. Boxes start out as search screens, then become search results, then become course data displays after clicking on a search result. Ability to tab between each mode on a box. Tentatively determined group roles: Natalie and Jocelyn to focus on backend / scraping, Luke to focus on Django framework and logic, Garrett and Noah to focus on frontend. For this week: Set up AWS, finish design document.</p>
-
+<hr/>
 <p> 3/11 Timeline posted as HTML. </p>
-
+<hr/>
 <p> 3/12 Initial meeting with USG. Discovered that they've already been discussing the idea of redesigning the registrar page and SCORE. Discussed how their plan and our app can work together. Exchanged contact info with USG IT chairs.</p>
-
+<hr/>
 <p> 3/15 Design document finalized and submitted. </p>
-
+<hr/>
 <p> 3/19 Database building and access started with data from OIT web feed. </p>
-
+<hr/>
 <p> 3/20 Course data scraped from Registrar website and stored in database. </p>
-
+<hr/>
 <p> 3/21 Course data from MongoDB queried, accessed and displayed using Django. </p>
-
+<hr/>
 <p> 3/23 jQuery and jQueryUI set up, jQuery search interface demo running. </p>
-
+<image src="UIDemo.png">
+<hr/>
 <p> 3/24 jQuery integrated with Django. We can submit forms to a special Django view and get results back using jQuery. </p>
-
+<hr/>
 <p> 3/26 Basic Django setup demo'd to TA. </p>
-
+<hr/>
 <p> 3/31 Group meeting. Discussed structure of UI and changed design based on Garrett's and Noah's ideas. Scheduled meetings to implement the new design. Basic version of the unified search bar working. </p>
-
+<hr/>
 <p> 4/2 Basic UI layout implemented with jQuery / CSS and integrated with Django. </p>
-
+<hr/>
 <p> 4/3 Improved UI: search bar bugs fixed, scrolling display, correct professor data. </p>
-
+<hr/>
 <p> 4/5 New UI with searching, scrolling, and course information demo'd to TA. </p>
-
+<hr/>
 <p> 4/7 Made decisions on proposed features and on protocol for client / server interaction. Ability to view course reviews and past semesters; advanced search; multiple sorting options; keyword search; and professor ratings will be included. Course scheduling, textbook information, graphs, and analytics on grade distribution will not. First request to server will return full results list and data for the current semester; viewing previous semesters, viewing reviews, and modifying the cart will be served with additional requests. Priorities: scraping course reviews, adding list of semesters to database; navigating reviews and old semesters, re-structuring UI.</p>
-
+<hr/>
 <p> 4/10 Updated the database code to intelligently keep track of which semesters a course was offered, and only display the most recent offering. </p>
-
+<hr/>
 <p> 4/12 Successful storage of course cart in DB, ability to add course reviews to the DB, animation tweaks.</p>
-
+<hr/>
 <p> 4/14 new UI skin, new color scheme, scrollbars </p>
-
+<hr/>
 <p> 4/15 bug fixes, fine-tuning advanced search </p>
-
+<hr/>
 <p> 4/18 Detail view now contains *almost* all categories of data </p>
-
+<hr/>
 <p> 4/19 Keyword search working </p>
-
+<hr/>
 <p> 4/20 major UI overhaul, added spinner, cart icon </p>
-
+<hr/>
 <p> 4/21 Can now fetch something that looks maybe like review data and display it in UI, also can display some basic analytics on cart courses </p>
-
+<hr/>
 <p> 4/22 Lots of UI improvements: replacing html in course data, refining semester menu, cart improvements, showing/hiding courses from previous semesters, toggling course reviews, begin work on tabluating review summary data.</p>
-
+<hr/>
 <p> 4/24 CAS login working! OIT was very responsive about getting our site on the CAS whitelist, this came together in about 24 hours.</p>
-
+<hr/>
     </body>
 </html>
