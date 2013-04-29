@@ -1,19 +1,17 @@
 html, body {
     height: 100%;
     margin: 0;
-    background-image: -khtml-gradient(linear, left top, left bottom, from(#ffc579), to(#FFFFFF));
+    /*background-image: -khtml-gradient(linear, left top, left bottom, from(#ffc579), to(#FFFFFF));
     background-image: -moz-linear-gradient(top, #ffc579, #FFFFFF);
     background-image: -ms-linear-gradient(top, #ffc579, #FFFFFF);
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffc579), color-stop(100%, #FFFFFF));
     background-image: -webkit-linear-gradient(top, #ffc579, #FFFFFF);
     background-image: -o-linear-gradient(top, #ffc579, #FFFFFF);
-    background-image: linear-gradient(top, #ffc579, #FFFFFF);
+    background-image: linear-gradient(top, #ffc579, #FFFFFF);*/
     background-repeat:no-repeat;
     background-attachment:fixed;
-    /*
-    background-image:url('/static/picture.jpg');
+    background-image:url('/static/RockyWalk.jpg');
     background-size:cover;
-    */
 }
 
 #alert {

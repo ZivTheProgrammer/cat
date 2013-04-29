@@ -33,6 +33,10 @@ def login(request):
         login_url = cas_url + 'login?service=' + service_url
         return HttpResponseRedirect(login_url)
 
+def logout(request):
+    del request.session['netid']
+    return HttpResponseRedirect("https://fed.princeton.edu/cas/logout")
+        
 # Base view for the site
 def index(request):
     if not request.session.has_key('netid'):
@@ -228,7 +232,16 @@ def parse(db, text):
                         t_last = True
                     else:
                         output['day'].append(letter)
-            print output['day']            
+        elif re.match('^(M|MO|MON|MONDAY)$', token):
+            output['day'].append('M')
+        elif re.match('^(T|TU|TUE|TUES|TUESDAY)$', token):
+            output['day'].append('T')
+        elif re.match('^(W|WE|WED|WEDNESDAY)$', token):
+            output['day'].append('W')
+        elif re.match('^(TH|THU|THUR|THURS|THURSDAY)$', token):
+            output['day'].append('TH')
+        elif re.match('^(F|FR|FRI|FRIDAY)$', token):
+            output['day'].append('F')
         # Match professor names / general keywords
         elif re.match('^[A-Z]+$', token):
             if db.get_professor(token).count() > 0:
