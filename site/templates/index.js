@@ -115,7 +115,7 @@ function make_spinner() {
         className: 'spinner', // The CSS class to assign to the spinner
         zIndex: 2e9, // The z-index (defaults to 2000000000)
         top: 'auto', // Top position relative to parent in px
-        left: '260px' // Left position relative to parent in px
+        left: '12px' // Left position relative to parent in px
     };
     var target = document.getElementById('omnibar_form');
     var spinner = new Spinner(opts).spin(target);
@@ -127,9 +127,10 @@ var old_search = "";
 
 $(document).ready(function() {
 
-    /* Alert welcome message */ 
-    $('body').append('<div id="alert">' + $('#welcome').text() + '</div>');
-    $('#alert').fadeOut(5000);
+    /* Attach the logout handler */
+    $('#logout').click(function() {
+       window.location = "/logout/";
+    });
 
     /* Enable showing cart courses */
     $(".coursecart").click(function(ev){

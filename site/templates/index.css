@@ -230,7 +230,7 @@ div{
     min-width:90px;
 }
  
-#show_analytics, #show_advanced{
+#show_analytics, #show_advanced, #logout{
     position:absolute;
     color:white;
     background-color:black;
@@ -240,8 +240,20 @@ div{
 }
 
 #show_advanced{
-    top:10px;
-    left:35px;  
+    top:8px;
+    left:600px;
+    padding-bottom:3px;
+    padding-top:2px;  
+    font-size:11.5px;
+}
+
+#logout{
+   top:8px;
+   left:600px;
+   padding-bottom:3px;
+   padding-top:2px;  
+   font-size:11.5px;
+   left:940px;
 }
 
 #show_analytics{
@@ -249,7 +261,7 @@ div{
     left:888px;
 }
 
-.coursecart, #show_advanced,  #show_analytics, #showold_span{ 
+.coursecart, #show_advanced,  #show_analytics, #showold_span, #logout{ 
     background-color:black;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#7d7e7d), to(#0e0e0e));
     background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
@@ -269,7 +281,7 @@ div{
     cursor:pointer;
 }
 
-.coursecart:hover, #show_advanced:hover,  #show_analytics:hover{
+.coursecart:hover,  #show_analytics:hover{
  background-image: none;
  background-color:rgba(255,49,0,0.5);
 }
@@ -322,17 +334,17 @@ div{
     position:absolute;
     left:0;
     right:0;
-    top: 30px;
+    top: 10px;
     margin-left:auto;
     margin-right:auto;
-    }
+}
 
 #omnibar_div  {
     position: absolute;
     height:50px;
     width: 100%;
     top:5px;
-	z-index:0;
+    z-index:0;
 }
 
 #cart_div {
@@ -415,19 +427,20 @@ left:0;
 right:0;
 height:50px;
 position:absolute;
-text-align:center;
+text-align:left;
 border-top-left-radius: 12px;
 border-top-right-radius: 12px;
 }
 
 #omnibar_input {
 -webkit-appearance:none;
-width:400px;
+width:280px;
 margin-top:7px;
 font-size:1.2em;
 height:30px;
 font-family:Verdana,sans-serif;
 border-radius: 8px;
+margin-left:50px;
 }
 
 #advanced_search{
@@ -493,11 +506,20 @@ color:white;
     color:white;
     position:absolute;
     top:10px;
-    left:770px;
+    left:418px;
+    font-size:12px;
+    font-family:Verdana,sans-serif;
+    padding:1px;
 }
 
 #showold_span>label {
     padding-right:3px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #showold_span * {
