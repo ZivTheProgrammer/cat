@@ -72,6 +72,7 @@ function load_reviews(course_id) {
 function plot_review_data(course_id) {
     var data = [
                 {label:"Readings", data:[], color:"rgb(0,0,150)"},
+                {label:"Assignments", data:[], color:"rgb(255,0,255)"},
                 {label:"Precepts", data:[], color:"rgb(0,150,0)"},
                 {label:"Lectures", data:[], color:"rgb(255,200,0)"},
                 {label:"Overall", data:[], color:"rgb(255,49,0)"}
@@ -80,7 +81,7 @@ function plot_review_data(course_id) {
     
     /* iterate through all the past semesters of ratings */
     var xval = 0;
-    var categories = {"overall_mean": 3, "lectures_mean":2, "precepts_mean":1, "readings_mean":0};
+    var categories = {"overall_mean": 4, "lectures_mean":3, "precepts_mean":2, "assignments_mean":1, "readings_mean":0};
     $(".detail_shown>.detail_reviews.semester_shown>.detail_ratings_numbers").children().each(function() {
         /* iterate through all the ratings for that semester */
         if ($(this).children().length <= 1) return;
