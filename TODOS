@@ -3,6 +3,8 @@ could do in their spare time:
 
 /--------BUGS----------/
 
+When I remove a course from my cart, two remove requests are sent. What's up with that?
+
 **Get rid of empty reviews**
 
 **If you delete the text in the search field, stop the search?**
@@ -59,7 +61,9 @@ Searching by time should work.  Question: If a user searches an hour, say "11:00
 
 Distinguish between professors and preceptors. (This is a scraping issue first, then a display issue.)
 
-Database scraping: a few classes aren't getting added for some reason. In particular, CBE 504 (and a few others) for term 1132.
+Seach by name of department (e.g. 'math' instead of 'MAT')
+
+Check that all searches are case-insensitive in the right ways
 
 /------Feepers---------/
 Need to format detail view and make it include:

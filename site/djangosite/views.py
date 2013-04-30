@@ -119,8 +119,8 @@ def annotate(db, semester):
     # Unescape html characters
     parser = HTMLParser.HTMLParser()
     regex = re.compile(r'<.*?>')
-    if 'description' in semester:
-        semester['description'] = regex.sub('', parser.unescape(semester['description']))
+    if 'description' in semester and semester['description']:
+        semester['description'] = parser.unescape(semester['description'])
     if 'readings' in semester:
         for reading in semester['readings']:
             for key in reading:
