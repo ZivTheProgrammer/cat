@@ -79,10 +79,35 @@
         <span id="showold_span"><input id="omnibar_showold" type="checkbox"></input><label for="omnibar_showold">Show Previous Semesters</label></span>
     </form>
     <button id="show_advanced"> Advanced Search </button>
+    <label id="netid">{{ netid }}</label>
     <button id="logout">logout</button>
 </div>
 
 <div id="results_div">
+    <div>
+    <div id="left_scrollbar_wrap">
+    <div id="results_left_div">
+      <div id="initial_text">
+                  <p>Welcome to CAT!</p>
+                  <p>Search for courses by:</p>
+                  <ul>
+                    <li>Subject and/or course number (COS 333)</li>
+                    <li>Professor (Kernighan)</li>
+                    <li>Distribution (HA/LA/EC etc)</li>
+                    <li>Grading statue (pdf-only)</li>
+                    <li>Day/time (Mon 10:00)</li>
+                    <li>Keyword (art)</li>
+                  </ul>
+                </li>
+      </div>
+    </div>
+    </div>
+
+    <div id="right_scrollbar_wrap">
+    <div id="results_right_div">
+    </div>
+    </div>
+    </div>
     {% include "search_results.html" %}
 </div>
 

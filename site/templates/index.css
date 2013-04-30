@@ -10,8 +10,23 @@ html, body {
     background-image: linear-gradient(top, #ffc579, #FFFFFF);*/
     background-repeat:no-repeat;
     background-attachment:fixed;
-    background-image:url('/static/RockyWalk.jpg');
+    background-image:url('/static/Mahogany.jpg');
+    background-color:rgb(0, 50, 0);
     background-size:cover;
+}
+
+#netid {
+   color:white;
+   font-family:Verdana, sans-serif;
+   font-size:13px;
+   position:absolute;
+   left:890px;
+   top:12px;
+}
+
+#initial_text {
+   color:white;
+   font-family:Verdana, sans-serif;
 }
 
 #alert {
@@ -166,6 +181,8 @@ z-index:11;
 .course {
 padding:5px;
 background-color:rgba(0,0,0,0.9);
+font-family:Verdana, sans-serif;
+font-size:80%;
 }
 
 .course.course_old{
@@ -181,6 +198,17 @@ cursor:pointer;
 background-color:rgba(255,49,00,0.9);
 cursor:default;
 padding:5px;
+font-family:Verdana, sans-serif;
+font-size:80%;
+}
+
+/* Toggle professor name text color */
+.course>.sub_span {
+    color: rgb(251,27,0);
+}
+
+.course_shown>.sub_span {
+    color:black;
 }
 
 .detail {
@@ -261,7 +289,7 @@ div{
     left:888px;
 }
 
-.coursecart, #show_advanced,  #show_analytics, #showold_span, #logout{ 
+.coursecart, #show_advanced, #show_analytics, #showold_span, #logout{ 
     background-color:black;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#7d7e7d), to(#0e0e0e));
     background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
@@ -381,7 +409,7 @@ margin-left:15px;
 }
 
 #left_scrollbar_wrap{
-background-color:rgba(0,0,0,0.5);
+background-color:rgba(0,0,0,0.2);
 position:absolute;
 width:385px;
 height:100%;
@@ -393,7 +421,7 @@ border-color:#0f0f0f;*/
 }
 
 #right_scrollbar_wrap {
-background-color:rgba(0,0,0,0.5);
+background-color:rgba(0,0,0,0.2);
 position:absolute;
 left:404px;
 width:586px;
