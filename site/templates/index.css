@@ -211,6 +211,10 @@ font-size:80%;
     color:black;
 }
 
+.course:hover>.sub_span {
+    color:black;
+}
+
 .detail {
     display:none;
     /*height: 100%;
