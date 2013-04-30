@@ -10,7 +10,7 @@ import HTMLParser
 RATING_CATEGORIES = ['overall_mean', 'lectures_mean', 'precepts_mean', 'classes_mean', 'readings_mean']
 DISTRIBUTION_AREAS = ['EM', 'EC', 'HA', 'LA', 'QR', 'SA', 'STN', 'STL']
 SUBJECT_AREAS = ["AAS", "AFS", "AMS", "ANT", "AOS", "APC", "ARA", "ARC", "ART", "AST", "ATL", "BCS", "CBE", "CEE", "CHI", "CHM", "CHV", "CLA", "CLG", "COM", "COS", "CWR", "CZE", "DAN", "EAP", "EAS", "ECO", "ECS", "EEB", "EGR", "ELE", "ENE", "ENG", "ENV", "EPS", "FIN", "FRE", "FRS", "GEO", "GER", "GHP", "GLS", "GSS", "HEB", "HIN", "HIS", "HLS", "HOS", "HUM", "ISC", "ITA", "JDS", "JPN", "JRN", "KOR", "LAO", "LAS", "LAT", "LIN", "MAE", "MAT", "MED", "MOD", "MOG", "MOL", "MSE", "MUS", "NES", "NEU", "ORF", "PAW", "PER", "PHI", "PHY", "PLS", "POL", "POP", "POR", "PSY", "QCB", "REL", "RUS", "SAS", "SLA", "SOC", "SPA", "STC", "SWA", "THR", "TPP", "TRA", "TUR", "URB", "URD", "VIS", "WRI", "WWS"]
-DECAY_FACTOR = 0.5
+DECAY_FACTOR = 0.5 # For averaging course ratings over multiple semesters
 
 def home(request):
     return HttpResponseRedirect("/index/")
@@ -165,6 +165,24 @@ def annotate(db, semester):
         for category in RATING_CATEGORIES:
             if weighted_rating[category] > 0.0:
                 semester[category] = "{0:.2f}".format(weighted_rating[category] / total_weight)
+        if weighted_rating['overall_mean'] / total_weight > 4.6:
+            semester['rating_color'] = 'rating_color_1'
+        elif weighted_rating['overall_mean'] / total_weight > 4.4:
+            semester['rating_color'] = 'rating_color_2'
+        elif weighted_rating['overall_mean'] / total_weight > 4.2:
+            semester['rating_color'] = 'rating_color_3'
+        elif weighted_rating['overall_mean'] / total_weight > 4.0:
+            semester['rating_color'] = 'rating_color_4'
+        elif weighted_rating['overall_mean'] / total_weight > 3.8:
+            semester['rating_color'] = 'rating_color_5'
+        elif weighted_rating['overall_mean'] / total_weight > 3.6:
+            semester['rating_color'] = 'rating_color_6'
+        elif weighted_rating['overall_mean'] / total_weight > 3.4:
+            semester['rating_color'] = 'rating_color_7'
+        elif weighted_rating['overall_mean'] / total_weight > 3.2:
+            semester['rating_color'] = 'rating_color_8'
+        elif weighted_rating['overall_mean'] / total_weight > 0.0:
+            semester['rating_color'] = 'rating_color_9'
     return semester
 
 def term_name(term_no):
@@ -179,7 +197,7 @@ def term_name(term_no):
 # Note: standalone 'pdf' gets completely ignored unless immediately followed by 'only'
 def parse(db, text):
     tokens = text.upper().split()
-    output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [], 'keywords': [], 'day': []}
+    output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [], 'keywords': [], 'day': [], 'time': []}
     previous = ''
     for token in tokens:
         # Match distribution requirement codes
@@ -242,6 +260,11 @@ def parse(db, text):
             output['day'].append('TH')
         elif re.match('^(F|FR|FRI|FRIDAY)$', token):
             output['day'].append('F')
+        # Match times    
+        elif re.match('^[0-2]?[0-9]:[0-9][0-9]$', token):
+            output['time'].append(token)
+        elif re.match('^[0-2]?[0-9]$', token):
+            output['time'].append(token + ":00")
         # Match professor names / general keywords
         elif re.match('^[A-Z]+$', token):
             if db.get_professor(token).count() > 0:
