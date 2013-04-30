@@ -413,7 +413,7 @@ margin-left:15px;
 }
 
 #left_scrollbar_wrap{
-background-color:rgba(0,0,0,0.4);
+background-color:rgba(0,0,0,0.2);
 position:absolute;
 width:385px;
 height:100%;
@@ -425,7 +425,7 @@ border-color:#0f0f0f;*/
 }
 
 #right_scrollbar_wrap {
-background-color:rgba(0,0,0,0.4);
+background-color:rgba(0,0,0,0.2);
 position:absolute;
 left:404px;
 width:586px;
