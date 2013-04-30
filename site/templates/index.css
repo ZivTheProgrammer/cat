@@ -588,11 +588,19 @@ color:white;
     width:800px;
 }
 
-/*.detail_ratings_plot {
-    position:absolute;
+.detail_ratings_plot {
+    /*position:absolute;*/
     width: 500px;
-    height:500px;
-    background-color:white;
-}*/
+    margin-left:26px;
+    margin-top:15px;
+    margin-bottom:10px;
+    height:250px;
+    /*background-color:white;*/
+}
+
+.legend {
+   font-family:Verdana,sans-serif;
+   font-size:90%;
+}
 
 

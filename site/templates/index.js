@@ -53,31 +53,34 @@ function load_reviews(course_id) {
             $(detail_id).append(data);
             $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
             $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
-            plot_review_data();
+            plot_review_data(course_id);
         });
     }
     else {
         $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
         $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
-        plot_review_data();
+        plot_review_data(course_id);
     }
     $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Course Data");
     }
 }
 
 /* function to make the plots of the numerical review data */
-function plot_review_data() {
+function plot_review_data(course_id) {
     var data = [
-                {label:"Overall", data:[]}, 
-                {label:"Lectures", data:[]}
+                {label:"Readings", data:[], color:"rgb(0,0,150)"},
+                {label:"Precepts", data:[], color:"rgb(0,150,0)"},
+                {label:"Lectures", data:[], color:"rgb(255,200,0)"},
+                {label:"Overall", data:[], color:"rgb(255,49,0)"}
                ];
     var xmapping = [];
     
     /* iterate through all the past semesters of ratings */
     var xval = 0;
-    var categories = {"overall_mean": 0, "lectures_mean":1};
-    $(".detail_reviews.semester_shown>.detail_ratings_numbers").children().each(function() {
+    var categories = {"overall_mean": 3, "lectures_mean":2, "precepts_mean":1, "readings_mean":0};
+    $(".detail_shown>.detail_reviews.semester_shown>.detail_ratings_numbers").children().each(function() {
         /* iterate through all the ratings for that semester */
+        if ($(this).children().length <= 1) return;
         xmapping.push([ xval, $(this).children().first().text()]);
         $(this).children().each(function() {
             var itemarray = $(this).text().split(":");
@@ -88,13 +91,42 @@ function plot_review_data() {
         xval = xval - 1;
     });
     
+    for (var i = data.length-1; i >= 0; i--) {
+        if (data[i]["data"].length == 0) {
+            data.splice(i,1);
+        }
+    }
+    if (data.length == 0) {
+        $(".detail_shown").find(".detail_ratings_plot").css("display","none");
+    }
+   
     var options = {
                     series: {
-                             lines: {show:true}
+                             lines: {show:true, lineWidth:3},
+                             points: {show:true, radius:4}
                             },
-                     xaxis: {ticks: xmapping}
+                    xaxis:  {
+                             ticks: xmapping,
+                             font: {size: 13, weight: "bold", family: "sans-serif", color: "#FFFFFF"}
+                            },
+                    yaxis:  {
+                            min: 1,
+                            max: 5,
+                            tickDecimals: 0,
+                            font: {size: 13, weight: "bold", family: "sans-serif", color: "#FFFFFF"}
+                            },
+                    legend: {
+                            position: "se", 
+                            labelBoxBorderColor: "#000000",
+                            backgroundColor: "#AAAAAA",
+                            font: {size: 13, weight: "bold", family: "sans-serif", color: "#FFFFFF"}
+                            },
+                    grid:   {
+                            backgroundColor: "#888888",
+                            color: "#000000"
+                            }
                    };
-    //$.plot($(".detail_shown").find(".detail_ratings_plot"), data, options);
+    $.plot($(".detail_shown").find(".detail_ratings_plot"), data, options);
 }
 
 /* function to make the spinner */
