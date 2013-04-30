@@ -51,6 +51,9 @@ function load_reviews(course_id) {
     if ($(detail_id+">.detail_reviews").length == 0) {
         $.post("/reviews/", $(detail_id+">.semester_menu>.reviews_form").serialize(), function( data ) {
             $(detail_id).append(data);
+            $(detail_id+">.detail_reviews").find(".detail_description").each(function() {
+                if ($(this).text().trim() != "No data available for this semester.") $(this).css("display","none");
+            });
             $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
             $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
             plot_review_data(course_id);
