@@ -164,7 +164,7 @@ class CatDB:
             times = [re.compile('^'+t, re.I) for t in time]
 
             course['term'] = CURRENT_SEMESTER
-            course['classes'] =  { 
+            course['classes'] =  {
                 '$elemMatch': {
                     'section': re.compile('[LCS].*', re.I),
                     'starttime': {'$in': times},
@@ -182,13 +182,17 @@ class CatDB:
                     regex = regex + d + "|"
             regex = regex + "ZYX).*"
             course['term'] = CURRENT_SEMESTER
-            course['classes'] =  { 
+            match = { 
                 '$elemMatch': {
                     #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
                     'section': re.compile('[LCS].*', re.I),
                     'days': re.compile(regex, re.IGNORECASE)  #{'$in': day}
                     }
                 }
+            if 'classes' not in course:
+                course['classes'] = match
+            else:
+                course['classes']['$elemMatch']['days'] = match['$elemMatch']['days']
             
         if subject:
             # TODO: Make all capital letters
