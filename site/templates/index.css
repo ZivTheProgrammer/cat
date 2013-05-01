@@ -20,6 +20,12 @@ html, body {
 
 #top_bar {
     color:white;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#888888), to(#333333));
+    background-image: -webkit-linear-gradient(top, #888888, #333333);
+    background-image: -moz-linear-gradient(top, #888888, #333333);
+    background-image: -ms-linear-gradient(top, #888888, #333333);
+    background-image: -o-linear-gradient(top, #888888, #333333);
+    background-image: linear-gradient(to bottom, #888888, #333333);
     background-color:rgb(0, 70, 0);
     height:25px;
     margin:0px;
@@ -214,13 +220,13 @@ z-index:11;
 
 .course {
 padding:5px;
-background-color:rgba(0,0,0,0.9);
+background-color:rgba(0,0,0,0.8);
 font-family:Verdana, sans-serif;
 font-size:80%;
 }
 
 .course.course_old{
-background-color:rgba(100, 100, 100, 0.9);
+background-color:rgba(100, 100, 100, 0.8);
 }
 
 .course:hover{
@@ -417,7 +423,7 @@ margin-left:15px;
 }
 
 #left_scrollbar_wrap{
-background-color:rgba(0,0,0,0.2);
+background-color:rgba(0,0,0,0.3);
 position:absolute;
 width:385px;
 height:100%;
@@ -429,7 +435,7 @@ border-color:#0f0f0f;*/
 }
 
 #right_scrollbar_wrap {
-background-color:rgba(0,0,0,0.2);
+background-color:rgba(0,0,0,0.3);
 position:absolute;
 left:404px;
 width:586px;
