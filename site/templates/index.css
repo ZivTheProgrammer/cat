@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
     margin: 0;
+    padding: 0;
     /*background-image: -khtml-gradient(linear, left top, left bottom, from(#ffc579), to(#FFFFFF));
     background-image: -moz-linear-gradient(top, #ffc579, #FFFFFF);
     background-image: -ms-linear-gradient(top, #ffc579, #FFFFFF);
