@@ -31,7 +31,7 @@
 <div id="outside_div" class="container-fluid">
 	
 	<div id = "advanced_search">
-        <button id = "hide_advanced"> Close </button>
+        <button id = "hide_advanced"></button>
         <h3>Advanced Search</h3>
         <form id = "advanced_form" action="" method="post">
 			<span class="advanced_label">Subject:</span><input id = "advanced_subject" type="text" autofocus="autofocus"></input></br>
@@ -88,30 +88,28 @@
 </div>
 
 <div id="results_div">
-    <div>
-    <div id="left_scrollbar_wrap">
-    <div id="results_left_div">
-      <div id="initial_text">
-                  <p>Welcome to CAT!</p>
-                  <p>Search for courses by:</p>
-                  <ul>
-                    <li>Subject and/or course number (COS 333)</li>
-                    <li>Professor (Kernighan)</li>
-                    <li>Distribution (HA/LA/EC etc)</li>
-                    <li>Grading statue (pdf-only)</li>
-                    <li>Day/time (Mon 10:00)</li>
-                    <li>Keyword (art)</li>
-                  </ul>
-                </li>
-      </div>
-    </div>
-    </div>
-
-    <div id="right_scrollbar_wrap">
-    <div id="results_right_div">
-    </div>
-    </div>
-    </div>
+    <!--<div>
+        <div id="left_scrollbar_wrap">
+            <div id="results_left_div">
+              <div id="initial_text">
+                          <p>Welcome to CAT!</p>
+                          <p>Search for courses by:</p>
+                          <ul>
+                            <li>Subject and/or course number (COS 333)</li>
+                            <li>Professor (Kernighan)</li>
+                            <li>Distribution (HA/LA/EC etc)</li>
+                            <li>Grading statue (pdf-only)</li>
+                            <li>Day/time (Mon 10:00)</li>
+                            <li>Keyword (art)</li>
+                          </ul>
+                          </div>
+            </div>
+        </div>
+        <div id="right_scrollbar_wrap">
+            <div id="results_right_div">
+            </div>
+        </div>
+    </div>-->
     {% include "search_results.html" %}
 </div>
 
