@@ -108,6 +108,7 @@ html, body {
 .reviews_form {
   display:block;
   margin-left:430px;
+  margin-top:5px;
 }
 
 .term_selector {
