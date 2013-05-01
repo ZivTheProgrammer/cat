@@ -53,6 +53,10 @@ html, body {
    cursor:pointer;
 }
 
+#logout:hover{
+    color: rgb(255, 49, 0);
+}
+
 #initial_text {
    color:white;
    font-family:Verdana, sans-serif;
@@ -162,6 +166,17 @@ html, body {
 
 #hide_advanced {
 	float:right;
+    background: url(/static/ox.png);
+    height: 24px;
+    width: 24px;
+    background-size: contain;
+    border: none;
+}
+
+#hide_advanced:hover{
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 .advanced_label {
@@ -294,7 +309,7 @@ div{
     top:12px;
     width:12%;
     height:22px;
-    left:7%;
+    right: 20px;
     padding-bottom:3px;
     padding-top:2px;  
     font-size:11.5px;
@@ -355,7 +370,7 @@ div{
     position:absolute;
     left:0;
     right:0;
-    top: 25px;
+    top: 40px;
     margin-left:auto;
     margin-right:auto;
 }
@@ -455,14 +470,13 @@ border-top-right-radius: 12px;
 
 #omnibar_input {
 -webkit-appearance:none;
-width:50%;
-left:25%;
+width:400px;
 margin-top:7px;
 font-size:1.2em;
 height:30px;
 font-family:Verdana,sans-serif;
 border-radius: 8px;
-margin-left:25%;
+margin-left:300px;
 }
 
 #advanced_search{
@@ -529,8 +543,8 @@ color:white;
     position:absolute;
     top:12px;
     height:20px;
-    width:176px;
-    left:80%;
+    width:188px;
+    left:20px;
     font-size:12px;
     font-family:Verdana,sans-serif;
     padding:1px;
@@ -555,11 +569,12 @@ color:white;
     background-size:contain;
     border:none;
     background-repeat:no-repeat;
-    width:30px;
-    height:25px;
+    width:34px;
+    height:26px;
     cursor:pointer;
     margin-left:295px;
     margin-bottom:2px;
+    border: 2px solid rgba(255, 255, 255, 0.0);
 }
 
 .removecourse_form>[type=submit] {

@@ -151,7 +151,7 @@ function make_spinner() {
         className: 'spinner', // The CSS class to assign to the spinner
         zIndex: 2e9, // The z-index (defaults to 2000000000)
         top: 'auto', // Top position relative to parent in px
-        left: '207px' // Left position relative to parent in px
+        left: '264px' // Left position relative to parent in px
     };
     var target = document.getElementById('omnibar_form');
     var spinner = new Spinner(opts).spin(target);
