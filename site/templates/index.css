@@ -29,19 +29,8 @@ html, body {
    font-family:Verdana, sans-serif;
 }
 
-#alert {
-   position:fixed;
-   width: 200px;
-   height: 100px;
-   background-color:orange;
-   top:100px;
-   left:100px;
-}
-
-#welcome {
-  display:none;
-}
-
+/* Black CSS triangles */
+/*---------------------*/
 #omnibar_div:before {
   content: '';
   position: absolute;
@@ -85,6 +74,7 @@ html, body {
   border-bottom: 12px solid black;
   border-right: 10px solid transparent;
 }
+/*-----------------------------------*/
 
 .reviews_form {
   display:block;
@@ -337,29 +327,6 @@ div{
     font-style: bold;
     color:white;
 }
-
-/*.ui-slider {
-	position: relative;
-	text-align: left;
-    height: 18px;
-    width: 200px;
-}
-.ui-slider .ui-slider-handle {
-	position: absolute;
-	z-index: 2;
-    width: 18px;
-	height: 18px;
-	cursor: default;
-}
-.ui-slider .ui-slider-range {
-	position: absolute;
-	z-index: 1;
-	font-size: 18px;
-	display: block;
-	border: 3px solid #aed0ea;
-    height: 12px;
-    background:#aed0ea;
-}*/
 
 #outside_div {
     width:1000px;
