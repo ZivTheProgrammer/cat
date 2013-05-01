@@ -1,13 +1,16 @@
 html, body {
     height: 100%;
     margin: 0;
-    /*background-image: -khtml-gradient(linear, left top, left bottom, from(#ffc579), to(#FFFFFF));
+    padding: 0;
+    /*
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#ffc579), to(#FFFFFF));
     background-image: -moz-linear-gradient(top, #ffc579, #FFFFFF);
     background-image: -ms-linear-gradient(top, #ffc579, #FFFFFF);
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffc579), color-stop(100%, #FFFFFF));
     background-image: -webkit-linear-gradient(top, #ffc579, #FFFFFF);
     background-image: -o-linear-gradient(top, #ffc579, #FFFFFF);
-    background-image: linear-gradient(top, #ffc579, #FFFFFF);*/
+    background-image: linear-gradient(top, #ffc579, #FFFFFF);
+    */
     background-repeat:no-repeat;
     background-attachment:fixed;
     background-image:url('/static/Mahogany.jpg');
@@ -15,13 +18,49 @@ html, body {
     background-size:cover;
 }
 
+#top_bar {
+    color:white;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#888888), to(#333333));
+    background-image: -webkit-linear-gradient(top, #888888, #333333);
+    background-image: -moz-linear-gradient(top, #888888, #333333);
+    background-image: -ms-linear-gradient(top, #888888, #333333);
+    background-image: -o-linear-gradient(top, #888888, #333333);
+    background-image: linear-gradient(to bottom, #888888, #333333);
+    background-color:rgb(0, 70, 0);
+    height:25px;
+    margin:0px;
+}
+
+#logo {
+   color:white;
+   font-family:Verdana, sans-serif;
+   font-size:13px;
+   position:absolute;
+   left:10px;
+   top:2px;
+}
+
 #netid {
    color:white;
    font-family:Verdana, sans-serif;
    font-size:13px;
    position:absolute;
-   left:870px;
-   top:12px;
+   right:74px;
+   top:2px;
+}
+
+#logout{
+   font-family:Verdana,sans-serif;
+   position:absolute;
+   color:white;
+   top:2px;
+   right:15px;
+   font-size:13px;
+   cursor:pointer;
+}
+
+#logout:hover{
+    color: rgb(255, 49, 0);
 }
 
 #initial_text {
@@ -29,19 +68,8 @@ html, body {
    font-family:Verdana, sans-serif;
 }
 
-#alert {
-   position:fixed;
-   width: 200px;
-   height: 100px;
-   background-color:orange;
-   top:100px;
-   left:100px;
-}
-
-#welcome {
-  display:none;
-}
-
+/* Black CSS triangles */
+/*---------------------*/
 #omnibar_div:before {
   content: '';
   position: absolute;
@@ -85,6 +113,7 @@ html, body {
   border-bottom: 12px solid black;
   border-right: 10px solid transparent;
 }
+/*-----------------------------------*/
 
 .reviews_form {
   display:block;
@@ -143,6 +172,17 @@ html, body {
 
 #hide_advanced {
 	float:right;
+    background: url(/static/ox.png);
+    height: 24px;
+    width: 24px;
+    background-size: contain;
+    border: none;
+}
+
+#hide_advanced:hover{
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 .advanced_label {
@@ -180,13 +220,13 @@ z-index:11;
 
 .course {
 padding:5px;
-background-color:rgba(0,0,0,0.9);
+background-color:rgba(0,0,0,0.8);
 font-family:Verdana, sans-serif;
 font-size:80%;
 }
 
 .course.course_old{
-background-color:rgba(100, 100, 100, 0.9);
+background-color:rgba(100, 100, 100, 0.8);
 }
 
 .course:hover{
@@ -262,7 +302,7 @@ div{
     min-width:90px;
 }
  
-#show_analytics, #show_advanced, #logout{
+#show_analytics, #show_advanced {
     position:absolute;
     color:white;
     background-color:black;
@@ -272,20 +312,13 @@ div{
 }
 
 #show_advanced{
-    top:8px;
-    left:615px;
+    top:12px;
+    width:12%;
+    height:22px;
+    right: 20px;
     padding-bottom:3px;
     padding-top:2px;  
     font-size:11.5px;
-}
-
-#logout{
-   top:8px;
-   left:600px;
-   padding-bottom:3px;
-   padding-top:2px;  
-   font-size:11.5px;
-   left:940px;
 }
 
 #show_analytics{
@@ -293,7 +326,7 @@ div{
     left:888px;
 }
 
-.coursecart, #show_advanced, #show_analytics, #showold_span, #logout{ 
+.coursecart, #show_advanced, #show_analytics, #showold_span { 
     background-color:black;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#7d7e7d), to(#0e0e0e));
     background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
@@ -338,35 +371,12 @@ div{
     color:white;
 }
 
-/*.ui-slider {
-	position: relative;
-	text-align: left;
-    height: 18px;
-    width: 200px;
-}
-.ui-slider .ui-slider-handle {
-	position: absolute;
-	z-index: 2;
-    width: 18px;
-	height: 18px;
-	cursor: default;
-}
-.ui-slider .ui-slider-range {
-	position: absolute;
-	z-index: 1;
-	font-size: 18px;
-	display: block;
-	border: 3px solid #aed0ea;
-    height: 12px;
-    background:#aed0ea;
-}*/
-
 #outside_div {
     width:1000px;
     position:absolute;
     left:0;
     right:0;
-    top: 10px;
+    top: 40px;
     margin-left:auto;
     margin-right:auto;
 }
@@ -413,7 +423,7 @@ margin-left:15px;
 }
 
 #left_scrollbar_wrap{
-background-color:rgba(0,0,0,0.2);
+background-color:rgba(0,0,0,0.3);
 position:absolute;
 width:385px;
 height:100%;
@@ -425,7 +435,7 @@ border-color:#0f0f0f;*/
 }
 
 #right_scrollbar_wrap {
-background-color:rgba(0,0,0,0.2);
+background-color:rgba(0,0,0,0.3);
 position:absolute;
 left:404px;
 width:586px;
@@ -466,13 +476,13 @@ border-top-right-radius: 12px;
 
 #omnibar_input {
 -webkit-appearance:none;
-width:280px;
+width:400px;
 margin-top:7px;
 font-size:1.2em;
 height:30px;
 font-family:Verdana,sans-serif;
 border-radius: 8px;
-margin-left:50px;
+margin-left:300px;
 }
 
 #advanced_search{
@@ -537,8 +547,10 @@ color:white;
 #showold_span {
     color:white;
     position:absolute;
-    top:10px;
-    left:418px;
+    top:12px;
+    height:20px;
+    width:188px;
+    left:20px;
     font-size:12px;
     font-family:Verdana,sans-serif;
     padding:1px;
@@ -563,11 +575,12 @@ color:white;
     background-size:contain;
     border:none;
     background-repeat:no-repeat;
-    width:30px;
-    height:25px;
+    width:34px;
+    height:26px;
     cursor:pointer;
     margin-left:295px;
     margin-bottom:2px;
+    border: 2px solid rgba(255, 255, 255, 0.0);
 }
 
 .removecourse_form>[type=submit] {

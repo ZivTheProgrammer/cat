@@ -46,6 +46,8 @@ Add a logout button.
 On the drop-down of semesters- make sure they are in chronological order. Most are now, I think since that's how they're in the database. (I can also make sure they stay sorted in the db, if that's
 
 /------Features--------/
+Make the labels on the graph hyperlink to the reviews.
+
 Include class number. The thing you need to enter on SCORE to find the stupid course.
 
 What about this thing that appears on some courses?

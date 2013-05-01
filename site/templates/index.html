@@ -6,7 +6,6 @@
 <meta name="author" content="Noah Apthorpe, Garrett Disco, Luke Paulsen, Jocelyn Tang, Natalie Weires">
 <meta name="description" content="A website to allow easy and informative comparisons of courses offered at Princeton University">
 <style type="text/css"> {% include "index.css" %} </style>
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/themes/cupertino/jquery.ui.theme.css">
 <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
 <script src="{{STATIC_URL}}js/jquery-ui-1.10.2.custom.min.js"></script>
 <script> {% include "jquery.mousewheel.js" %} </script>
@@ -21,12 +20,18 @@
 
 <body>
 
-<div id = "advanced_search_wrapper"></div>
+<div id="advanced_search_wrapper"></div>
+
+<div id="top_bar">
+   <label id="logo">Welcome to CAT!</label>
+   <label id="netid">{{ netid }}</label>
+   <label id="logout">| logout</button>
+</div>
 
 <div id="outside_div" class="container-fluid">
 	
 	<div id = "advanced_search">
-        <button id = "hide_advanced"> Close </button>
+        <button id = "hide_advanced"></button>
         <h3>Advanced Search</h3>
         <form id = "advanced_form" action="" method="post">
 			<span class="advanced_label">Subject:</span><input id = "advanced_subject" type="text" autofocus="autofocus"></input></br>
@@ -80,35 +85,31 @@
         <span id="showold_span"><input id="omnibar_showold" type="checkbox"></input><label for="omnibar_showold">Show Previous Semesters</label></span>
     </form>
     <button id="show_advanced"> Advanced Search </button>
-    <label id="netid">{{ netid }}</label>
-    <button id="logout">logout</button>
 </div>
 
 <div id="results_div">
-    <div>
-    <div id="left_scrollbar_wrap">
-    <div id="results_left_div">
-      <div id="initial_text">
-                  <p>Welcome to CAT!</p>
-                  <p>Search for courses by:</p>
-                  <ul>
-                    <li>Subject and/or course number (COS 333)</li>
-                    <li>Professor (Kernighan)</li>
-                    <li>Distribution (HA/LA/EC etc)</li>
-                    <li>Grading statue (pdf-only)</li>
-                    <li>Day/time (Mon 10:00)</li>
-                    <li>Keyword (art)</li>
-                  </ul>
-                </li>
-      </div>
-    </div>
-    </div>
-
-    <div id="right_scrollbar_wrap">
-    <div id="results_right_div">
-    </div>
-    </div>
-    </div>
+    <!--<div>
+        <div id="left_scrollbar_wrap">
+            <div id="results_left_div">
+              <div id="initial_text">
+                          <p>Welcome to CAT!</p>
+                          <p>Search for courses by:</p>
+                          <ul>
+                            <li>Subject and/or course number (COS 333)</li>
+                            <li>Professor (Kernighan)</li>
+                            <li>Distribution (HA/LA/EC etc)</li>
+                            <li>Grading statue (pdf-only)</li>
+                            <li>Day/time (Mon 10:00)</li>
+                            <li>Keyword (art)</li>
+                          </ul>
+                          </div>
+            </div>
+        </div>
+        <div id="right_scrollbar_wrap">
+            <div id="results_right_div">
+            </div>
+        </div>
+    </div>-->
     {% include "search_results.html" %}
 </div>
 

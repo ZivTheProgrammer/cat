@@ -151,7 +151,7 @@ function make_spinner() {
         className: 'spinner', // The CSS class to assign to the spinner
         zIndex: 2e9, // The z-index (defaults to 2000000000)
         top: 'auto', // Top position relative to parent in px
-        left: '12px' // Left position relative to parent in px
+        left: '264px' // Left position relative to parent in px
     };
     var target = document.getElementById('omnibar_form');
     var spinner = new Spinner(opts).spin(target);
@@ -172,9 +172,27 @@ $(document).ready(function() {
     $(".coursecart").click(function(ev){
         if ($(ev.target).attr("type") == "submit") return;
         var course_id = this.id.split('_')[2];
-        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
+        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
         display(course_id);
     });
+    
+    /* Give cart courses a scrollbar */
+    $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
+    
+    /* Set up initial left pane */
+    $("#results_left_div").append('<div id="initial_text">\
+                          <p>Welcome to CAT!</p>\
+                          <p>Search for courses by:</p>\
+                          <ul>\
+                            <li>Subject and/or course number (COS 333)</li>\
+                            <li>Professor (Kernighan)</li>\
+                            <li>Distribution (HA/LA/EC etc)</li>\
+                            <li>Grading statue (pdf-only)</li>\
+                            <li>Day/time (Mon 10:00)</li>\
+                            <li>Keyword (art)</li>\
+                          </ul>\
+                        </li>\
+                        </div>');
     
     /* set the behavior of the "load semester button" */
     $(".semester_menu>.term_selector>.term_dropdown").change(function() {
@@ -359,7 +377,7 @@ $(document).ready(function() {
                 
                 /* make the course's data show up when it is clicked */
                 $(".course").click(function() {
-                    $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
+                    $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
                     var course_id = $(this).attr('id').split('_')[2];
                     display(course_id);  
                 });
@@ -389,7 +407,7 @@ $(document).ready(function() {
                         $(".coursecart").click(function(ev){
                             if ($(ev.target).attr("type") == "submit") return;
                             var course_id = this.id.split('_')[2];
-                            $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
+                            $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
                             display(course_id);
                         });
                         
@@ -416,7 +434,7 @@ $(document).ready(function() {
                 //if only one course is returned, display the information
                 if ($("#search_results_list li").length == 1) {
                     if (!$("#search_results_list li").hasClass("course_old") || $("#omnibar_showold").is(":checked")) {
-                        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
+                        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
                         var course_id = $("#search_results_list li").attr('id').split('_')[2];
                         display(course_id);
                     }                        
