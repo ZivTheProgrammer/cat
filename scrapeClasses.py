@@ -59,6 +59,8 @@ for term in terms.iter(ns + 'term'):
     if action == 'add' and courseCol.find_one({'term':termCode}):
         continue
     print "term code: " + termCode
+    #if termCode != '1132':
+    #    continue
     # Get the data from each term, starting with list of subjects:
     try:
         fSub = urlopen(feed + '?term=' + termCode + "&subject=list")
@@ -72,7 +74,7 @@ for term in terms.iter(ns + 'term'):
     # Get data for each subject
     for sub in subjects.iter(ns + 'subject'):
         subCode = sub.find(ns + 'code').text
-        #if subCode != "MAT" and subCode != "GLS":
+        #if subCode != "COM":
         #    continue
         # Get all the courses for each subject
         sleep(.5)
@@ -182,7 +184,7 @@ for term in terms.iter(ns + 'term'):
             #print uniqueCourseCol.find_one({'course' : entry['unique_course']})
 #            break
         
-    break
+#    break
 #for p in profCol.find():
 #    print p
 #for c in courseCol.find():

@@ -53,8 +53,10 @@ class CatDB:
                                    {
                     '$set': {'courseList': entry['courseList']},
                     })
+        print 'Added a course to get list: ', entry.get('courseList', []);
 
     def remove_course(self, netID, courseList):
+        print 'removing', courseList
         # check for if course is not there then you can't remove it
         if (self.studentCol.find_one({'netID': netID}) is None):
             sys.stderr.write('you tried to remove a course when the student has no courses!');
@@ -71,6 +73,7 @@ class CatDB:
                                    {
                     '$set': {'courseList': entry['courseList']},
                     })
+        print 'Removed a course to get list: ', entry.get('courseList', []);
 
     # Returns a list of professors with matching id and name
     # (name can be partial, id cannot)
@@ -109,7 +112,7 @@ class CatDB:
             # sleazy            
             totalscore = matchTitle*1000 + matchDesc*100 + totalcount
             course['score'] = totalscore; # dictionary of scores of courses
-            print totalscore
+            #print totalscore
         # sort by score
         #for c in sorted(scores, key = scores.get, reverse = True):
             # Don't do this! The entries have been modified between getting them from the db
@@ -159,11 +162,13 @@ class CatDB:
         if time:
             if not isinstance(time, list):
                 time = [time]
+            times = [re.compile('^'+t, re.I) for t in time]
+
             course['term'] = CURRENT_SEMESTER
-            course['classes'] =  { 
+            course['classes'] =  {
                 '$elemMatch': {
                     'section': re.compile('[LCS].*', re.I),
-                    'starttime': {'$in': time},
+                    'starttime': {'$in': times},
                     }
                 }
             
@@ -178,13 +183,17 @@ class CatDB:
                     regex = regex + d + "|"
             regex = regex + "ZYX).*"
             course['term'] = CURRENT_SEMESTER
-            course['classes'] =  { 
+            match = { 
                 '$elemMatch': {
                     #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
                     'section': re.compile('[LCS].*', re.I),
                     'days': re.compile(regex, re.IGNORECASE)  #{'$in': day}
                     }
                 }
+            if 'classes' not in course:
+                course['classes'] = match
+            else:
+                course['classes']['$elemMatch']['days'] = match['$elemMatch']['days']
             
         if subject:
             # TODO: Make all capital letters
@@ -243,7 +252,7 @@ class CatDB:
             if '$or' not in course:
                 course['$or'] = []
             course['$or'].extend([{'description':course.pop('description')}, {'title':course.pop('title')}])
-            print "regex: ", descRegex
+            #print "regex: ", descRegex
 
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
