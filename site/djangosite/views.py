@@ -229,7 +229,7 @@ def parse(db, text):
         elif re.match('^<[0-9]{3}$', token) or re.match('^<[0-9]{3}$', previous+token):
             output['max_course_number'] = token[-3:]
         elif re.match('^>=[0-9]{3}$', token) or re.match('^>=[0-9]{3}$', previous+token):
-            output['min_course_number'] = '%03d'%(int(token[0:3])-1)
+            output['min_course_number'] = '%03d'%(int(token[-3:])-1)
         elif re.match('^<=[0-9]{3}$', token) or re.match('^<=[0-9]{3}$', previous+token):
             output['max_course_number'] = '%03d'%(int(token[-3:])+1)
         elif re.match('^[0-9]{3}[A-Za-z]?$', token):
