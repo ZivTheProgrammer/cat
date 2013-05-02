@@ -2,7 +2,7 @@
     <div class = "detail_term"> {{result.term_name}} ({{result.term}}) </div>
     <div class = "detail_subject_number_dist"> {{result.subject}} {{result.course_number}} {% for s in result.crosslistings %}/ {{ s.subject }} {{ s.course_number }} {% endfor %} {% if result.distribution %}({{ result.distribution }}){% endif %}  {% for s in result.pdf %} {{ s }} {% endfor %}</div></br>
     <div class = "detail_rating"> 
-    {% if result.overall_mean %}| Overall: {{result.overall_mean }} |{% endif %}
+    {% if result.overall_mean %}| Overall: <span class="overall_rating">{{result.overall_mean }}</span> |{% endif %}
     {% if result.lectures_mean %} Lectures: {{result.lectures_mean }} |{% endif %}
     {% if result.precepts_mean %} Precepts: {{result.precepts_mean }} |{% endif %}
     {% if result.readings_mean %} Readings: {{result.readings_mean }} |{% endif %}

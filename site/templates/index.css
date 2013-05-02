@@ -602,6 +602,23 @@ color:white;
     width:800px;
 }
 
+#sortby_selector {
+    visibility:hidden;
+    margin-left:4px;
+}
+
+#sortby_selector * {
+    color:white;
+    font-family:Verdana, sans-serif;
+    font-size:80%;
+}
+
+#sortby_selector select {
+    background-color:rgba(0,0,0,0.4);
+    border-color:#888888;
+}
+
+
 .detail_ratings_plot {
     /*position:absolute;*/
     width: 500px;
@@ -610,6 +627,10 @@ color:white;
     margin-bottom:10px;
     height:250px;
     /*background-color:white;*/
+}
+
+.relevance {
+    display: none;
 }
 
 .legend {
