@@ -31,6 +31,19 @@ html, body {
     margin:0px;
 }
 
+.classes_table {
+    margin-bottom:30px;
+}
+
+.classes_table_header_cell {
+   padding:4px;
+   font-weight:bold;
+}
+
+.classes_table_cell {
+   padding-right:3px;
+}
+
 #logo {
    color:white;
    font-family:Verdana, sans-serif;
