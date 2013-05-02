@@ -134,6 +134,14 @@ html, body {
   margin-top:5px;
 }
 
+.reviews_form>[type=submit] {
+    color:white;
+}
+
+.reviews_form>[type=submit]:hover {
+    cursor:pointer;
+}
+
 .term_selector {
   display:block;
   float:left;
@@ -340,7 +348,7 @@ div{
     left:888px;
 }
 
-.coursecart, #show_advanced, #show_analytics, #showold_span { 
+.coursecart, #show_advanced, #show_analytics, #showold_span, .reviews_form>[type=submit]{ 
     background-color:black;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#7d7e7d), to(#0e0e0e));
     background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
@@ -620,13 +628,13 @@ color:white;
     margin-left:4px;
 }
 
-#sortby_selector * {
+#sortby_selector *, .term_selector * {
     color:white;
     font-family:Verdana, sans-serif;
     font-size:80%;
 }
 
-#sortby_selector select {
+#sortby_selector select, .term_selector select {
     background-color:rgba(0,0,0,0.4);
     border-color:#888888;
 }
