@@ -240,7 +240,7 @@ $(document).ready(function() {
     $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
     
     /* Set up initial left pane */
-    $("#results_left_div").append('<div id="initial_text">\
+    $("#results_left_div").append('<div class="instruction_text">\
                           <p>Welcome to CAT!</p>\
                           <p>Search for courses by:</p>\
                           <ul>\
@@ -393,6 +393,7 @@ $(document).ready(function() {
         /* handle if just checked */
         if ($(this).is(":checked")) {
             $(".course_old").css("display","");
+            if ($("#prev_only_message").length != 0) $("#prev_only_message").remove();
         }
         else if (!$(this).is(":checked")) {
             $(".course_old").css("display","none");
@@ -422,7 +423,12 @@ $(document).ready(function() {
                 $("#results_div").empty().append( $( data ) );
                 
                 /* don't show old courses if the check box isn't checked */
-                if(!$("#omnibar_showold").is(":checked")) $(".course_old").css("display","none");
+                if ($("#search_results_list").children().length == $("#search_results_list>.course_old").length && !$("#omnibar_showold").is(":checked")) {
+                    $("#results_left_div").prepend("<div class='instruction_text' id='prev_only_message'> <p> No results from current or upcoming semesters.</p> <p>Select 'Show Previous Semesters' above to diplay courses taught in previous semesters.</p></div>");
+                }
+                if(!$("#omnibar_showold").is(":checked")) {
+                    $(".course_old").css("display","none");
+                }
                 
                 /* give the results divs a fancy scrollbar */
                 $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});

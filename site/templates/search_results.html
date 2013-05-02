@@ -37,6 +37,7 @@
         <div class = "detail" id="detail_num_{{course_id}}">
             <div class = "semester_menu"> 
                 <form class="term_selector">{% csrf_token %}
+                    <label>Select Semester:</label>
                     <select name="semester" class="term_dropdown">
                         {% for term, term_name in result.all_named_terms.items %}
                            <option class="semester_{{course_id}}_{{term}}" value="{{term}}"> {{term_name}} </option>
