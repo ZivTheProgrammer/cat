@@ -46,6 +46,7 @@ class CatDB:
                     if course not in entry['courseList']:
                         entry['courseList'].append(course);
             else:
+                print entry['courseList']
                 entry['courseList'].append(courseList);
             # put updated things back
             self.studentCol.update({'netID': netID},
