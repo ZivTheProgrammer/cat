@@ -422,12 +422,18 @@ $(document).ready(function() {
                 /* put the data in the result div */
                 $("#results_div").empty().append( $( data ) );
                 
-                /* don't show old courses if the check box isn't checked */
-                if ($("#search_results_list").children().length == $("#search_results_list>.course_old").length && !$("#omnibar_showold").is(":checked")) {
-                    $("#results_left_div").prepend("<div class='instruction_text' id='prev_only_message'> <p> No results from current or upcoming semesters.</p> <p>Select 'Show Previous Semesters' above to diplay courses taught in previous semesters.</p></div>");
+                /* display a "no results found message if no results were found */
+                if($("#search_results_list").children().length == 0) {
+                 $("#results_left_div").prepend("<div class='instruction_text' id='no_results_message'> <p>No results found</p></div>"); 
                 }
-                if(!$("#omnibar_showold").is(":checked")) {
-                    $(".course_old").css("display","none");
+                else {
+                    /* don't show old courses if the check box isn't checked */
+                    if ($("#search_results_list").children().length == $("#search_results_list>.course_old").length && !$("#omnibar_showold").is(":checked")) {
+                        $("#results_left_div").prepend("<div class='instruction_text' id='prev_only_message'> <p> No results from most recent semester.</p> <p>Select 'Show Previous Semesters' above to display courses taught in previous semesters.</p></div>");
+                    }
+                    if(!$("#omnibar_showold").is(":checked")) {
+                        $(".course_old").css("display","none");
+                    }
                 }
                 
                 /* give the results divs a fancy scrollbar */
