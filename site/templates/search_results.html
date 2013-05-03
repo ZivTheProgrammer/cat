@@ -15,7 +15,7 @@
                 {% if result.source != 'cart' %}
                 <li class="course{% if result.term != '1142' %} course_old{%endif%}" id="result_num_{{course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}}</br> 
                     <span class="sub_span"> {% include "prof_snippet.html" %}</span> 
-                    {% if result.rating_color %} <div class="rating_marker {{ result.rating_color}}"> </div> {% endif %}
+                    {% if result.rating_color %} <div class="rating_marker {{ result.rating_color}}" title="Rating: {{result.overall_mean}}"> </div> {% endif %}
                     {% if result.score %}
                     <div class = "relevance">{{result.score}}</div>
                     {% endif %}
