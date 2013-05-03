@@ -255,12 +255,13 @@ $(document).ready(function() {
                           <p>Welcome to CAT!</p>\
                           <p>Search for courses by:</p>\
                           <ul>\
-                            <li>Subject and/or course number (COS 333)</li>\
-                            <li>Professor (Kernighan)</li>\
+                            <li>Subject</li>\
+                            <li>Course number</li>\
+                            <li>Professor</li>\
                             <li>Distribution (HA/LA/EC etc)</li>\
-                            <li>Grading statue (pdf-only)</li>\
-                            <li>Day/time (Mon 10:00)</li>\
-                            <li>Keyword (art)</li>\
+                            <li>Grading status (pdf-only)</li>\
+                            <li>Day/time (Mon 10:00am)</li>\
+                            <li>Keyword</li>\
                           </ul>\
                         </li>\
                         </div>');
@@ -411,9 +412,13 @@ $(document).ready(function() {
         if ($(this).is(":checked")) {
             $(".course_old").css("display","");
             if ($("#prev_only_message").length != 0) $("#prev_only_message").remove();
+            $("#showold_span>label").text("Hide Previous Semesters");
+            $("#showold_span>label").css("background-color", "rgba(255, 49, 0, 0.5)");
         }
         else if (!$(this).is(":checked")) {
             $(".course_old").css("display","none");
+            $("#showold_span>label").text("View Previous Semesters");
+            $("#showold_span>label").css("background-color", "rgba(255, 49, 0, 0.0)");
         }
     });
     
@@ -535,7 +540,6 @@ $(document).ready(function() {
                                   $("#detail_num_"+course_id).remove();
                                }
                                /* Show cart empty message if necessary */
-                               alert("yo!");
                                toggleCartEmptyMessage();
                             }
                         });
