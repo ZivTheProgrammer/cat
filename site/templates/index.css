@@ -145,7 +145,10 @@ html, body {
 
 .reviews_form>[type=submit] {
     color:white;
-    padding:5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 .sortby_option {
@@ -624,10 +627,10 @@ color:white;
 #showold_span>label {
     position: absolute;
     height: 19px;
-    width: 172px;
+    width: 170px;
     padding-left: 0px;
     padding-top: 3px;
-    padding-right:10px;
+    padding-right:12px;
     padding-bottom:0px;
     margin-left: -1px;
     margin-top: -1px;
