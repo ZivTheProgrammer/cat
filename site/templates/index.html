@@ -114,6 +114,7 @@
 </div>
 
 <div id="cart_div">
+    <span id="cart_label">Cart:</span>
     <ul id="cart_list">
         {% for course_id, result in results.items %}
             {% if result.source = "cart" %}

@@ -434,6 +434,14 @@ div{
     z-index:0;
 }
 
+#cart_label {
+    color: white;
+    font-family: Verdana, sans-serif;
+    position: absolute;
+    margin-top: 15px;
+    padding-left: 8px;
+}
+
 #cart_div {
     background-image: -khtml-gradient(linear, left top, left bottom, from(#888888), to(#333333));
     background-image: -moz-linear-gradient(top, #888888, #333333);
@@ -448,7 +456,7 @@ div{
     min-height: 50px;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
-    }
+}
     
 #results_div{
 width:100%;
@@ -644,6 +652,7 @@ color:white;
 
 #cart_list {
     width:800px;
+    padding-left:55px;
 }
 
 #sortby_selector {
