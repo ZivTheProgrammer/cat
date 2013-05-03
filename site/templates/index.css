@@ -137,7 +137,6 @@ html, body {
 .reviews_form>[type=submit] {
     color:white;
     padding:5px;
-    font-weight:bold;
 }
 
 .sortby_option {
