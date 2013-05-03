@@ -62,6 +62,15 @@ html, body {
    top:2px;
 }
 
+#separator {
+   color:white;
+   font-family:Verdana, sans-serif;
+   font-size:14px;
+   position:absolute;
+   right:62px;
+   top:2px;
+}
+
 #logout{
    font-family:Verdana,sans-serif;
    position:absolute;
