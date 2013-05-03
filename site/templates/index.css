@@ -589,12 +589,16 @@ color:white;
     margin-bottom:auto;
 }
 
+#omnibar_showold{
+    display: none;
+}
+
 #showold_span {
     color:white;
     position:absolute;
     top:12px;
     height:20px;
-    width:188px;
+    width:180px;
     left:20px;
     font-size:12px;
     font-family:Verdana,sans-serif;
@@ -602,7 +606,17 @@ color:white;
 }
 
 #showold_span>label {
-    padding-right:3px;
+    position: absolute;
+    height: 19px;
+    width: 172px;
+    padding-left: 0px;
+    padding-top: 3px;
+    padding-right:10px;
+    padding-bottom:0px;
+    margin-left: -1px;
+    margin-top: -1px;
+    border-radius: 3px;
+    text-align: right;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
