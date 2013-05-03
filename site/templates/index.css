@@ -720,7 +720,7 @@ color:white;
     height: 16px;
     width: 16px;
     border-radius: 9px;
-    border: 1px solid black; /*rgba(255,49,0, 0.5);*/
+    border: 1px solid black;
 }
 
 .rating_color_1{
