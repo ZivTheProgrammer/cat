@@ -286,6 +286,10 @@ $(document).ready(function() {
         var posting = $.post("/course/remove/", $(this).serialize());
         /* remove the course from the cart list and remove any hidden info about the course */
         $("#cart_num_"+course_id).remove();
+        /* if in result list activate save button */
+        if ($("#result_num_"+course_id).length > 0) {
+            $("#save_"+course_id+">input[type=submit]").removeAttr("disabled").css("visibility","visible");
+        }
         $("#save_"+course_id+">input[type=submit]").removeAttr("disabled");
         /* Display empty message if the cart is empty */
         toggleCartEmptyMessage();
@@ -516,21 +520,24 @@ $(document).ready(function() {
                         $(".removecourse_form").submit(function(e) {
                             e.preventDefault();
                             var course_id = $(this).parent().attr('id').split('_')[2];
-                            /* send post request to save that the user has removed the course from his/her cart */
-                            var posting = $.post("/course/remove/", $(this).serialize());
-                            /* remove the course from the cart list */
-                            $("#cart_num_"+course_id).remove();
-                            /* if in result list activate save button */
-                            if ($("#result_num_"+course_id).length > 0) {
-                                $("#save_"+course_id+">input[type=submit]").removeAttr("disabled").css("visibility","visible");
+                            /* Only send request if course is still in cart */
+                            if ($("#remove_" + course_id).length == 1) { 
+                               /* send post request to save that the user has removed the course from his/her cart */
+                               var posting = $.post("/course/remove/", $(this).serialize());
+                               /* remove the course from the cart list */
+                               $("#cart_num_"+course_id).remove();
+                               /* if in result list activate save button */
+                               if ($("#result_num_"+course_id).length > 0) {
+                                  $("#save_"+course_id+">input[type=submit]").removeAttr("disabled").css("visibility","visible");
+                               }
+                               /* Otherwise delete course result */
+                               else {
+                                  $("#detail_num_"+course_id).remove();
+                               }
+                               /* Show cart empty message if necessary */
+                               alert("yo!");
+                               toggleCartEmptyMessage();
                             }
-                            /* Otherwise delete course result */
-                            else {
-                                $("#detail_num_"+course_id).remove();
-                            }
-                            /* Show cart empty message if necessary */
-                             alert("yo!");
-                            toggleCartEmptyMessage();
                         });
                     });
                 }); 
