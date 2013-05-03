@@ -535,7 +535,6 @@ $(document).ready(function() {
                                   $("#detail_num_"+course_id).remove();
                                }
                                /* Show cart empty message if necessary */
-                               alert("yo!");
                                toggleCartEmptyMessage();
                             }
                         });
