@@ -463,10 +463,10 @@ $(document).ready(function() {
                 $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
                 
                 /* enable the sorting dropdown */
-                if ($("#search_results_list").children().length > 1) {
+                if ($("#search_results_list").children().length > 0) {
                     $("#sortby_selector").css("display", "inline");
                 }
-                else if ($("#search_results_list").children().length <= 1) { 
+                else if ($("#search_results_list").children().length <= 0) { 
                     $("#sortby_selector").attr("display","none");
                 }
                 /* set the behavior of the sortby dropdown */
