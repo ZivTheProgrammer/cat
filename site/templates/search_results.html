@@ -1,12 +1,24 @@
 <div>
     <div id="left_scrollbar_wrap">
     <div id="results_left_div">
+        <form id="sortby_selector" action="">
+        <label> Sort Results By: </label> 
+        <select name="sortby" class="sort_dropdown">
+            {% if results.items.0.1.score %}<option class = "sortby_option" value = "relevance"> Relevance </option> {% endif %}
+            <option class = "sortby_option" value="subject"> Subject & Number </option>
+            <option class="sortby_option" value="rating"> Average Rating </option>
+            <option class="sortby_option" value="professor"> Professor </option>
+        </select>
+        </form>
         <ul id="search_results_list">
             {% for course_id, result in results.items %}
                 {% if result.source != 'cart' %}
                 <li class="course{% if result.term != '1142' %} course_old{%endif%}" id="result_num_{{course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}}</br> 
                     <span class="sub_span"> {% include "prof_snippet.html" %}</span> 
                     {% if result.rating_color %} <div class="rating_marker {{ result.rating_color}}"> </div> {% endif %}
+                    {% if result.score %}
+                    <div class = "relevance">{{result.score}}</div>
+                    {% endif %}
                     <form class="savecourse_form" id="save_{{course_id}}"> {% csrf_token %}
                         <input type="hidden" name="course_id" value="{{course_id}}">
                         <input type="hidden" name="course_code" value="{{result.subject}}{{result.course_number}}">
@@ -25,6 +37,7 @@
         <div class = "detail" id="detail_num_{{course_id}}">
             <div class = "semester_menu"> 
                 <form class="term_selector">{% csrf_token %}
+                    <label>Select Semester:</label>
                     <select name="semester" class="term_dropdown">
                         {% for term, term_name in result.all_named_terms.items %}
                            <option class="semester_{{course_id}}_{{term}}" value="{{term}}"> {{term_name}} </option>

@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import pymongo
 import re
 import string
 import pprint
@@ -46,6 +47,7 @@ class CatDB:
                     if course not in entry['courseList']:
                         entry['courseList'].append(course);
             else:
+                print entry['courseList']
                 entry['courseList'].append(courseList);
             # put updated things back
             self.studentCol.update({'netID': netID},
@@ -336,7 +338,7 @@ class CatDB:
         else:
             terms = []
         term_ids = [t['id'] for t in terms]
-        offerings = self.courseCol.find({'_id' : {'$in' : term_ids}})
+        offerings = self.courseCol.find({'_id' : {'$in' : term_ids}}, sort=[('term', pymongo.DESCENDING)])
         reviews = []
         for i in offerings:
             semester = {}

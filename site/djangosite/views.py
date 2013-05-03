@@ -10,6 +10,8 @@ import HTMLParser
 RATING_CATEGORIES = ['overall_mean', 'lectures_mean', 'precepts_mean', 'classes_mean', 'readings_mean']
 DISTRIBUTION_AREAS = ['EM', 'EC', 'HA', 'LA', 'QR', 'SA', 'STN', 'STL']
 SUBJECT_AREAS = ["AAS", "AFS", "AMS", "ANT", "AOS", "APC", "ARA", "ARC", "ART", "AST", "ATL", "BCS", "CBE", "CEE", "CHI", "CHM", "CHV", "CLA", "CLG", "COM", "COS", "CWR", "CZE", "DAN", "EAP", "EAS", "ECO", "ECS", "EEB", "EGR", "ELE", "ENE", "ENG", "ENV", "EPS", "FIN", "FRE", "FRS", "GEO", "GER", "GHP", "GLS", "GSS", "HEB", "HIN", "HIS", "HLS", "HOS", "HUM", "ISC", "ITA", "JDS", "JPN", "JRN", "KOR", "LAO", "LAS", "LAT", "LIN", "MAE", "MAT", "MED", "MOD", "MOG", "MOL", "MSE", "MUS", "NES", "NEU", "ORF", "PAW", "PER", "PHI", "PHY", "PLS", "POL", "POP", "POR", "PSY", "QCB", "REL", "RUS", "SAS", "SLA", "SOC", "SPA", "STC", "SWA", "THR", "TPP", "TRA", "TUR", "URB", "URD", "VIS", "WRI", "WWS"]
+SPECIAL = {'AFRICAN', 'COMPUTATIONAL', 'APPLIED', 'CHEMICAL', 'CIVIL', 'BIOLOGICAL', 'CLASSICAL', 'COMPARATIVE', 'COMPUTER', 'CREATIVE', 'EUROPEAN', 'EVOLUTIONARY', 'ELECTRICAL', 'ENERGY', 'ENVIRONMENTAL', 'FRESHMAN', 'GLOBAL', 'GENDER', 'SEXUALITY', 'INTEGRATED', 'LATIN', 'MECHANICAL', 'AEROSPACE', 'MODERN', 'MOLECULAR', 'NEAR', 'FINANCIAL', 'OPERATIONS', 'ANCIENT', 'QUANTITATIVE', 'COMPUTATIONAL', 'SOUTH', 'TEACHER','INTERCULTURAL', 'WOODROW', 'VISUAL', 'SCIENCE', 'TECHNOLOGY'}
+DEPT_MAP = {"AFRICAN AMERICAN": "AAS", "AMERICAN": "AMS", "ANTHROPOLOGY": "ANT", "ATMOSPHERIC": "AOS", "OCEANIC SCIENCE": "AOS", "APPLIED MATH": "APC", "COMPUTATIONAL MATH": "APC", "ARABIC": "ARA", "ARCHITECTURE": "ARC", "ARCHAEOLOGY": "ART", "ASTROPHYSICS": "AST", "ATELIER": "ATL", "BOSNIAN": "BCS", "CROATIAN": "BCS", "SERBIAN": "BCS", "CHEMICAL ENGINEERING": "CBE", "BIOLOGICAL ENGINEERING": "CBE", "CIVIL ENGINEERING": "CEE", "ENVIRONMENTAL ENGINEERING": "CEE", "CHINESE": "CHI", "CHEMISTRY": "CHM", "HUMAN VALUES": "CHV", "CLASSICS": "CLA", "CLASSICAL GREEK": "CLG", "COMPARATIVE LITERATURE": "COM", "COMPUTER SCIENCE": "COS", "CREATIVE WRITING": "CWR", "CZECH": "CZE", "DANCE": "DAN", "EAST ASIAN": "EAS", "ECONOMICS": "ECO", "EUROPEAN CULTURAL": "ECS", "ECOLOGY": "EEB", "EVOLUTIONARY BIOLOGY": "EEB", "ENGINEERING": "EGR", "ELECTRICAL ENGINEERING": "ELE", "ENERGY STUDIES": "ENE", "ENGLISH": "ENG", "ENVIRONMENTAL STUDIES":"ENV", "CONTEMPORARY EUROPEAN": "EPS", "EUROPEAN POLITICS": "EPS", "FINANCE": "FIN", "FRENCH": "FRE", "FRESHMAN SEMINAR": "FRS", "GEOSCIENCES": "GEO", "GERMAN": "GER", "GLOBAL HEALTH": "GHP", "GLOBAL SEMINAR": "GLS", "GENDER AND SEXUALITY": "GSS", "HEBREW": "HEB", "HINDI": "HIN", "HISTORY": "HIS", "HELLENIC RY EUROPEAN": "EPS", "EUROPEAN POLITICS": "EPS", "FINANCE": "FIN", "FRENCH": "FRE", "FRESHMAN SEMINAR": "FRS", "GEOSCIENCES": "GEO", "GERMAN": "GER", "GLOBAL HEALTH": "GHP", "GLOBAL SEMINAR": "GLS", "GENDER": "GSS", "SEXUALITY": "GSS", "HEBREW": "HEB", "HINDI": "HIN", "HISTORY": "HIS", "HELLENIC": "HLS", "HUMANISTIC": "HUM", "INTEGRATED SCIENCE": "ISC", "ITALIAN": "ITA", "JUDAIC": "JDS", "JAPANESE": "JPN", "JOURNALISM": "JRN", "KOREAN": "KOR", "LATINO": "LAO", "LATIN AMERICAN": "LAS", "LATIN": "LAT", "LINGUISTICS": "LIN", "MECHANICAL ENGINEERING": "MAE", "AEROSPACE ENGINEERING": "MAE", "MATHEMATICS": "MAT", "MATH": "MAT", "MEDIEVAL": "MED", "MODERN GREEK": "MOG", "MOLECULAR BIOLOGY": "MOL", "MATERIALS": "MSE", "MUSIC": "MUS", "NEAR EASTERN": "NES", "NEUROSCIENCE": "NEU", "OPERATIONS RESEARCH": "ORF", "FINANCIAL ENGINEERING": "ORF", "ANCIENT WORLD": "PAW", "PERSIAN": "PAW", "PHILOSOPHY": "PHI", "PHYSICS": "PHY", "POLISH": "PLS", "POLITICS": "POL", "PSYCHOLOGY": "PSY", "QUANTITATIVE BIOLOGY": "QCB", "COMPUTATIONAL BIOLOGY": "QCB", "RELIGION": "REL", "RUSSIAN": "RUS", "SOUTH ASIAN": "SAS", "SLAVIC": "SLA", "SOCIOLOGY": "SOC", "SPANISH": "SPA", "SWAHILI": "SWA", "THEATER": "THR", "TEACHER PREPARATION": "TPP", "TRANSLATION": "TRA", "INTERCULTURAL COMMUNICATION": "TRA", "TURKISH": "TUR", "URBAN": "URB", "URDU": "URD", "VISUAL ARTS": "VIS", "WRITING": "WRI", "WOORDROW WILSON": "WWS", "SCIENCE COUNCIL": "STC", "TECHNOLOGY COUNCIL": "STC"}
 DECAY_FACTOR = 0.5 # For averaging course ratings over multiple semesters
 
 def home(request):
@@ -200,6 +202,7 @@ def parse(db, text):
     output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [], 'keywords': [], 'day': [], 'time': []}
     previous = ''
     for token in tokens:
+        two = previous + ' ' + token
         # Match distribution requirement codes
         if token in DISTRIBUTION_AREAS:
             output['distribution'].append(token)
@@ -208,17 +211,32 @@ def parse(db, text):
         # Match subject codes
         elif token in SUBJECT_AREAS:
             output['subject'].append(token)
+        # Match departments
+        elif two in DEPT_MAP:
+            output['subject'].append(DEPT_MAP[two])
+        elif token in DEPT_MAP:
+            print 'ahoy!'
+            output['subject'].append(DEPT_MAP[token])
+        elif token in SPECIAL:
+            print 'here'
+            pass
+        elif previous in SPECIAL:
+            output['keywords'].append(previous)
+            output['keywords'].append(token)
         # Match course numbers
         elif re.match('^>[0-9]{3}$', token) or re.match('^>[0-9]{3}$', previous+token):
             output['min_course_number'] = token[-3:] 
         elif re.match('^<[0-9]{3}$', token) or re.match('^<[0-9]{3}$', previous+token):
             output['max_course_number'] = token[-3:]
         elif re.match('^>=[0-9]{3}$', token) or re.match('^>=[0-9]{3}$', previous+token):
-            output['min_course_number'] = str(int(token[-3:])-1)
+            output['min_course_number'] = '%03d'%(int(token[-3:])-1)
         elif re.match('^<=[0-9]{3}$', token) or re.match('^<=[0-9]{3}$', previous+token):
-            output['max_course_number'] = str(int(token[-3:])+1)
+            output['max_course_number'] = '%03d'%(int(token[-3:])+1)
         elif re.match('^[0-9]{3}[A-Za-z]?$', token):
             output['course_number'].append(token)
+        elif re.match('^[0-9]{1,3}-[0-9]{1,3}$', token):
+            output['min_course_number'] = '%03d'%(int(token.split('-')[0])-1)
+            output['max_course_number'] = '%03d'%(int(token.split('-')[1])+1)
         # Match PDF criteria
         elif re.match('^(NO-AUDIT|NA|NOAUDIT)$', token):
             output['pdf'].append('na')

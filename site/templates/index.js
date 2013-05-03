@@ -133,6 +133,66 @@ function plot_review_data(course_id) {
     $.plot($(".detail_shown").find(".detail_ratings_plot"), data, options);
 }
 
+/* function to sort the results based on the current selection of the spinner */
+function sort_results(sortby) {
+
+    var sorted = {};
+    var keys = [];
+    var courses = $("#search_results_list").children();
+    $.each(courses, function() {
+        var key;
+        var course_id = $(this).attr("id").split("_")[2];
+        
+        // get the keys for each type of sorting
+        if (sortby == "professor") {
+           var profs = $(this).find(".sub_span").text();
+           var mainprof = profs.split(",");
+           var lname = mainprof[0].trim().split(/\s+/);
+           key = lname[lname.length-1];
+           key = key + course_id;
+           keys.push(key);
+        }
+        else if (sortby == "rating") {
+            var rating = $("#detail_num_"+course_id).children().eq('1').find(".overall_rating").text().trim();
+            key = rating + course_id;
+            keys.push(key);
+        }
+        else if (sortby == "subject") {
+            var sub = $("#detail_num_"+course_id).children().eq('1').find(".detail_subject_number_dist").text();
+            key = sub.trim()+course_id;
+            keys.push(key);
+        }
+        else if (sortby = "relevance") {
+            var rel = $(this).find(".relevance").text().trim();
+            key = rel + course_id;
+            keys.push(key);
+        }
+        
+        // add key and element to dict
+        sorted[key] = $(this);
+    });
+    
+   //do the sort
+    keys.sort();    
+    
+   // reverse if sorting numbers 
+    if (sortby == "rating" || sortby == "relevance") keys.reverse();
+    //alert(keys);
+    
+    //put the results back in the html
+    courses.remove();
+    $.each(keys, function() {
+        $("#search_results_list").append(sorted[this]);
+    });
+    
+    /* make the course's data show up when it is clicked */
+    $(".course").click(function() {
+        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
+        var course_id = $(this).attr('id').split('_')[2];
+        display(course_id);  
+    });
+}
+
 /* function to make the spinner */
 function make_spinner() {
         var opts = {
@@ -180,7 +240,7 @@ $(document).ready(function() {
     $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
     
     /* Set up initial left pane */
-    $("#results_left_div").append('<div id="initial_text">\
+    $("#results_left_div").append('<div class="instruction_text">\
                           <p>Welcome to CAT!</p>\
                           <p>Search for courses by:</p>\
                           <ul>\
@@ -333,6 +393,7 @@ $(document).ready(function() {
         /* handle if just checked */
         if ($(this).is(":checked")) {
             $(".course_old").css("display","");
+            if ($("#prev_only_message").length != 0) $("#prev_only_message").remove();
         }
         else if (!$(this).is(":checked")) {
             $(".course_old").css("display","none");
@@ -361,12 +422,36 @@ $(document).ready(function() {
                 /* put the data in the result div */
                 $("#results_div").empty().append( $( data ) );
                 
-                /* don't show old courses if the check box isn't checked */
-                if(!$("#omnibar_showold").is(":checked")) $(".course_old").css("display","none");
+                /* display a "no results found message if no results were found */
+                if($("#search_results_list").children().length == 0) {
+                 $("#results_left_div").prepend("<div class='instruction_text' id='no_results_message'> <p>No results found</p></div>"); 
+                }
+                else {
+                    /* don't show old courses if the check box isn't checked */
+                    if ($("#search_results_list").children().length == $("#search_results_list>.course_old").length && !$("#omnibar_showold").is(":checked")) {
+                        $("#results_left_div").prepend("<div class='instruction_text' id='prev_only_message'> <p> No results from most recent semester.</p> <p>Select 'Show Previous Semesters' above to display courses taught in previous semesters.</p></div>");
+                    }
+                    if(!$("#omnibar_showold").is(":checked")) {
+                        $(".course_old").css("display","none");
+                    }
+                }
                 
                 /* give the results divs a fancy scrollbar */
                 $("#results_left_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
                 $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
+                
+                /* enable the sorting dropdown */
+                if ($("#search_results_list").children().length > 1) {
+                    $("#sortby_selector").css("visibility", "visible");
+                }
+                else if ($("#search_results_list").children().length <= 1) { 
+                    $("#sortby_selector").attr("visibility","hidden");
+                }
+                /* set the behavior of the sortby dropdown */
+                $("#sortby_selector").change(function() {
+                    if ($("#search_results_list").children().length > 1) 
+                        sort_results($(this).find("option:selected").val());
+                });
                 
                 /* Enable showing cart courses */
                 $(".coursecart").click(function(ev){

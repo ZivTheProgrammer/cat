@@ -1,8 +1,8 @@
 <div class = "detail_all_the_things">
-    <div class = "detail_term"> {{result.term_name}} ({{result.term}}) </div>
+    <div class = "detail_term"> {{result.term_name}} </div>
     <div class = "detail_subject_number_dist"> {{result.subject}} {{result.course_number}} {% for s in result.crosslistings %}/ {{ s.subject }} {{ s.course_number }} {% endfor %} {% if result.distribution %}({{ result.distribution }}){% endif %}  {% for s in result.pdf %} {{ s }} {% endfor %}</div></br>
     <div class = "detail_rating"> 
-    {% if result.overall_mean %}| Overall: {{result.overall_mean }} |{% endif %}
+    {% if result.overall_mean %}| Overall: <span class="overall_rating">{{result.overall_mean }}</span> |{% endif %}
     {% if result.lectures_mean %} Lectures: {{result.lectures_mean }} |{% endif %}
     {% if result.precepts_mean %} Precepts: {{result.precepts_mean }} |{% endif %}
     {% if result.readings_mean %} Readings: {{result.readings_mean }} |{% endif %}
@@ -40,15 +40,26 @@
     {% endif %}
     {% if result.classes %}
     <div class = "detail_classes"><span class="detail_heading"> Classes:</span>
-        <ul>
-            {% for class in result.classes %}
-            <li> {{ class.section}} : {{ class.days}} {{ class.starttime }} - {{ class.endtime }}
-            {% if class.bldg %} in {{ class.bldg }} {{class.roomnum}}
-            {% else %}, room TBD
-            {% endif %}
-            </li>
-            {% endfor %}
-        </ul> 
+        <table class="classes_table" border="1">
+          <tr>
+            <td class="classes_table_header_cell">Class Num</td>
+            <td class="classes_table_header_cell">Section</td>
+            <td class="classes_table_header_cell">Days</td>
+            <td class="classes_table_header_cell">Time</td>
+            <td class="classes_table_header_cell">Room</td>
+          </tr>
+          {% for class in result.classes %}
+          <tr>
+            <td class="classes_table_cell">{{class.classnum}}</td>
+            <td class="classes_table_cell">{{ class.section}}</td>
+            <td class="classes_table_cell">{{ class.days}}</td>
+            <td class="classes_table_cell">{{ class.starttime }} - {{ class.endtime }}</td>
+            <td class="classes_table_cell">{% if class.bldg %} in {{ class.bldg }} {{class.roomnum}}
+            {% else %}room TBD
+            {% endif %}</td>
+          </tr>
+          {% endfor %}
+        </table> 
     </div>
     {% endif %}
 </div>
