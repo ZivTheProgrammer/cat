@@ -255,12 +255,13 @@ $(document).ready(function() {
                           <p>Welcome to CAT!</p>\
                           <p>Search for courses by:</p>\
                           <ul>\
-                            <li>Subject and/or course number (COS 333)</li>\
-                            <li>Professor (Kernighan)</li>\
+                            <li>Subject</li>\
+                            <li>Course number</li>\
+                            <li>Professor</li>\
                             <li>Distribution (HA/LA/EC etc)</li>\
-                            <li>Grading statue (pdf-only)</li>\
-                            <li>Day/time (Mon 10:00)</li>\
-                            <li>Keyword (art)</li>\
+                            <li>Grading status (pdf-only)</li>\
+                            <li>Day/time (Mon 10:00am)</li>\
+                            <li>Keyword</li>\
                           </ul>\
                         </li>\
                         </div>');
