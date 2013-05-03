@@ -459,10 +459,10 @@ $(document).ready(function() {
                 
                 /* enable the sorting dropdown */
                 if ($("#search_results_list").children().length > 1) {
-                    $("#sortby_selector").css("visibility", "visible");
+                    $("#sortby_selector").css("display", "inline");
                 }
                 else if ($("#search_results_list").children().length <= 1) { 
-                    $("#sortby_selector").attr("visibility","hidden");
+                    $("#sortby_selector").attr("display","none");
                 }
                 /* set the behavior of the sortby dropdown */
                 $("#sortby_selector").change(function() {
