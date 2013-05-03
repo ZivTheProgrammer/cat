@@ -1,3 +1,12 @@
+// Helper function: adds/removes cart empty message
+function toggleCartEmptyMessage() {
+    if ($("#cart_list li").length == 0) {
+        $("#cart_label").append("<span id='cart_empty_message'> (Click a course's cart icon to save it here)</span>");
+    } else {
+        $("#cart_empty_message").remove();
+    }
+}
+
 // Helper function: displays a course in the detail view, no matter how it was clicked
 function display(course_id) {
     /* highlight the course if it's in the search results */
@@ -235,7 +244,9 @@ $(document).ready(function() {
         $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
         display(course_id);
     });
-    
+
+    toggleCartEmptyMessage();
+
     /* Give cart courses a scrollbar */
     $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
     
@@ -276,6 +287,8 @@ $(document).ready(function() {
         /* remove the course from the cart list and remove any hidden info about the course */
         $("#cart_num_"+course_id).remove();
         $("#save_"+course_id+">input[type=submit]").removeAttr("disabled");
+        /* Display empty message if the cart is empty */
+        toggleCartEmptyMessage();
     });
                         
     /* Show and hide the advanced search dialog */
@@ -488,6 +501,9 @@ $(document).ready(function() {
                     var posting = $.post("/course/add/", $(this).serialize(), function( data ) {
                         $("#cart_list").append(data);
                         
+                        /* Hide cart empty message if necessary */
+                        toggleCartEmptyMessage();
+                        
                         /* redisplay course information when user selects it in his/her cart */
                         $(".coursecart").click(function(ev){
                             if ($(ev.target).attr("type") == "submit") return;
@@ -512,6 +528,9 @@ $(document).ready(function() {
                             else {
                                 $("#detail_num_"+course_id).remove();
                             }
+                            /* Show cart empty message if necessary */
+                             alert("yo!");
+                            toggleCartEmptyMessage();
                         });
                     });
                 }); 
