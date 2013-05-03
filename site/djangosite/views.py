@@ -15,7 +15,7 @@ DECAY_FACTOR = 0.5 # For averaging course ratings over multiple semesters
 def home(request):
     return HttpResponseRedirect("/index/")
 
-# Handle user login. Non-functional at the moment.    
+# Handle user login. Based on Kernighan's Python CAS code. 
 def login(request):
     cas_url = "https://fed.princeton.edu/cas/"
     service_url = 'http://' + urllib.quote(request.META['HTTP_HOST'] + request.META['PATH_INFO'])
