@@ -145,7 +145,10 @@ html, body {
 
 .reviews_form>[type=submit] {
     color:white;
-    padding:5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 .sortby_option {
@@ -605,12 +608,16 @@ color:white;
     margin-bottom:auto;
 }
 
+#omnibar_showold{
+    display: none;
+}
+
 #showold_span {
     color:white;
     position:absolute;
     top:12px;
     height:20px;
-    width:188px;
+    width:180px;
     left:20px;
     font-size:12px;
     font-family:Verdana,sans-serif;
@@ -618,7 +625,17 @@ color:white;
 }
 
 #showold_span>label {
-    padding-right:3px;
+    position: absolute;
+    height: 19px;
+    width: 170px;
+    padding-left: 0px;
+    padding-top: 3px;
+    padding-right:12px;
+    padding-bottom:0px;
+    margin-left: -1px;
+    margin-top: -1px;
+    border-radius: 3px;
+    text-align: right;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -703,7 +720,7 @@ color:white;
     height: 16px;
     width: 16px;
     border-radius: 9px;
-    border: 1px solid black; /*rgba(255,49,0, 0.5);*/
+    border: 1px solid black;
 }
 
 .rating_color_1{

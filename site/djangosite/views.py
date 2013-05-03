@@ -17,7 +17,7 @@ DECAY_FACTOR = 0.5 # For averaging course ratings over multiple semesters
 def home(request):
     return HttpResponseRedirect("/index/")
 
-# Handle user login. Non-functional at the moment.    
+# Handle user login. Based on Kernighan's Python CAS code. 
 def login(request):
     cas_url = "https://fed.princeton.edu/cas/"
     service_url = 'http://' + urllib.quote(request.META['HTTP_HOST'] + request.META['PATH_INFO'])
@@ -198,7 +198,7 @@ def term_name(term_no):
 # Helper function to interpret the OMNIBAR(tm).
 # Note: standalone 'pdf' gets completely ignored unless immediately followed by 'only'
 def parse(db, text):
-    tokens = text.upper().split()
+    tokens = text.upper().replace(',', ' ').replace('.', ' ').split()
     output = {'subject': [], 'course_number': [], 'professor_name': [], 'distribution': [], 'pdf': [], 'keywords': [], 'day': [], 'time': []}
     previous = ''
     for token in tokens:
@@ -287,9 +287,8 @@ def parse(db, text):
         elif re.match('^[A-Z]+$', token):
             if db.get_professor(token).count() > 0:
                 output['professor_name'].append(token)
-            # (professor names get used as keywords as well)
+            # if not a professor's name, then assume it's a keyword
             elif re.match('^[A-Z]{3,}$', token):
                 output['keywords'].append(token)
         previous = token
     return output
-    
