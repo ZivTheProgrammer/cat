@@ -583,6 +583,7 @@ margin: 0px;
 padding:0px;
 }
 
+
 #search_results_list>li{
 /*border-bottom: 2px solid black;*/
 margin-top:4px;
@@ -681,8 +682,12 @@ color:white;
 }
 
 #sortby_selector {
-    visibility:hidden;
+    display:none;
     margin-left:4px;
+}
+
+#sortby_selector select {
+    margin-top:7px;
 }
 
 #sortby_selector *, .term_selector * {
