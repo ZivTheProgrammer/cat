@@ -13,7 +13,7 @@
         <ul id="search_results_list">
             {% for course_id, result in results.items %}
                 {% if result.source != 'cart' %}
-                <li class="course{% if result.term != '1142' %} course_old{%endif%}" id="result_num_{{course_id}}"> {{ result.subject}} {{ result.course_number }}: {{ result.title}}</br> 
+                <li class="course{% if result.term != '1142' %} course_old{%endif%}" id="result_num_{{course_id}}"> {{ result.subject}} {{ result.course_number }} {% for s in result.crosslistings %}/ {{s.subject}} {{s.course_number}} {% endfor %}: {{ result.title}}</br> 
                     <span class="sub_span"> {% include "prof_snippet.html" %}</span> 
                     {% if result.rating_color %} <div class="rating_marker {{ result.rating_color}}" title="Rating: {{result.overall_mean}}"> </div> {% endif %}
                     {% if result.score %}
