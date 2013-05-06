@@ -281,8 +281,12 @@ def parse(db, text):
         # Match times    
         elif re.match('^[0-2]?[0-9]:[0-9][0-9]$', token):
             output['time'].append(token)
+        elif re.match('^[0-2]?[0-9]:[0-9][0-9][AP]M$', token):
+            output['time'].append(token[:-2])
         elif re.match('^[0-2]?[0-9]$', token):
             output['time'].append(token + ":00")
+        elif re.match('^[0-2]?[0-9][AP]M$', token):
+            output['time'].append(token[:-2] + ":00")
         # Match professor names / general keywords
         elif re.match('^[A-Z]+$', token):
             if db.get_professor(token).count() > 0:

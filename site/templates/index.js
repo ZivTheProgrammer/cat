@@ -255,12 +255,13 @@ $(document).ready(function() {
                           <p>Welcome to CAT!</p>\
                           <p>Search for courses by:</p>\
                           <ul>\
-                            <li>Subject and/or course number (COS 333)</li>\
-                            <li>Professor (Kernighan)</li>\
+                            <li>Subject</li>\
+                            <li>Course number</li>\
+                            <li>Professor</li>\
                             <li>Distribution (HA/LA/EC etc)</li>\
-                            <li>Grading statue (pdf-only)</li>\
-                            <li>Day/time (Mon 10:00)</li>\
-                            <li>Keyword (art)</li>\
+                            <li>Grading status (pdf-only)</li>\
+                            <li>Day/time (Mon 10:00am)</li>\
+                            <li>Keyword</li>\
                           </ul>\
                         </li>\
                         </div>');
@@ -450,7 +451,7 @@ $(document).ready(function() {
                 else {
                     /* don't show old courses if the check box isn't checked */
                     if ($("#search_results_list").children().length == $("#search_results_list>.course_old").length && !$("#omnibar_showold").is(":checked")) {
-                        $("#results_left_div").prepend("<div class='instruction_text' id='prev_only_message'> <p> No results from most recent semester.</p> <p>Select 'Show Previous Semesters' above to display courses taught in previous semesters.</p></div>");
+                        $("#results_left_div").append("<div class='instruction_text' id='prev_only_message'> <p> No results from most recent semester.</p> <p>Select 'Show Previous Semesters' above to display courses taught in previous semesters.</p></div>");
                     }
                     if(!$("#omnibar_showold").is(":checked")) {
                         $(".course_old").css("display","none");
@@ -462,11 +463,11 @@ $(document).ready(function() {
                 $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
                 
                 /* enable the sorting dropdown */
-                if ($("#search_results_list").children().length > 1) {
-                    $("#sortby_selector").css("visibility", "visible");
+                if ($("#search_results_list").children().length > 0) {
+                    $("#sortby_selector").css("display", "inline");
                 }
-                else if ($("#search_results_list").children().length <= 1) { 
-                    $("#sortby_selector").attr("visibility","hidden");
+                else if ($("#search_results_list").children().length <= 0) { 
+                    $("#sortby_selector").attr("display","none");
                 }
                 /* set the behavior of the sortby dropdown */
                 $("#sortby_selector").change(function() {

@@ -19,9 +19,6 @@ When I remove a course from my cart, two remove requests are sent. What's up wit
 
 ** Hey Natalie, I really like how COM 318 looks, specially that little question mark in Bola?o that's in the
 database. Good job!**
-    Thanks! It's the same way on the OIT webfeed, so that's not really my fault...
-
-**Still not scraping all courses** We are now!
 
 Fixed? **Scraping formats for distribution requirements and pdf stuff. So far, "na, npdf" doesn't seem to work.**
     Any specific examples?
@@ -43,12 +40,11 @@ Make the black less black.
 
 Make scrollbar present always.
 
-Add a logout button.
-
 On the drop-down of semesters- make sure they are in chronological order. Most are now, I think since that's how they're in the database. (I can also make sure they stay sorted in the db, if that's
 
 /------Features--------/
-Search by grading option
+
+Label ratings graphs with professors.
 
 Format reviews better (show/hide review text, get professor name from left side)
 
@@ -86,3 +82,5 @@ Will it be possible to search by grade percentages, i.e. "<50% final" or "no ora
 **Should not be able to spam requests if search hasn't changed**
 **AHH SAME SCROLLING BUG WITH THE GRADIENT FIX THIS NAUWGH!!!**
 **Can we make it so that if there is only one search result (especially if I search for a specific course, e.g. "COS 333"), it gets opened up on the right side automatically?**
+**Still not scraping all courses** We are now!
+Search by grading option
