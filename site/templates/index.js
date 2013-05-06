@@ -451,7 +451,7 @@ $(document).ready(function() {
                 else {
                     /* don't show old courses if the check box isn't checked */
                     if ($("#search_results_list").children().length == $("#search_results_list>.course_old").length && !$("#omnibar_showold").is(":checked")) {
-                        $("#results_left_div").prepend("<div class='instruction_text' id='prev_only_message'> <p> No results from most recent semester.</p> <p>Select 'Show Previous Semesters' above to display courses taught in previous semesters.</p></div>");
+                        $("#results_left_div").append("<div class='instruction_text' id='prev_only_message'> <p> No results from most recent semester.</p> <p>Select 'Show Previous Semesters' above to display courses taught in previous semesters.</p></div>");
                     }
                     if(!$("#omnibar_showold").is(":checked")) {
                         $(".course_old").css("display","none");
