@@ -18,6 +18,12 @@ html, body {
     background-size:cover;
 }
 
+.instruction_item {
+    padding-bottom:10px;
+    position:relative;
+    left:-10px;
+}
+
 #top_bar {
     color:white;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#888888), to(#333333));

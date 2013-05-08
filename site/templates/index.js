@@ -253,17 +253,21 @@ $(document).ready(function() {
     /* Set up initial left pane */
     $("#results_left_div").append('<div class="instruction_text">\
                           <p>Welcome to CAT!</p>\
-                          <p>Search for courses by:</p>\
+                          <p>Search for courses:</p>\
                           <ul>\
-                            <li>Subject</li>\
-                            <li>Course number</li>\
-                            <li>Professor</li>\
-                            <li>Distribution (HA/LA/EC etc)</li>\
-                            <li>Grading status (pdf-only)</li>\
-                            <li>Day/time (Mon 10:00am)</li>\
-                            <li>Keyword</li>\
-                          </ul>\
-                        </li>\
+                            <li class="instruction_item">Looking for a specific course? </br>\
+                                "COS 333"</li>\
+                            <li class="instruction_item">Want all courses taught by a professor?</br>\
+                                "Kernighan"</li>\
+                            <li class="instruction_item">Have a gap in your schedule you want to fill?</br>\
+                                "MW 10:00am"</li>\
+                            <li class="instruction_item">Distribution reqirements?</br>\
+                                ("HA/LA/EC" etc)</li>\
+                            <li class="instruction_item">Heavy courseload?</br>\
+                                "pdf-only"</li>\
+                            <li class="instruction_item">Interested in a topic?</br>\
+                                "Italian food"</li>\
+                         </ul>\
                         </div>');
     
     /* set the behavior of the "load semester button" */
