@@ -251,7 +251,7 @@ $(document).ready(function() {
     $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
 
     /* Give the tutorial a scrollbar */
-    $("#tutorial").show().jScrollPane({showArrows:true}).hide();
+    $("#tutorial").show().jScrollPane({showArrows:true, hideFocus:true, autoReinitialize:true}).hide();
     
     /* Set up initial left pane */
     $("#results_left_div").append('<div class="instruction_text">\
