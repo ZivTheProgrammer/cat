@@ -5,15 +5,11 @@ could do in their spare time:
 
 HUGE bug: remove commas from tokens!!
 
-When I remove a course from my cart, two remove requests are sent. What's up with that?
-
 **Get rid of empty reviews**
 
 **If you delete the text in the search field, stop the search?**
 
 **searching 'npdf' returns ART 260, which is not npdf**
-
-**Put pdf options in Advanced Search**
 
 **ENG 201 has been offered in past semesters, not showing**
 
@@ -29,8 +25,6 @@ Fixed? **Scraping formats for distribution requirements and pdf stuff. So far, "
 There's a freaky review for AAS 201, from 2006 for Robert Fredin, that's just "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" and it makes ICE look pretty bad.
 
 Fonts
-
-Show crosslistings in results list
 
 top/bottom of scroll bar (are great!)
 
@@ -84,3 +78,6 @@ Will it be possible to search by grade percentages, i.e. "<50% final" or "no ora
 **Can we make it so that if there is only one search result (especially if I search for a specific course, e.g. "COS 333"), it gets opened up on the right side automatically?**
 **Still not scraping all courses** We are now!
 Search by grading option
+Show crosslistings in results list
+When I remove a course from my cart, two remove requests are sent. What's up with that?
+**Put pdf options in Advanced Search**

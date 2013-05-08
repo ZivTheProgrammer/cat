@@ -257,6 +257,7 @@ class CatDB:
 
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
+            #course['term'] = CURRENT_SEMESTER
         if course_id:
             course['course_id'] = {'$in': course_id if isinstance(course_id, list) else [course_id]}
         if unique_course:
