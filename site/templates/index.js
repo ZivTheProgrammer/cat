@@ -249,6 +249,9 @@ $(document).ready(function() {
 
     /* Give cart courses a scrollbar */
     $("#results_right_div").jScrollPane({showArrows:true, hideFocus:true, autoReinitialise:true});
+
+    /* Give the tutorial a scrollbar */
+    $("#tutorial").show().jScrollPane({showArrows:true}).hide();
     
     /* Set up initial left pane */
     $("#results_left_div").append('<div class="instruction_text">\
@@ -316,6 +319,24 @@ $(document).ready(function() {
     $("#hide_advanced").click(function(){
         $("#advanced_search_wrapper").fadeOut();
 		$("#advanced_search").fadeOut();
+    });
+
+    /* Show and hide the tutorial */
+    $("#show_tutorial").click(function(){
+        $("#advanced_search_wrapper").fadeIn();
+        $("#tutorial").fadeIn(function() {
+            $("#advanced_search_wrapper").click(function(ev) {
+                if (ev.target != this) return;
+                $("#advanced_search_wrapper").fadeOut();
+                $("#tutorial").fadeOut();
+                $("#advanced_search_wrapper").unbind('click');
+            });  
+        });
+    });
+
+    $("#hide_tutorial").click(function(){
+        $("#advanced_search_wrapper").fadeOut();
+		$("#tutorial").fadeOut();
     });
     
     /* Show and hide the analytics */
