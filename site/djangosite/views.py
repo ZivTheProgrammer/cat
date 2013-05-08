@@ -53,7 +53,7 @@ def index(request):
         result['source'] = 'cart'
         classified[result['course_id']] = result
     return render(request, "index.html", {'distrib': DISTRIBUTION_AREAS, 'courses': courses, 
-        'results': classified, 'netid': request.session['netid']})
+        'results': classified, 'netid': request.session['netid'], 'first_load': True})
 
 # Get search results and pass them back to the search page.
 def search_results(request):
@@ -102,6 +102,7 @@ def get_reviews(request):
         review['profs'] = []
         for instructor in review['instructors']:
             review['profs'].append(db.get_professor(id_number=instructor)[0])
+        review['review_text'].sort(key = len, reverse = True)
     return render(request, "get_reviews.html", {'results': result})
     
 # Add a course to the user's course cart.
@@ -203,8 +204,11 @@ def parse(db, text):
     previous = ''
     for token in tokens:
         two = previous + ' ' + token
+        # Match specially detected keywords
+        if re.match('^KW:.{3,}$', token):
+            output['keywords'].append(token[3:])
         # Match distribution requirement codes
-        if token in DISTRIBUTION_AREAS:
+        elif token in DISTRIBUTION_AREAS:
             output['distribution'].append(token)
         elif token == 'ST':
             output['distribution'].extend(['STN', 'STL'])
@@ -283,7 +287,7 @@ def parse(db, text):
             output['time'].append(token)
         elif re.match('^[0-2]?[0-9]:[0-9][0-9][AP]M$', token):
             output['time'].append(token[:-2])
-        elif re.match('^[0-2]?[0-9]$', token):
+        elif re.match('^[0-2]?[0-9](AM|PM)?$', token):
             output['time'].append(token + ":00")
         elif re.match('^[0-2]?[0-9][AP]M$', token):
             output['time'].append(token[:-2] + ":00")

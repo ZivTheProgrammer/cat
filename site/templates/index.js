@@ -11,15 +11,17 @@ function toggleCartEmptyMessage() {
 function display(course_id) {
     /* highlight the course if it's in the search results */
     if ($("#result_num_"+course_id).attr('class') !=('course_shown')) {
-        $(".course_shown").addClass("course").removeClass("course_shown");//switchClass("course_shown","course");
-        $("#result_num_"+course_id).addClass("course_shown").removeClass("course");//switchClass('course','course_shown');
+        $(".course_shown").addClass("course").removeClass("course_shown");
+        $("#result_num_"+course_id).addClass("course_shown").removeClass("course");
     }
     
     /* show the info */
     if ($("#detail_num_"+course_id).attr('class') != "detail_shown") {
-        $(".detail_shown").addClass("detail").removeClass("detail_shown");//switchClass("detail_shown", "detail");                        
+        $(".detail_shown").addClass("detail").removeClass("detail_shown");
         var detail_id = "#detail_num_"+course_id;
-        $(detail_id).addClass("detail_shown").removeClass("detail");//switchClass("detail", "detail_shown");
+        $(detail_id).addClass("detail_shown").removeClass("detail");
+        $(".coursecart").removeClass("coursecart_selected");
+        $("#cart_num_"+course_id).addClass("coursecart_selected");
     }
 }
 
@@ -144,7 +146,6 @@ function plot_review_data(course_id) {
 
 /* function to sort the results based on the current selection of the spinner */
 function sort_results(sortby) {
-
     var sorted = {};
     var keys = [];
     var courses = $("#search_results_list").children();
@@ -186,7 +187,6 @@ function sort_results(sortby) {
     
    // reverse if sorting numbers 
     if (sortby == "rating" || sortby == "relevance") keys.reverse();
-    //alert(keys);
     
     //put the results back in the html
     courses.remove();
@@ -390,7 +390,7 @@ $(document).ready(function() {
             input += " " + $(this).val();
         });
         if ($("#advanced_keyword").val().trim().length != 0) {
-            input += " " + $("#advanced_keyword").val();
+            input += " kw:" + $("#advanced_keyword").val();
         }
         
         $("#omnibar_input").val(input);
