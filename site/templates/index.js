@@ -423,12 +423,7 @@ $(document).ready(function() {
         $("#advanced_search").fadeOut();
         $("#advanced_search_wrapper").fadeOut();
         $("#advanced_search_wrapper").unbind('click');
-    });
-
-    /* Attach a handler to the preset search button */
-    $("#preset_search_1").click(function() {
-        $("#omnibar_input").val("pdf-only");
-        $("#omnibar_input").submit();
+        $("#advanced_form")[0].reset();
     });
     
     /* handle checking and unchecking the show old courses checkbox */

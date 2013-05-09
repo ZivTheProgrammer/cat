@@ -4,7 +4,7 @@
     <div class="detail_ratings_numbers">
     {% for result in results %}
         <div>
-            <div>{{ result.term_name }}</div>
+            <div>{{ result.term_name }}{% if result.profs %}&#x0D;&#x0A;{{ result.profs.0.last_name }}{% endif %}</div>
             {% for field, value in result.review_Nums.items %}
             <div>{{ field }}:{{ value }}</div>
             {% endfor %}
