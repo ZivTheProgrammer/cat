@@ -601,12 +601,12 @@ right:0;
 position: absolute;
 margin-left:auto;
 margin-right:auto;
-background-color: #333333;
-border: 2px solid rgba(255, 49, 0, 0.5);
+background-color: white;
+border: 2px solid black;
 border-radius: 6px;
 padding: 10px;
 font-family:"Verdana", Verdana, sans-serif;
-color:white;
+color:black;
 z-index:11;
 }
 
@@ -622,7 +622,7 @@ position: absolute;
 margin-left:auto;
 margin-right:auto;
 background-color: #333333;
-border: 2px solid rgba(255, 49, 0, 0.5);
+border: 2px solid black;
 border-radius: 6px;
 padding: 10px;
 font-family:"Verdana", Verdana, sans-serif;

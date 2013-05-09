@@ -1,3 +1,18 @@
+// Helper function: styles show previous button (state "courses_shown" or "courses_hidden")
+function styleShowPreviousButton(state) {
+    if (state == "courses_shown") {
+        $("#showold_span>label").text("Hide Previous Semesters");
+        $("#showold_span>label").css("background-color", "rgba(255, 49, 0, 0.5)");
+        $("#show_prev_result").css("display", "none");
+    } else if (state == "courses_hidden") {
+        $("#showold_span>label").text("View Previous Semesters");
+        $("#showold_span>label").css("background-color", "rgba(255, 49, 0, 0.0)");
+        $("#show_prev_result").css("display", "");            
+    } else {
+        alert("Oops! Please refresh the page");
+    }
+}
+
 // Helper function: adds/removes cart empty message
 function toggleCartEmptyMessage() {
     if ($("#cart_list li").length == 0) {
@@ -431,14 +446,13 @@ $(document).ready(function() {
         /* handle if just checked */
         if ($(this).is(":checked")) {
             $(".course_old").css("display","");
+            /* get rid of the prev_only_message if it's there */
             if ($("#prev_only_message").length != 0) $("#prev_only_message").remove();
-            $("#showold_span>label").text("Hide Previous Semesters");
-            $("#showold_span>label").css("background-color", "rgba(255, 49, 0, 0.5)");
+            styleShowPreviousButton("courses_shown");
         }
         else if (!$(this).is(":checked")) {
             $(".course_old").css("display","none");
-            $("#showold_span>label").text("View Previous Semesters");
-            $("#showold_span>label").css("background-color", "rgba(255, 49, 0, 0.0)");
+            styleShowPreviousButton("courses_hidden");
         }
     });
     
@@ -469,10 +483,23 @@ $(document).ready(function() {
                  $("#results_left_div").prepend("<div class='instruction_text' id='no_results_message'> <p>No results found</p></div>"); 
                 }
                 else {
-                    /* don't show old courses if the check box isn't checked */
+                    /* Show the "check prev semesters" message if we return only old semester courses */
                     if ($("#search_results_list").children().length == $("#search_results_list>.course_old").length && !$("#omnibar_showold").is(":checked")) {
-                        $("#results_left_div").append("<div class='instruction_text' id='prev_only_message'> <p> No results from most recent semester.</p> <p>Select 'Show Previous Semesters' above to display courses taught in previous semesters.</p></div>");
+                        $("#results_left_div").append("<div class='instruction_text' id='prev_only_message'>\
+                                                          <p> No results from most recent semester.</p>\
+                                                          <p>Select 'Show Previous Semesters' above to display courses taught in previous semesters.</p>\
+                                                      </div>");
+                    } /* Otherwise, if we have any old semester courses, append an extra result that reminds
+                         people to show past results if they get to the end of the list and don't find what they want.*/
+                    else if ($("#search_results_list>.course_old").length != 0) {
+                        $("#search_results_list").append("<li id='show_prev_result' class='course'>See results from previous semesters</li>");
+                        $("#show_prev_result").click(function() {
+                                $(".course_old").css("display", "");
+                                $("#omnibar_showold").prop('checked', true);
+                                styleShowPreviousButton("courses_shown");
+                        });                     
                     }
+                    /* Regardless, don't show old courses if the "show previous" isn't selected */
                     if(!$("#omnibar_showold").is(":checked")) {
                         $(".course_old").css("display","none");
                     }
