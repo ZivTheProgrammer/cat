@@ -278,9 +278,9 @@ $(document).ready(function() {
                             <li class="instruction_item">Want all courses taught by a professor?</br>\
                                 "Kernighan"</li>\
                             <li class="instruction_item">Have a gap in your schedule you want to fill?</br>\
-                                "MW 10:00am"</li>\
+                                "MW 10:00"</li>\
                             <li class="instruction_item">Distribution reqirements?</br>\
-                                ("HA/LA/EC" etc)</li>\
+                                "HA", "EC", etc.</li>\
                             <li class="instruction_item">Heavy courseload?</br>\
                                 "pdf-only"</li>\
                             <li class="instruction_item">Interested in a topic?</br>\
