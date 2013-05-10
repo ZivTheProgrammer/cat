@@ -227,7 +227,7 @@ function make_spinner() {
         corners: 1, // Corner roundness (0..1)
         rotate: 0, // The rotation offset
         direction: 1, // 1: clockwise, -1: counterclockwise
-        color: '#ff4900', // #rgb or #rrggbb
+        color: "#ff6400", // #rgb or #rrggbb
         speed: 1, // Rounds per second
         trail: 80, // Afterglow percentage
         shadow: false, // Whether to render a shadow
