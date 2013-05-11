@@ -224,7 +224,7 @@ function make_spinner() {
         corners: 1, // Corner roundness (0..1)
         rotate: 0, // The rotation offset
         direction: 1, // 1: clockwise, -1: counterclockwise
-        color: '#ff4900', // #rgb or #rrggbb
+        color: "#ff6400", // #rgb or #rrggbb
         speed: 1, // Rounds per second
         trail: 80, // Afterglow percentage
         shadow: false, // Whether to render a shadow
@@ -275,9 +275,9 @@ $(document).ready(function() {
                             <li class="instruction_item">Want all courses taught by a professor?</br>\
                                 "Kernighan"</li>\
                             <li class="instruction_item">Have a gap in your schedule you want to fill?</br>\
-                                "MW 10:00am"</li>\
+                                "MW 10:00"</li>\
                             <li class="instruction_item">Distribution reqirements?</br>\
-                                ("HA"/"LA"/"EC" etc.)</li>\
+                                "HA", "EC", etc.</li>\
                             <li class="instruction_item">Heavy courseload?</br>\
                                 "pdf only"</li>\
                             <li class="instruction_item">Interested in a topic?</br>\

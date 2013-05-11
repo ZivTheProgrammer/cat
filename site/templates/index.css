@@ -70,7 +70,7 @@ html, body {
 }
 
 #show_tutorial:hover {
-   color: rgb(255, 49, 0);
+   color: rgb(255, 100, 0);
 }
 
 #netid {
@@ -111,7 +111,7 @@ html, body {
 }
 
 #logout:hover{
-    color: rgb(255, 49, 0);
+    color: rgb(255, 100, 0);
 }
 
 .instruction_text {
@@ -235,7 +235,7 @@ html, body {
 }
 
 .detail_profs {
-    color:rgba(255,49,00, 1);
+    color:rgba(255,100,00, 1);
     font-size:110%;
 }
 
@@ -306,16 +306,17 @@ font-size:80%;
 }
 
 .course.course_old{
-background-color:rgba(100, 100, 100, 0.8);
+background-color:rgba(80, 80, 80, 0.8);
+/*background-color:rgba(100, 100, 100, 0.8);*/
 }
 
 .course:hover{
-background-color:rgba(255,49,00, 0.5);
+background-color:rgba(255, 100, 00, 0.7);
 cursor:pointer;
 }
 
 .course_shown{
-background-color:rgba(255,49,00,0.9);
+background-color:rgba(255,100,00,0.9);
 cursor:default;
 padding:5px;
 font-family:Verdana, sans-serif;
@@ -324,7 +325,8 @@ font-size:80%;
 
 /* Toggle professor name text color */
 .course>.sub_span {
-    color: rgb(251,27,0);
+    /*color: rgb(251,27,0);*/
+    color: #FF6C00;
 }
 
 .course_shown>.sub_span {
@@ -434,13 +436,13 @@ div{
 
 #advanced_form>[type="submit"]:hover, #advanced_form>[type="reset"]:hover {
     background-image:none;
-    background-color:rgba(255,49,0,0.5);
+    background-color:rgba(255,100,0,0.5);
     cursor:pointer;
 }
 
 .coursecart:hover,  #show_analytics:hover{
  background-image: none;
- background-color:rgba(255,49,0,0.5);
+ background-color:rgba(255,100,0,0.5);
 }
 
 .coursecart.coursecart_selected{
