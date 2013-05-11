@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> CAT Internals Documentation </title>
+</head>
+<body>
+    <h1> CAT Internals Documentation </h1>
+    <p> Noah Apthorpe, Garrett Disco, Luke Paulsen, Jocelyn Tang, Natalie Weires </p>
+    <p> Princeton University, COS 333, Spring 2013 (TA: Hao Wu) </p>
+    
+    <h2> Overall Design </h2>
+    <p> CAT is a web application designed to provide student users with access to Registrar course information through a powerful, easy-to-use interface. The CAT website is built with the Django web development framework, using Javascript/CSS with jQuery for the UI and MongoDB for the backend database. We use Git for version control, and all of the code for CAT is available in a public repository on Github: <a href="https://github.com/lpaulsen333/cat">github.com/lpaulsen333/cat</a>.</p>
+    
+    <h2> Django framework </h2>
+    <p> The CAT webpage is rendered using the Django framework. When a user makes a request to a URL in CAT's domain, that URL gets looked up in our urls.py file, which specifies a view function in views.py, the file containing most of the Django code. A view function typically: </p>
+    <ol>
+        <li> Uses the information in the user's request to build one or more database queries </li>
+        <li> Accesses the CAT database using the CatDB class (see below) </li>
+        <li> Makes some modifications to the resulting data (adding professor info, aggregating ratings, formatting term number, etc.) </li>
+        <li> Passes the modified information and a Django template to Django's render() function </li>
+    </ol>
+    <p>  Steps 1 and 3 above are more or less self-contained operations that may need to be called by more than one view function. Therefore, these operations are encapsulated as helper functions in views.py (called "parse" and "annotate", respectively). Step 4 relies on the Django templating system. A Django template is essentially an HTML document with specialized "tags" added to insert variables and provide control-flow (if / for) functionality. The render() function uses these tags with the data it recieved to create HTML, which it then sends back to the user as its response. The CSS and JavaScript files that the website uses are served as static files and are linked to by the template for the main page, index.html.</p>
+    
+    <h2> Database </h2>
+    <p> We use MongoDB, an open-source "No-SQL" database, to store user information and Registrar data. For access to the database, we use Python's "pymongo" module. The database as set up uses four different "collections" (the equivalent of SQL tables): "courses", "instructors", "unique", and "students". </p>
+    <p> The "courses" collection is used to store most course data provided by the registrar. Course number, subject, description, grading scheme, distribution area, etc. for a particular semester of a particular course are stored as entries in a Python-style dictionary. However, some courses listed by the Registrar are actually cross-listings (or previous semesters) of another course. To avoid displaying any course more than once, the "unique" collection maintains a list of unique courses, each with a list of the semesters in which that course has been offered. To look up a course with a given set of attributes, first a query is run to find all matching documents in the "courses" collection; then those documents are reduced to a list of unique courses, and only the most recent semester of each is returned. Instructor data is stored separately (as it is on the registrar site) and is looked up as needed based on references in the course data. </p>
+    <p> The above information is scraped from the OIT course information web feed by a Python command-line program, scrapeClasses.py, which constructs the appropriate URLs for querying courses and then interprets the resulting XML that the feed provides. This code is completely separate from the website itself and is run separately. (In fact, the website's database is typically updated by re-scraping the data on a different computer and then transferring the new data as a set of json files.)  A second command-line program, curling.py, is used to scrape course review data directly from the Registrar's website. This program is adapted from code provided to us by Candy Button '13 from her independent work. </p>
+    <p> Other than the scraping process described above, all database access is performed through the Python class "CatDB," which provides an interface for Django to access the database and provides several important abstractions. CatDB creates and maintains a connection to the database; interprets specialized search queries into the correct pymongo format; and returns search results as Python dictionaries rather than pymongo's cursors (which can only be iterated through once). It contains functions for getting a particular course; a particular semester of a course; reviews for a course; and a particular professor. Because it only supports searching course data, not creating, modifying, or deleting it, CatDB ensures that the database is protected from accidental or malicious damage. </p>
+    <p> The "students" collection works somewhat differently. It is used to store each student user's "course cart", a list of saved courses that is student-specific and is preserved across sessions. CatDB supports queries to get the list of courses in a student's cart, to add a course to a student's cart, and to remove a course from a student's cart.</p>
+    
+    <h2> User Interface </h2>
+    <p> Not counting login/logout (see below), all of CAT's functionality is provided on a single webpage, /index. Javascript is used for selection and navigation, and we make generous use of the jQuery and jQueryUI libraries for the graphical interface. The Javascript code for CAT relies on asynchronous calls to Django view functions for database access. Django's views.py file (described above) contains view functions for:</p>
+    <ul>
+        <li> Getting results for a search query </li>
+        <li> Displaying a previous semester of a course </li>
+        <li> Displaying review data for a course </li>
+        <li> Adding a course to a user's cart </li>
+        <li> Removing a course from a user's cart </li>
+    </ul>
+    <p> Each of these views is associated with a URL that does not respond to GET requests, but accepts POST requests from the appropriate source. All but the last of them return fragments of HTML that are then inserted into the page using JavaScript. Search results overwrite the entire main pane (excluding the top and bottom bars). Different semesters of a course, and the reviews page for a course, are considered "pages" within the right-hand pane's course information display. They are not loaded in initially (to avoid unnecessary work transferring data), so when a user switches to a different page, it must be loaded in as HTML if it has not been loaded already. Only one page of a particular course is displayed at a time.</p>
+    <p> Also, only one course in a particular set of search results can be displayed at a time. (Courses in the user's cart are also considered part of the search results; they are looked up and added to the search results by Django code.) A course is displayed by clicking on its preview in the left-hand pane or on its cart entry. Each course is uniquely identified by the ID number of its most recent semester, which is included in the ID attribute of its main display on the right, its preview on the left (if any), and its cart entry (if any). To ensure that it updates all of these elements accurately, our JavaScript code typically extracts this course ID from the element clicked on and uses it to build IDs for the other elements, which it then accesses using selectors. For example, whenever a course is selected, all other course information is hidden, the selected course's information is displayed, and the matching preview and cart elements are marked as selected. </p>
+    <p> Adding and removing cart courses does not cause any courses or search results to reload. All courses initially in the user's cart are loaded when the CAT page is first requested. Since any course added to the cart is already in the list of search results, it will have been loaded in; all that Django needs to do is note that the course has been added and send a small HTML fragment for the cart entry itself. JavaScript then sets each element to display appropriately. Removing a course is even easier: the course is deleted in the database, no response from Django is required, and JavaScript takes care of deleting the course's cart entry. The course information itself is not deleted, since it may still be in the search results.</p>
+    <p> Searching uses two interfaces: the "Omnibar" and advanced search. The Omnibar is a unified search bar that supports many different types of queries. Input to the Omnibar is passed to the Django parser mentioned above, which tokenizes it and then uses string matching and regular expressions (including multi-token matching) to identify what kind of query (subject, number, time, professor, keyword, etc.) is being used. It then builds the appropriate CatDB query. Advanced search works as an alternate interface to the Omnibar, with users able to select from more discrete options. To simplify the code involved, and to help teach users how to use the Omnibar, advanced search does not submit a request directly; rather, it uses JavaScript to fill the Omnibar with the equivalent Omnibar query and submit that.</p>
+    <p> CAT assumes that all search terms are meaningful (i.e. none are optional). In CatDB's search function, queries of the same type (e.g. two different subjects or course numbers) are logical OR-ed; then the different types of queries are logical AND-ed together. Search results are by default displayed in alphabetical order by subject, then by course number, but CatDB also ranks search results by the goodness of the match in some cases (e.g. keyword). On the client side, options are provided to order the search results by rating, by professor, or by their default order, using hidden information embedded in the course previews. Search results that are not being offered for the current (which Django stores as a constant) are by default hidden; if the user chooses to display them, they are grayed out to clearly distinguish them from the current courses.</p>
+
+    <h2> Web Hosting </h2>
+    <p> For development and testing, Django's runserver was the main server we used. However, for public use, we deployed CAT on an Amazon EC2 instance with an elastic IP address, running Ubuntu and using Apache as the server. The following is a complete list of the software (mostly Python packages) that we needed to install. All of these were successfully downloaded from the command line with apt-get and python's "pip" package.<p>
+    <ul>
+        <li> Apache 2 </li>
+        <li> Mongo </li>
+        <li> Django </li>
+        <li> pip </li>
+        <li> pymongo </li>
+        <li> pycurl </li>
+        <li> beautifulsoup4 </li>
+        <li> Git (for version control) </li>
+    </ul>
+    <p> Mongo as installed runs automatically on Apache, but requires that folders be created by hand to hold the database. To get Django running on Apache, we needed to modify Apache's conf file, add a .wsgi file to the Django site to perform the proper setup, and change some settings in the site's settings file. These changes are not stored on Github because they are deployment-only settings.</p>
+
+    <h2> Security </h2>
+    <p> Because Registrar course review data is sensitive, and because we are storing private user data (the list of courses in a user's cart), we need to ensure that only Princeton users can use CAT, and that one user cannot access data as a different user. To achieve this, we use Princeton's CAS system, a third-party service that independently verifies that a user is logged in to the Princeton system and, if so, sends the user's netid. If a user who is not logged in attempts to access CAT, he or she is directed to CAT's "login" view, which in turn queries CAS to determine if the user is valid. (The code for the login view is based on Brian Kernighan's CAS Python code posted on the COS 333 website.) If the user is vaid, he or she is logged into CAT using Django's "session" framework, which uses signed cookies to store information (in this case, the user's netid). Otherwise, the user is redirected to the CAS login page and then, upon successful CAS login, back to the CAT login view. Functionality is also provided to log a user out, which just requires deleting the user's netid and then redirecting to the CAS logout page.
+    </p>
+</body>
+</html>

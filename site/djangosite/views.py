@@ -1,5 +1,6 @@
 from django.shortcuts import render, render_to_response
 from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.views.decorators.http import require_POST
 from forms import *
 import CASClient
 import sys, os, urllib, re
@@ -25,7 +26,7 @@ def login(request):
     service_url = re.sub(r'\?&?$|&$', '', service_url)
     if "ticket" in request.GET:
         val_url = cas_url + "validate?service=" + service_url + '&ticket=' + urllib.quote(request.GET['ticket'])
-        r = urllib.urlopen(val_url).readlines() #returns 2 lines
+        r = urllib.urlopen(val_url).readlines() # returns 2 lines
         if len(r) == 2 and re.match("yes", r[0]) != None:
             request.session['netid'] = r[1].strip()
             return HttpResponseRedirect("/index/")
@@ -35,11 +36,12 @@ def login(request):
         login_url = cas_url + 'login?service=' + service_url
         return HttpResponseRedirect(login_url)
 
+# Handle user logout. Logs user out of both CAT and CAS.
 def logout(request):
     del request.session['netid']
     return HttpResponseRedirect("https://fed.princeton.edu/cas/logout")
         
-# Base view for the site
+# Base view for the site. Get courses currently in cart.
 def index(request):
     if not request.session.has_key('netid'):
         return HttpResponseRedirect("/login/")
@@ -56,6 +58,7 @@ def index(request):
         'results': classified, 'netid': request.session['netid'], 'first_load': True})
 
 # Get search results and pass them back to the search page.
+@require_POST()
 def search_results(request):
     # Used to keep track of result versus cart courses
     classified = OrderedDict()
@@ -82,6 +85,7 @@ def search_results(request):
     return render(request, "search_results.html", {'results': classified})
     
 # Get a new semester and pass it back to the search page.
+@require_POST()
 def get_semester(request):
     db = CatDB()
     course = db.get_course({"course_id": request.POST['course_id']})[0]
@@ -92,6 +96,7 @@ def get_semester(request):
     return render(request, "get_semester.html", {'result': result})
 
 # Get a course's reviews and pass them back.
+@require_POST()
 def get_reviews(request):
     db = CatDB()
     course = db.get_course({"course_id": request.POST['course_id']})[0]
@@ -106,12 +111,14 @@ def get_reviews(request):
     return render(request, "get_reviews.html", {'results': result})
     
 # Add a course to the user's course cart.
+@require_POST()
 def add_course_cart(request):
     db = CatDB()
     db.add_course(request.session['netid'], request.POST['course_id'])
     return render(request, "cart_course.html", {'course_id': request.POST['course_id'], 'course_name': request.POST['course_code']})
     
 # Remove a course from the user's course cart.  
+@require_POST()
 def remove_course_cart(request):
     db = CatDB()
     db.remove_course(request.session['netid'], request.POST['course_id'])

@@ -58,17 +58,14 @@ function load_semester(params) {
         $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
         $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
     }
-    /* Enable / disable course history selection buttons */ 
- //   $(detail_id+">.semester_menu>button").removeAttr("disabled");
- //   $(detail_id+">.semester_menu>.semester_"+params[1]+"_"+params[2]).attr("disabled", "disabled");
 }
 
 function load_reviews(course_id) {
     var detail_id = "#detail_num_"+course_id;
     if ($(detail_id+">.detail_reviews").hasClass("semester_shown")) {
        var semester_id = $(detail_id+">.semester_menu>.term_selector>select>option:selected").attr("value");
-       $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
-       $(detail_id+">.detail_sem_"+semester_id).addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+       $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); 
+       $(detail_id+">.detail_sem_"+semester_id).addClass("semester_shown").removeClass("semester"); 
        $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
     }
     else {
@@ -80,14 +77,14 @@ function load_reviews(course_id) {
             $(detail_id+">.detail_reviews").find(".detail_description").each(function() {
                 if ($(this).text().trim() != "No data available for this semester.") $(this).css("display","none");
             });
-            $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
-            $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+            $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); 
+            $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); 
             plot_review_data(course_id);
         });
     }
     else {
-        $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
-        $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+        $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); 
+        $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); 
         plot_review_data(course_id);
     }
     $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Course Data");
@@ -280,9 +277,9 @@ $(document).ready(function() {
                             <li class="instruction_item">Have a gap in your schedule you want to fill?</br>\
                                 "MW 10:00am"</li>\
                             <li class="instruction_item">Distribution reqirements?</br>\
-                                ("HA/LA/EC" etc)</li>\
+                                ("HA"/"LA"/"EC" etc.)</li>\
                             <li class="instruction_item">Heavy courseload?</br>\
-                                "pdf-only"</li>\
+                                "pdf only"</li>\
                             <li class="instruction_item">Interested in a topic?</br>\
                                 "Italian food"</li>\
                          </ul>\
@@ -438,7 +435,7 @@ $(document).ready(function() {
         $("#advanced_search").fadeOut();
         $("#advanced_search_wrapper").fadeOut();
         $("#advanced_search_wrapper").unbind('click');
-        $("#advanced_form")[0].reset();
+        $("#advanced_form")[0].reset(); // clear fields
     });
     
     /* handle checking and unchecking the show old courses checkbox */
@@ -478,7 +475,7 @@ $(document).ready(function() {
                 /* put the data in the result div */
                 $("#results_div").empty().append( $( data ) );
                 
-                /* display a "no results found message if no results were found */
+                /* display a "no results found" message if no results were found */
                 if($("#search_results_list").children().length == 0) {
                  $("#results_left_div").prepend("<div class='instruction_text' id='no_results_message'> <p>No results found</p></div>"); 
                 }
