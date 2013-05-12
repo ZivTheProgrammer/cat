@@ -85,7 +85,7 @@ class CatDB:
         if id_number:
             prof['id'] = id_number
         if name: # regex to search for parts of names
-            nameRegex = '.*(^|\s)' + string.join(name.split(), '.*') + '.*'
+            nameRegex = '.*(^|\s)' + string.join(name.split(), '(\s)(.+\s)?') + '($|\s).*'
             prof['name'] = re.compile(nameRegex, re.IGNORECASE)
         return self.profCol.find(prof)
 
@@ -151,8 +151,6 @@ class CatDB:
             professor_name=None, term=None, min_term=None, max_term=None,
             distribution=None, pdf=None, course_id=None, unique_course=None,
             keywords=None, unique=True, time=None, day=None):
-#        print self.courseCol
-#        print self.db
 
         #TODO: make sure all of these are strings
         if course:
@@ -176,13 +174,13 @@ class CatDB:
         if day:
             if not isinstance(day, list):
                 day = [day]
-            regex = '.*('
+            regex = '^('
             for d in day:
                 if (d == "t") or (d == "T"):
                     regex = regex +  "(t[^h])|"
                 else:
                     regex = regex + d + "|"
-            regex = regex + "ZYX).*"
+            regex = regex + "Z)*$"
             course['term'] = CURRENT_SEMESTER
             match = { 
                 '$elemMatch': {
@@ -245,9 +243,9 @@ class CatDB:
             descRegex = '.*('
             for kw in keywords:
                 if (kw.lower() not in self.words2ignore):
-                    descRegex = descRegex + kw + '|'
+                    descRegex = descRegex + '(^|\s)' + kw + '|'
 
-            descRegex = descRegex + 'zyvxzzxzx).*'
+            descRegex = descRegex + 'zyvxzx).*'
             course['description'] = re.compile(descRegex, re.IGNORECASE)
             course['title'] = course['description']
             if '$or' not in course:

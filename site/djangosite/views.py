@@ -1,14 +1,12 @@
 from django.shortcuts import render, render_to_response
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
-from forms import *
-import CASClient
 import sys, os, urllib, re
-from CatDB import CatDB
+from CatDB import *
 from collections import OrderedDict
 import HTMLParser
 
-RATING_CATEGORIES = ['overall_mean', 'lectures_mean', 'precepts_mean', 'classes_mean', 'readings_mean']
+RATING_CATEGORIES = ['overall_mean', 'lectures_mean', 'precepts_mean', 'classes_mean', 'readings_mean', 'assignments_mean']
 DISTRIBUTION_AREAS = ['EM', 'EC', 'HA', 'LA', 'QR', 'SA', 'STN', 'STL']
 SUBJECT_AREAS = ["AAS", "AFS", "AMS", "ANT", "AOS", "APC", "ARA", "ARC", "ART", "AST", "ATL", "BCS", "CBE", "CEE", "CHI", "CHM", "CHV", "CLA", "CLG", "COM", "COS", "CWR", "CZE", "DAN", "EAP", "EAS", "ECO", "ECS", "EEB", "EGR", "ELE", "ENE", "ENG", "ENV", "EPS", "FIN", "FRE", "FRS", "GEO", "GER", "GHP", "GLS", "GSS", "HEB", "HIN", "HIS", "HLS", "HOS", "HUM", "ISC", "ITA", "JDS", "JPN", "JRN", "KOR", "LAO", "LAS", "LAT", "LIN", "MAE", "MAT", "MED", "MOD", "MOG", "MOL", "MSE", "MUS", "NES", "NEU", "ORF", "PAW", "PER", "PHI", "PHY", "PLS", "POL", "POP", "POR", "PSY", "QCB", "REL", "RUS", "SAS", "SLA", "SOC", "SPA", "STC", "SWA", "THR", "TPP", "TRA", "TUR", "URB", "URD", "VIS", "WRI", "WWS"]
 SPECIAL = {'AFRICAN', 'COMPUTATIONAL', 'APPLIED', 'CHEMICAL', 'CIVIL', 'BIOLOGICAL', 'CLASSICAL', 'COMPARATIVE', 'COMPUTER', 'CREATIVE', 'EUROPEAN', 'EVOLUTIONARY', 'ELECTRICAL', 'ENERGY', 'ENVIRONMENTAL', 'FRESHMAN', 'GLOBAL', 'GENDER', 'SEXUALITY', 'INTEGRATED', 'LATIN', 'MECHANICAL', 'AEROSPACE', 'MODERN', 'MOLECULAR', 'NEAR', 'FINANCIAL', 'OPERATIONS', 'ANCIENT', 'QUANTITATIVE', 'COMPUTATIONAL', 'SOUTH', 'TEACHER','INTERCULTURAL', 'WOODROW', 'VISUAL', 'SCIENCE', 'TECHNOLOGY'}
@@ -55,7 +53,7 @@ def index(request):
         result['source'] = 'cart'
         classified[result['course_id']] = result
     return render(request, "index.html", {'distrib': DISTRIBUTION_AREAS, 'courses': courses, 
-        'results': classified, 'netid': request.session['netid'], 'first_load': True})
+        'results': classified, 'netid': request.session['netid'], 'first_load': True, 'current_semester': CURRENT_SEMESTER})
 
 # Get search results and pass them back to the search page.
 @require_POST
@@ -82,7 +80,7 @@ def search_results(request):
         else:
             result['source'] = 'cart'
             classified[result['course_id']] = result
-    return render(request, "search_results.html", {'results': classified})
+    return render(request, "search_results.html", {'results': classified, 'current_semester': CURRENT_SEMESTER})
     
 # Get a new semester and pass it back to the search page.
 @require_POST
@@ -108,14 +106,15 @@ def get_reviews(request):
         for instructor in review['instructors']:
             review['profs'].append(db.get_professor(id_number=instructor)[0])
         review['review_text'].sort(key = len, reverse = True)
-    return render(request, "get_reviews.html", {'results': result})
+    return render(request, "get_reviews.html", {'results': result, 'current_semester': CURRENT_SEMESTER})
     
 # Add a course to the user's course cart.
 @require_POST
 def add_course_cart(request):
     db = CatDB()
     db.add_course(request.session['netid'], request.POST['course_id'])
-    return render(request, "cart_course.html", {'course_id': request.POST['course_id'], 'course_name': request.POST['course_code']})
+    return render(request, "cart_course.html", {'course_id': request.POST['course_id'], 
+        'course_subject': request.POST['course_code'][0:3], 'course_number': request.POST['course_code'][3:6]})
     
 # Remove a course from the user's course cart.  
 @require_POST
@@ -213,7 +212,7 @@ def parse(db, text):
         two = previous + ' ' + token
         # Match specially detected keywords
         if re.match('^KW:.{3,}$', token):
-            output['keywords'].append(token[3:])
+            output['keywords'].append(token[3:])  
         # Match distribution requirement codes
         elif token in DISTRIBUTION_AREAS:
             output['distribution'].append(token)
@@ -296,11 +295,11 @@ def parse(db, text):
         # Match times    
         elif re.match('^[0-2]?[0-9]:[0-9][0-9]$', token):
             output['time'].append(token)
-        elif re.match('^[0-2]?[0-9]:[0-9][0-9][AP]M$', token):
+        elif re.match('^[0-2]?[0-9]:[0-9][0-9](AM|PM)$', token):
             output['time'].append(token[:-2])
-        elif re.match('^[0-2]?[0-9](AM|PM)?$', token):
+        elif re.match('^[0-2]?[0-9]$', token):
             output['time'].append(token + ":00")
-        elif re.match('^[0-2]?[0-9][AP]M$', token):
+        elif re.match('^[0-2]?[0-9](AM|PM)$', token):
             output['time'].append(token[:-2] + ":00")
         # Match professor names / general keywords
         elif re.match('^[A-Z]+$', token):
