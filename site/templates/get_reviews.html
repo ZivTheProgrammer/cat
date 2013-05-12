@@ -13,6 +13,7 @@
     </div>
     <div class = "detail_all_the_things">
     {% for result in results %}
+        {% if result.term != current_semester %}
         <div class = "detail_term"> {{ result.term_name }} </div>
         <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
         <div class = "detail_description">
@@ -28,6 +29,7 @@
         {% endfor %}
         </ul>
         <br>
+        {% endif %}
     {% endfor %}
     </div>
 </div>

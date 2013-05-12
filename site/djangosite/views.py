@@ -6,7 +6,7 @@ from CatDB import *
 from collections import OrderedDict
 import HTMLParser
 
-RATING_CATEGORIES = ['overall_mean', 'lectures_mean', 'precepts_mean', 'classes_mean', 'readings_mean', 'assignments_mean']
+RATING_CATEGORIES = ['overall', 'lectures', 'precepts', 'classes', 'readings', 'assignments']
 DISTRIBUTION_AREAS = ['EM', 'EC', 'HA', 'LA', 'QR', 'SA', 'STN', 'STL']
 SUBJECT_AREAS = ["AAS", "AFS", "AMS", "ANT", "AOS", "APC", "ARA", "ARC", "ART", "AST", "ATL", "BCS", "CBE", "CEE", "CHI", "CHM", "CHV", "CLA", "CLG", "COM", "COS", "CWR", "CZE", "DAN", "EAP", "EAS", "ECO", "ECS", "EEB", "EGR", "ELE", "ENE", "ENG", "ENV", "EPS", "FIN", "FRE", "FRS", "GEO", "GER", "GHP", "GLS", "GSS", "HEB", "HIN", "HIS", "HLS", "HOS", "HUM", "ISC", "ITA", "JDS", "JPN", "JRN", "KOR", "LAO", "LAS", "LAT", "LIN", "MAE", "MAT", "MED", "MOD", "MOG", "MOL", "MSE", "MUS", "NES", "NEU", "ORF", "PAW", "PER", "PHI", "PHY", "PLS", "POL", "POP", "POR", "PSY", "QCB", "REL", "RUS", "SAS", "SLA", "SOC", "SPA", "STC", "SWA", "THR", "TPP", "TRA", "TUR", "URB", "URD", "VIS", "WRI", "WWS"]
 SPECIAL = {'AFRICAN', 'COMPUTATIONAL', 'APPLIED', 'CHEMICAL', 'CIVIL', 'BIOLOGICAL', 'CLASSICAL', 'COMPARATIVE', 'COMPUTER', 'CREATIVE', 'EUROPEAN', 'EVOLUTIONARY', 'ELECTRICAL', 'ENERGY', 'ENVIRONMENTAL', 'FRESHMAN', 'GLOBAL', 'GENDER', 'SEXUALITY', 'INTEGRATED', 'LATIN', 'MECHANICAL', 'AEROSPACE', 'MODERN', 'MOLECULAR', 'NEAR', 'FINANCIAL', 'OPERATIONS', 'ANCIENT', 'QUANTITATIVE', 'COMPUTATIONAL', 'SOUTH', 'TEACHER','INTERCULTURAL', 'WOODROW', 'VISUAL', 'SCIENCE', 'TECHNOLOGY'}
@@ -151,9 +151,10 @@ def annotate(db, semester):
         semester['all_named_terms'] = all_named_terms
     # Add aggregated review data
     reviews = db.get_reviews(semester['unique_course'])
-    current_weight = 1.0
-    total_weight = 0.0 
-    weighted_rating = dict((category, 0.0) for category in RATING_CATEGORIES)
+    current_weight = 0.05 # Starting weight. Increase or decrease to change strength of Bayesian ranking system
+    total_weight = dict((category, 1.0) for category in RATING_CATEGORIES)
+    weighted_rating = dict((category, 3.8) for category in RATING_CATEGORIES)
+    seen_one = dict((category, False) for category in RATING_CATEGORIES) # To make sure we are getting some ratings
     for review in reviews:
         # Skip reviews for terms later than the one being viewed
         if int(review['term']) > int(semester['term']):
@@ -162,36 +163,36 @@ def annotate(db, semester):
         if not review['review_Nums']:
             continue
         # Update weights
-        current_weight = current_weight * DECAY_FACTOR 
-        total_weight += current_weight
+        current_weight = current_weight * DECAY_FACTOR
         # Add up ratings by category
         for category in RATING_CATEGORIES:
             if category in review['review_Nums']:
-                weighted_rating[category] += float(review['review_Nums'][category]) * current_weight
-            else:
-                weighted_rating[category] -= 42.0 # large negative magic number
-    if total_weight > 0.0:
-        for category in RATING_CATEGORIES:
-            if weighted_rating[category] > 0.0:
-                semester[category] = "{0:.2f}".format(weighted_rating[category] / total_weight)
-        if weighted_rating['overall_mean'] / total_weight > 4.6:
-            semester['rating_color'] = 'rating_color_1'
-        elif weighted_rating['overall_mean'] / total_weight > 4.4:
-            semester['rating_color'] = 'rating_color_2'
-        elif weighted_rating['overall_mean'] / total_weight > 4.2:
-            semester['rating_color'] = 'rating_color_3'
-        elif weighted_rating['overall_mean'] / total_weight > 4.0:
-            semester['rating_color'] = 'rating_color_4'
-        elif weighted_rating['overall_mean'] / total_weight > 3.8:
-            semester['rating_color'] = 'rating_color_5'
-        elif weighted_rating['overall_mean'] / total_weight > 3.6:
-            semester['rating_color'] = 'rating_color_6'
-        elif weighted_rating['overall_mean'] / total_weight > 3.4:
-            semester['rating_color'] = 'rating_color_7'
-        elif weighted_rating['overall_mean'] / total_weight > 3.2:
-            semester['rating_color'] = 'rating_color_8'
-        elif weighted_rating['overall_mean'] / total_weight > 0.0:
-            semester['rating_color'] = 'rating_color_9'
+                seen_one[category] = True
+                for i, count in enumerate(review['review_Nums'][category]):
+                    weighted_rating[category] += current_weight * float(count) * (5 - i)
+                    total_weight[category] += current_weight * float(count)
+    for category in RATING_CATEGORIES:
+        if seen_one[category]:
+            final_average = weighted_rating[category] / total_weight[category]
+            semester[category + "_mean"] = "{0:.2f}".format(final_average)
+            if final_average > 4.6:
+                semester[category + '_color'] = 'rating_color_1'
+            elif final_average > 4.4:
+                semester[category + '_color'] = 'rating_color_2'
+            elif final_average > 4.2:
+                semester[category + '_color'] = 'rating_color_3'
+            elif final_average > 4.0:
+                semester[category + '_color'] = 'rating_color_4'
+            elif final_average > 3.8:
+                semester[category + '_color'] = 'rating_color_5'
+            elif final_average > 3.6:
+                semester[category + '_color'] = 'rating_color_6'
+            elif final_average > 3.4:
+                semester[category + '_color'] = 'rating_color_7'
+            elif final_average > 3.2:
+                semester[category + '_color'] = 'rating_color_8'
+            elif final_average > 0.0:
+                semester[category + '_color'] = 'rating_color_9'
     return semester
 
 def term_name(term_no):
@@ -225,10 +226,8 @@ def parse(db, text):
         elif two in DEPT_MAP:
             output['subject'].append(DEPT_MAP[two])
         elif token in DEPT_MAP:
-            print 'ahoy!'
             output['subject'].append(DEPT_MAP[token])
         elif token in SPECIAL:
-            print 'here'
             pass
         elif previous in SPECIAL:
             output['keywords'].append(previous)

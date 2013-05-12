@@ -1,14 +1,28 @@
 <div class = "detail_all_the_things">
     <div class = "detail_term"> {{result.term_name}} </div>
-    <div class = "detail_subject_number_dist"> {{result.subject}} {{result.course_number}} {% for s in result.crosslistings %}/ {{ s.subject }} {{ s.course_number }} {% endfor %} {% if result.distribution %}({{ result.distribution }}){% endif %}  {% for s in result.pdf %} {{ s }} {% endfor %}</div></br>
+    <div class = "detail_subject_number_dist"> {{result.subject}} {{result.course_number}} {% for s in result.crosslistings %}/ {{ s.subject }} {{ s.course_number }} {% endfor %} {% if result.distribution %}({{ result.distribution }}){% endif %}  {% for s in result.pdf %} {{ s }} {% endfor %}</div>
+    </br>
     <div class = "detail_rating"> 
-    {% if result.overall_mean %}| Overall: <span class="overall_rating">{{result.overall_mean }}</span> |{% endif %}
-    {% if result.lectures_mean %} Lectures: {{result.lectures_mean }} |{% endif %}
-    {% if result.precepts_mean %} Precepts: {{result.precepts_mean }} |{% endif %}
-    {% if result.readings_mean %} Readings: {{result.readings_mean }} |{% endif %}
-    {% if result.classes_mean %} Classes: {{result.classes_mean }} |{% endif %}
-
+    {% if result.overall_mean %} 
+        <div class="rating_box {{result.overall_color}}">Overall: <span class="overall_rating">{{result.overall_mean }}</span></div>
+    {% endif %}
+    {% if result.lectures_mean %}
+        <div class="rating_box {{result.lectures_color}}">Lectures: {{result.lectures_mean }}</div>
+    {% endif %}
+    {% if result.precepts_mean %}
+        <div class="rating_box {{result.precepts_color}}">Precepts: {{result.precepts_mean }}</div>
+    {% endif %}
+    {% if result.classes_mean %}
+        <div class="rating_box {{result.classes_color}}">Classes: {{result.classes_mean }}</div>
+    {% endif %}
+    {% if result.readings_mean %}
+        <div class="rating_box {{result.readings_color}}">Readings: {{result.readings_mean }}</div>
+    {% endif %}
+    {% if result.assignments_mean %}
+        <div class="rating_box {{result.assignments_color}}">Assignments: {{result.assignments_mean }}</div>
+    {% endif %}
     </div>
+    </br>
     <div class = "detail_title"> {{result.title}} </div>
     <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
     <div class = "detail_description"> {{result.description}} </div> </br>
@@ -54,7 +68,7 @@
             <td class="classes_table_cell">{{ class.section}}</td>
             <td class="classes_table_cell">{{ class.days}}</td>
             <td class="classes_table_cell">{{ class.starttime }} - {{ class.endtime }}</td>
-            <td class="classes_table_cell">{% if class.bldg %} in {{ class.bldg }} {{class.roomnum}}
+            <td class="classes_table_cell">{% if class.bldg %} {{ class.bldg }} {{class.roomnum}}
             {% else %}room TBD
             {% endif %}</td>
           </tr>

@@ -93,14 +93,6 @@
 			{% endfor %} </br>
 			<span class="advanced_label">PDF Only:</span><input class = "advanced_pdf " name="pdfonly" value="pdfonly" type="checkbox"></input></br>
             <span class="advanced_label">Keyword:</span><input id = "advanced_keyword" type="text" name="keyword"></input></br>
-            <!--<select id = "advanced_distribution">
-                <option value=''></option>
-                {% for d in distrib %} <option value='{{ d }}'>{{ d }}</option> {% endfor %}
-            </select>
-            <div style="display:block;">
-                <input type="text" id="advanced_num_range" style="border: 0; font-weight: bold;" readonly/>
-                <div id="advanced_num_slider"></div>
-            </div>-->
             <input value="Search" type="submit"></input>
             <input value="Reset" type="reset"></input>
         </form>
@@ -124,7 +116,7 @@
     <ul id="cart_list">
         {% for course_id, result in results.items %}
             {% if result.source = "cart" %}
-                {% include "cart_course.html" with course_id=course_id course_name=result.unique_course %}
+                {% include "cart_course.html" with course_id=course_id course_subject=result.subject course_number=result.course_number%}
             {% endif %}
         {% endfor %}
     </ul>
