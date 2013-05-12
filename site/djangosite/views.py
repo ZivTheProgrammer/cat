@@ -58,7 +58,7 @@ def index(request):
         'results': classified, 'netid': request.session['netid'], 'first_load': True})
 
 # Get search results and pass them back to the search page.
-@require_POST()
+@require_POST
 def search_results(request):
     # Used to keep track of result versus cart courses
     classified = OrderedDict()
@@ -85,7 +85,7 @@ def search_results(request):
     return render(request, "search_results.html", {'results': classified})
     
 # Get a new semester and pass it back to the search page.
-@require_POST()
+@require_POST
 def get_semester(request):
     db = CatDB()
     course = db.get_course({"course_id": request.POST['course_id']})[0]
@@ -96,7 +96,7 @@ def get_semester(request):
     return render(request, "get_semester.html", {'result': result})
 
 # Get a course's reviews and pass them back.
-@require_POST()
+@require_POST
 def get_reviews(request):
     db = CatDB()
     course = db.get_course({"course_id": request.POST['course_id']})[0]
@@ -111,14 +111,14 @@ def get_reviews(request):
     return render(request, "get_reviews.html", {'results': result})
     
 # Add a course to the user's course cart.
-@require_POST()
+@require_POST
 def add_course_cart(request):
     db = CatDB()
     db.add_course(request.session['netid'], request.POST['course_id'])
     return render(request, "cart_course.html", {'course_id': request.POST['course_id'], 'course_name': request.POST['course_code']})
     
 # Remove a course from the user's course cart.  
-@require_POST()
+@require_POST
 def remove_course_cart(request):
     db = CatDB()
     db.remove_course(request.session['netid'], request.POST['course_id'])
