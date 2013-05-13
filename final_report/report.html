@@ -13,7 +13,11 @@
 <p> pretty well </p>
 
 <h2> What was your experience with design, interfaces, testing, etc.? </h2>
-<p> </p>
+<p> We started out design process early on, with the entire group present. We first identified the key features of our app (which ended up changing over time), and then split up into UI and Back-end teams to design (without implementing anything) how the architecture was going to work on both ends. After each team had come up with a design, we met together again to critique and finalize these designs, and also to come up with a great protocol for communication between the two sides. Specifically, we decided exactly when requests would be made and what the database would return at each step. Because we thought about this so far in advance, our final product is able to fetch most data well in advance of when the user actually needs it, thus making for a more seamless user experience.</p>
+
+<p>Actual testing of our code was minimal and spotty. In general, if after creating a new feature we could do a run through of the basic use case (search for "COS", view registrar data for COS 126, see reviews, add to cart) and nothing broke, that was sufficient to push to master. We ended up introducing a lot of bugs this way, including some that persist in the final product and have only been fixed with patches that cover up the mistake.</p>
+
+<p>Eventually we started doing intentional testing of the app, but this mostly consisted of coming up with the strangest plausible queries we could think of and seeing if the app behaved in a way that was not an obvious catastrphic failure. We also tried searching for the entire text of Genesis 1 and 2, which causes the app to hang (go ahead, try it), which we think is a reasonable response.</p> 
 
 <h2> What surprises, pleasant or otherwise, did you encounter on the way? </h2>
 <p><h3>Surprise #1: Unpleasant</h3></p>
