@@ -16,20 +16,20 @@
 <p> </p>
 
 <h2> What surprises, pleasant or otherwise, did you encounter on the way? </h2>
-<p>Surprise #1: Unpleasant</p>
+<p><h3>Surprise #1: Unpleasant</h3></p>
 <p>In the first few weeks of the project, we had meetings with the USG, who showed a lot of support and excitement for the project. We initially thought we would be able to host our site on the their server but realized that this was more complicated than we thought, for a few reasons. First, communication between our team and the USG was sometimes not the best (ie, they were not always good at replying promptly), and also, they were used to using php for TigerApps, and it was unclear how we could get Django set up.</p>
 <p>After realizing that we probably wouldn't be able to host on the USG servers, we decided to host on ec2 servers, which was generally straightforward. We did, however, encounter a problem when we accidentally locked ourselves out of the ec2 instance and had to restart everything.</p>
 
-<p>Surprise #2: Unpleasant</p>
+<p><h3>Surprise #2: Unpleasant</h3></p>
 Getting CAS to work also proved more difficult than we expected, because Professor Kernighan's code, though it was very helpful, was not designed for Django. After we got that to work, however, we still had to wait for approval from OIT to get white-listed. Overall this was slightly inconvenient but not too frustrating.</p>
 
-<p>Surprise #3: Unpleasant</p>
+<p><h3>Surprise #3: Unpleasant</h3></p>
 Interpreting searches was not as easy or intuitive as we thought it would be. We originally decided to parse text searches (ie, those that were not related to other specific searches like distribution requirement, days of week/times, etc) by first checking if the word was a professor name - if so, we just matched classes with that professor name. If not, we labeled it a keyword and counted the number of times the keyword appeared in a course title or description (weighting it more if it was in the title), and returned searches in the order of relevance (most matches). We realized that this works for the most part, but certain keywords are also professor names - like Christian, Black, White, Green, etc. We decided that the only way to really solve for this was to have special cases for certain words/names, but overall it was a strange and slightly unpleasant surprise.</p>
 <p>Another case where search was a bit ambiguous was interpretation of day/time searches. We had a few disagreements on whether MWF meant classes that met on Mondays, Wednesdays, and Fridays, or if it meant classes that met on Mondays, Wednesdays, or Fridays. In the end we decided to use "or", but we still feel that users could mean both.</p>
-<p>Surprise #4: Pleasant</p>
+<p><h3>Surprise #4: Pleasant</h3></p>
 <p>Mongo integrated well with Apache</p>
 
-<p>Surprise #5: Pleasant</p>
+<p><h3>Surprise #5: Pleasant</h3><p>
 <p>jQuery ended up working out really well; every time we looked up a function, it was there (built-in) and named with something we expected it to be named. The intuitive nature of jQuery was pleasantly surprising. </p>
 
 <h2> What choices did you make that worked out well or badly? </h2>
