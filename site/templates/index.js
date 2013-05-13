@@ -160,7 +160,7 @@ function plot_review_data(course_id) {
 function sort_results(sortby) {
     var sorted = {};
     var keys = [];
-    var courses = $("#search_results_list").children();
+    var courses = $("#search_results_list").children().not("#show_prev_result");
     $.each(courses, function() {
         var key;
         var course_id = $(this).attr("id").split("_")[2];
@@ -197,18 +197,18 @@ function sort_results(sortby) {
    //do the sort
     keys.sort();    
     
-   // reverse if sorting numbers 
-    if (sortby == "rating" || sortby == "relevance") keys.reverse();
+   // Preemptively undo the reversing unless sorting by numbers 
+    if (sortby != "rating" && sortby != "relevance") keys.reverse();
     
-    //put the results back in the html
+    // Put the results back in the html. Has the effect of reversing the keys (done to keep 'show previous' at the end).
     courses.remove();
     $.each(keys, function() {
-        $("#search_results_list").append(sorted[this]);
+        $("#search_results_list").prepend(sorted[this]);
     });
     
     /* make the course's data show up when it is clicked */
     $(".course").click(function() {
-        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.9)");
+        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
         var course_id = $(this).attr('id').split('_')[2];
         display(course_id);  
     });

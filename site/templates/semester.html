@@ -1,7 +1,6 @@
 <div class = "detail_all_the_things">
     <div class = "detail_term"> {{result.term_name}} </div>
     <div class = "detail_subject_number_dist"> {{result.subject}} {{result.course_number}} {% for s in result.crosslistings %}/ {{ s.subject }} {{ s.course_number }} {% endfor %} {% if result.distribution %}({{ result.distribution }}){% endif %}  {% for s in result.pdf %} {{ s }} {% endfor %}</div>
-    </br>
     <div class = "detail_rating"> 
     {% if result.overall_mean %} 
         <div class="rating_box {{result.overall_color}}">Overall: <span class="overall_rating">{{result.overall_mean }}</span></div>
@@ -22,7 +21,6 @@
         <div class="rating_box {{result.assignments_color}}">Assignments: {{result.assignments_mean }}</div>
     {% endif %}
     </div>
-    </br>
     <div class = "detail_title"> {{result.title}} </div>
     <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
     <div class = "detail_description"> {{result.description}} </div> </br>

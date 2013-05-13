@@ -14,7 +14,7 @@ html, body {
     background-repeat:no-repeat;
     background-attachment:fixed;
     background-image:url('/static/Mahogany.jpg');
-    background-color:rgb(0, 50, 0);
+    background-color:white;
     background-size:cover;
 }
 
@@ -228,6 +228,11 @@ html, body {
     font-weight:bold;
 }
 
+.detail_rating{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .detail_title {
     color:rgb(255,255,255);
     font-size:130%;
@@ -307,7 +312,6 @@ font-size:80%;
 
 .course.course_old{
 background-color:rgba(80, 80, 80, 0.8);
-/*background-color:rgba(100, 100, 100, 0.8);*/
 }
 
 .course:hover{
@@ -325,7 +329,6 @@ font-size:80%;
 
 /* Toggle professor name text color */
 .course>.sub_span {
-    /*color: rgb(251,27,0);*/
     color: #FF6C00;
 }
 
@@ -644,6 +647,7 @@ z-index:11;
 #search_results_list{
 margin: 0px;
 padding:0px;
+padding-bottom: 4px;
 }
 
 
