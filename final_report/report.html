@@ -16,17 +16,41 @@
 <p> </p>
 
 <p> What surprises, pleasant or otherwise, did you encounter on the way? </p>
-<p> professor = keyword? (“Christian”) </p>
-<p> trouble with hosting/CAS? </p>
+<p>Surprise #1: Unpleasant</p>
+<p>In the first few weeks of the project, we had meetings with the USG, who showed a lot of support and excitement for the project. We initially thought we would be able to host our site on the their server but realized that this was more complicated than we thought, for a few reasons. First, communication between our team and the USG was sometimes not the best (ie, they were not always good at replying promptly), and also, they were used to using php for TigerApps, and it was unclear how we could get Django set up.</p>
+<p>After realizing that we probably wouldnâ€™t be able to host on the USG servers, we decided to host on ec2 servers, which was generally straightforward. We did, however, encounter a problem when we accidentally locked ourselves out of the ec2 instance and had to restart everything.</p>
 
-<p> What choices did you make that worked out well or badly? </p>
-<p> starting early (thanks to natski) was good!</p>
+<p>Surprise #2: Unpleasant</p>
+Getting CAS to work also proved more difficult than we expected, because Professor Kernighan's code, though it was very helpful, was not designed for Django. After we got that to work, however, we still had to wait for approval from OIT to get white-listed. Overall this was slightly inconvenient but not too frustrating.</p>
 
-<p>  What would you like to do if there were more time? How would you do things differently next time? </p>
-<p> analyze button </p>
+<p>Surprise #2: Unpleasant</p>
+Interpreting searches was not as easy or intuitive as we thought it would be. We originally decided to parse text searches (ie, those that were not related to other specific searches like distribution requirement, days of week/times, etc) by first checking if the word was a professor name - if so, we just matched classes with that professor name. If not, we labeled it a keyword and counted the number of times the keyword appeared in a course title or description (weighting it more if it was in the title), and returned searches in the order of relevance (most matches). We realized that this works for the most part, but certain keywords are also professor names - like Christian, Black, White, Green, etc. We decided that the only way to really solve for this was to have special cases for certain words/names, but overall it was a strange and slightly unpleasant surprise.</p>
+<p>Another case where search was a bit ambiguous was interpretation of day/time searches. We had a few disagreements on whether MWF meant classes that met on Mondays, Wednesdays, and Fridays, or if it meant classes that met on Mondays, Wednesdays, or Fridays. In the end we decided to use "or", but we still feel that users could mean both.</p>
+<p>Surprise #3: Pleasant</p>
+<p>Mongo integrated well with Apache</p>
 
-<p> What should next year's class learn from your experience? Imagine that you are writing this document for your (friendly!) boss or professor and want to explain what you learned that could be applied to the next project.</p>
-<p> start early! (like over spring break) </p>
+<p>Surprise #4: Pleasant</p>
+<p>jQuery ended up working out really well; every time we looked up a function, it was there (built-in) and named with something we expected it to be named. The intuitive nature of jQuery was pleasantly surprising. </p>
+
+<h2> What choices did you make that worked out well or badly? </h2>
+<!--<p> starting early (thanks to natski) was good!</p>-->
+<p> We started our project early, getting the basic database built over spring break. This included defining an interface through which the database could be accessed, which let us start building the middle and front layers of the site while still making changes to how the database was structured and built. Similarly, we split up the various components of the project in a way that let us work indivually or in pairs on sections separately, but so that the pieces worked together well.
+
+<p> Unlike many groups, we decided not to use Twitter Bootstrap to design our app's style and layout. This gave us more freedom to design features in novel ways. For example, no other search engine we have observed brings back search results on the left and detail views of search results on the right. We think that this is one of our app's best features, as it allows you to search, browse results, and read registrar and review data all without reloading the page.</p>
+
+<p> At the very beginning of the project, we talked to USG about making our site a TigerApp. While they were excited and wanted to be involved, actually getting our project hosted with them didn't happen quickly enough for us to keep making progress, so we ended up hosting on an Amazon EC2 server. While there are plans to eventually move CAT to USG servers, trying to make this happen during the semester didn't work out. </p>
+
+<h2> What would you like to do if there were more time? How would you do things differently next time? </h2>
+<p> One of the most frustrating parts of designing CAT was not getting to include all the features we had in mind. We overestimated how long it would take to implement what we consider our "core platform," namely, the user interface, the search functionality, and the ability to see graphs of reviews. A major feature we did not have time to implement was an "Analyze" feature for courses in the cart. This feature would have analyzed Registrar data to compile statistics on the total workload required to complete all of the courses in the cart. For example, we might have reported on the number of midterms, finals, pages of reading per week, Dean's Date papers, etc, and displayed these results in a slick graph.</p>
+
+<p> We would also have liked to implement connectivity with ICE in the form of a button that would populate ICE with the courses in your cart. This feature would really make CAT the go-to place for course searching by providing easy access to the current most popular course-related app. </p>
+
+<p> If we had the chance to do it again, one of the first things we would do is organize our code better. We started with a demo jQuery website with all of the javascript in a file called index.js, and the css in a file called index.css. Somehow in the process of turning that jQuery demo into CAT, we never broke up those files, such that index.js is now about 600 lines long, index.css is about 800 lines long, and both of them are essentially unordered collections of miscelaneous functions and classes that we added as we went along. Keeping these files better organized would have made later development and bug fixing much easier.</p>
+
+<p> We also would put more thought into styling the app. Consistent with our choice not to use Twitter Bootstrap, we focused first and foremost on functionality and layout, and thus left the "minor details" of fonts, color, background, etc. up to whoever happend to be working on that feature at the time. Do to differences in taste and the lack of a framework like Bootstrap, we ended up with some inconsistent styling that had to be resolved through much debate within the group, and a final product that lacks the polished look of a Bootstrap-driven site.</p> 
+
+<h2> What should next year's class learn from your experience? Imagine that you are writing this document for your (friendly!) boss or professor and want to explain what you learned that could be applied to the next project.</h2>
+<p> Get started early. That means both choosing a project and group early in the semester and actually starting to build things as soon as is reasonable. Have a clear idea of what you want your site/app/whatever to be able to do, and focus on getting the basic features implemented before trying to do fancy things. Likely, the basic functionality will take longer to implement than you expect. Have a clear division of labor, so everyone knows what they are responsible for and when they need to get it done. </p>
 
 </body>
 </html>
