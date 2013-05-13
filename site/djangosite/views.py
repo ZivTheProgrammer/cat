@@ -16,6 +16,13 @@ DECAY_FACTOR = 0.33 # For averaging course ratings over multiple semesters
 def home(request):
     return HttpResponseRedirect("/index/")
 
+def about(request):
+    if 'netid' in request.session:
+        netid = request.session['netid']
+    else:
+        netid = ""
+    return render(request, "about.html", {'netid': netid})
+    
 # Handle user login. Based on Kernighan's Python CAS code. 
 def login(request):
     cas_url = "https://fed.princeton.edu/cas/"

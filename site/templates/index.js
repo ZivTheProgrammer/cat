@@ -245,9 +245,10 @@ var old_search = "";
 $(document).ready(function() {
 
     /* Attach the logout handler */
-    $('#logout').click(function() {
+/*$('#logout').click(function() {
        window.location = "/logout/";
     });
+    */
 
     /* Enable showing cart courses */
     $(".coursecart").click(function(ev){
@@ -334,7 +335,7 @@ $(document).ready(function() {
     });
 
     /* Show and hide the tutorial */
-    $("#show_tutorial").click(function(){
+/*    $("#show_tutorial").click(function(){
         $("#advanced_search_wrapper").fadeIn();
         $("#tutorial").fadeIn(function() {
             $("#advanced_search_wrapper").click(function(ev) {
@@ -350,7 +351,7 @@ $(document).ready(function() {
         $("#advanced_search_wrapper").fadeOut();
 		$("#tutorial").fadeOut();
     });
-    
+*/    
     /* Show and hide the analytics */
      $("#show_analytics").click(function(){
         $("#advanced_search_wrapper").fadeIn();

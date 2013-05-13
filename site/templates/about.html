@@ -4,18 +4,22 @@
 <meta charset="UTF-8">
 <meta name="author" content="Noah Apthorpe, Garrett Disco, Luke Paulsen, Jocelyn Tang, Natalie Weires">
 <meta name="description" content="Information Page for CAT: Course Aggregation Tool">
-<link rel="stylesheet" type="text/css" href="index.css">
-<link rel="stylesheet" type="text/css" href="about.css">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}index.css">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}about.css">
 </head>
 <body>
 
-<div id="top_bar">
+<div id="top_bar" style="padding-top: 0px; padding-bottom: 4px;">
    <label id="logo">Welcome to CAT!</label>
    <label id="separator2">|</label>
-   <label id="show_tutorial">Home</label>
+   <label id="show_tutorial"><a class="top_bar_link" href="/index/">Home</a></label>
+   {% if netid != "" %}
    <label id="netid">{{ netid }}</label>
    <label id="separator">|</label>
-   <label id="logout">logout</button>
+   <label id="logout"><a class="top_bar_link" href="/logout/">Logout</a></label>
+   {% else %}
+   <label id="logout"><a class="top_bar_link" href="/login/">Login</a></label>
+   {% endif %}
 </div>
 
 <div id="outside_div" class="container-fluid">
@@ -25,28 +29,28 @@
         <!--<p>A few tips to make the most of these tools:</p>-->
         <ul>
         <li class="instruction_item">Our smart search bar allows you to search for courses like you search for everything else, with Google-like queries.</br>
-            <img src="searchbar_searchcircle.png" alt="" class = "about_image">
+            <img src="/static/searchbar_searchcircle.png" alt="" class = "about_image">
         </li>
         <li class="instruction_item">To streamline your results, we hide courses from previous semesters by default. If you're looking for a course that might not be offered every semester, be sure to click the "View Previous Semesters" button next to the search bar. Courses from previous semesters will then show up as grey results.</br>
-            <img src="searchbar_showprev.png" alt="" class = "about_image">
+            <img src="/static/searchbar_showprev.png" alt="" class = "about_image">
         </li>
         <li class="instruction_item">Our smart search bar is still learning! If you're not getting the results you expect, give "Advanced Search" a try, next to the search bar.</br>
-            <img src="searchbar_advanced.png" alt="" class = "about_image">
+            <img src="/static/searchbar_advanced.png" alt="" class = "about_image">
         </li>
         <li class="instruction_item">Each search result displays a colored circle that represents the course's overall SCORE rating over time.</br>
-            <img src="course_result.png" alt="" class = "about_image_small">
+            <img src="/static/course_result.png" alt="" class = "about_image_small">
         </li>
         <li class="instruction_item">You can sort search results by subject/number, professor, or overall rating.</br>
-            <img src="sortingdropdown.png" alt="" class="about_image_small">
+            <img src="/static/sortingdropdown.png" alt="" class="about_image_small">
         </li>
         <li class="instruction_item"> Once you find the result you're looking for, one click displays the Registrar's data in the same format you're used to reading on their site. Clicking "See Reviews" will bring you data from Princeton's required course evaluations, both graphs and written reviews.</br>
-            <img src="resultsandreviews.png" alt="" class="about_image">
+            <img src="/static/resultsandreviews.png" alt="" class="about_image">
         </li>
         <li class="instruction_item"> You can also see data from past offerings of a course by using the "Select Semesters" dropdown menu.</br>
-            <img src="prevsems.png" alt="" class="about_image_small">
+            <img src="/static/prevsems.png" alt="" class="about_image_small">
         </li>
         <li class="instruction_item">If you want to save a course for future reference, click the cart icon in the results. We'll store it for you in your cart (at the bottom of the page) so you can find it quickly later, even if you log out.</br>
-            <img src="cart.png" alt="" class = "about_image"></li>
+            <img src="/static/cart_bar.png" alt="" class = "about_image"></li>
         </ul>
         <hr/>
         <h2>Meet the team!</h2>
