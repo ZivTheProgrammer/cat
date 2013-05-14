@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>About CAT</title>
+<meta charset="UTF-8">
+<meta name="author" content="Noah Apthorpe, Garrett Disco, Luke Paulsen, Jocelyn Tang, Natalie Weires">
+<meta name="description" content="Information Page for CAT: Course Aggregation Tool">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/index.css">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/about.css">
+</head>
+<body>
+
+<div id="top_bar" style="padding-top: 0px; padding-bottom: 4px;">
+   <label id="logo">Welcome to CAT!</label>
+   <label id="separator2">|</label>
+   <label id="show_tutorial"><a class="top_bar_link" href="/index/">Home</a></label>
+   {% if netid != "" %}
+   <label id="netid">{{ netid }}</label>
+   <label id="separator">|</label>
+   <label id="logout"><a class="top_bar_link" href="/logout/">Logout</a></label>
+   {% else %}
+   <label id="logout"><a class="top_bar_link" href="/login/">Login</a></label>
+   {% endif %}
+</div>
+
+<div id="outside_div" class="container-fluid">
+    <div id="about_information  ">
+        <h1 id="Welcome">Welcome to CAT: The Princeton Course Aggregation Tool</h1>
+        <h3>We provide you with tools that make looking for courses powerful and painless:</h3>
+        <!--<p>A few tips to make the most of these tools:</p>-->
+        <ul>
+        <li class="instruction_item">Our smart search bar allows you to search for courses like you search for everything else, with Google-like queries.</br>
+            <img src="/static/searchbar_searchcircle.png" alt="" class = "about_image">
+        </li>
+        <li class="instruction_item">To streamline your results, we hide courses from previous semesters by default. If you're looking for a course that might not be offered every semester, be sure to click the "View Previous Semesters" button next to the search bar. Courses from previous semesters will then show up as grey results.</br>
+            <img src="/static/searchbar_showprev.png" alt="" class = "about_image">
+        </li>
+        <li class="instruction_item">Our smart search bar is still learning! If you're not getting the results you expect, give "Advanced Search" a try, next to the search bar.</br>
+            <img src="/static/searchbar_advanced.png" alt="" class = "about_image">
+        </li>
+        <li class="instruction_item">Each search result displays a colored circle that represents the course's overall SCORE rating over time.</br>
+            <img src="/static/course_result.png" alt="" class = "about_image_small">
+        </li>
+        <li class="instruction_item">You can sort search results by subject/number, professor, or overall rating.</br>
+            <img src="/static/sortingdropdown.png" alt="" class="about_image_small">
+        </li>
+        <li class="instruction_item"> Once you find the search result you're looking for, one click on the result displays the Registrar's data in the same format you're used to reading on their site. Clicking "See Reviews" will bring you data from Princeton's required course evaluations, both graphs and written reviews.</br>
+            <img src="/static/resultsandreviews.png" alt="" class="about_image">
+        </li>
+        <li class="instruction_item"> You can also see data from past offerings of a course by using the "Select Semesters" dropdown menu.</br>
+            <img src="/static/prevsems.png" alt="" class="about_image_small">
+        </li>
+        <li class="instruction_item">If you want to save a course for future reference, click the cart icon in the results. We'll store it for you in your cart (at the bottom of the page) so you can find it quickly later, even if you log out.</br>
+            <img src="/static/cart_bar.png" alt="" class = "about_image"></li>
+        </ul>
+        <hr/>
+        <h2>Meet the team!</h2>
+        <ul>
+        <li class="instruction_item"><b>Noah Apthorpe '14</b></br>
+          Noah was our go-to UI man. Most of the CAT's look comes from his hard work, including the current CSS skin and the graphs of course review data.</li>
+        <li class="instruction_item"><b>Natalie Weires '14</b></br>
+          Natalie cranked out the core of our database code in a few days over Spring break. Her passion for hacking is unmatched, and she's a great sport when we blame anything that breaks on her.</li>
+        <li class="instruction_item"><b>Luke Paulsen '14</b></br>
+          Luke was CAT's renaissance man. His mastery of Django from past projects proved invaluable in getting CAT's backbone set up, but he also wrote the search bar parser, and fixed the database frequently, and polished the UI...</li>
+        <li class="instruction_item"><b>Jocelyn Tang '14</b></br>
+          Jocelyn's input was critical to building our database in the early stages, and she also wrote the code that lets you search by so many intuitive categories. She also has great taste in design, and picked our final background.</li>
+        <li class="instruction_item"><b>Garrett Disco '14</b></br>
+          Garrett was our team leader, and kept the group focused while working closely with Noah to design and build CAT's user interface. He also liked to blame things on Natalie.</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<div>
+    <div id="left_scrollbar_wrap">
+    <div id="results_left_div">
+        <form id="sortby_selector" action="">
+        <label> Sort Results By: </label> 
+        <select name="sortby" class="sort_dropdown">
+            {% if results.items.0.1.score %}<option class = "sortby_option" value = "relevance"> Relevance </option> {% endif %}
+            <option class = "sortby_option" value="subject"> Subject & Number </option>
+            <option class="sortby_option" value="rating"> Average Rating </option>
+            <option class="sortby_option" value="professor"> Professor </option>
+        </select>
+        </form>
+        <ul id="search_results_list">
+            {% for course_id, result in results.items %}
+                {% if result.source != 'cart' %}
+                <li class="course{% if result.term != current_semester %} course_old{%endif%}" id="result_num_{{course_id}}"> {{ result.subject}} {{ result.course_number }} {% for s in result.crosslistings %}/ {{s.subject}} {{s.course_number}} {% endfor %}: {{ result.title}}</br> 
+                    <span class="sub_span"> {% include "prof_snippet.html" %}</span> 
+                    {% if result.overall_color %} <div class="rating_marker {{ result.overall_color}}" title="Rating: {{result.overall_mean}}"> </div> {% endif %}
+                    {% if result.score %}
+                    <div class = "relevance">{{result.score}}</div>
+                    {% endif %}
+                    <form class="savecourse_form" id="save_{{course_id}}"> {% csrf_token %}
+                        <input type="hidden" name="course_id" value="{{course_id}}">
+                        <input type="hidden" name="course_code" value="{{result.subject}}{{result.course_number}}">
+                        <input type="submit" value="" {% if result.source == 'both' %} style="visibility:hidden" disabled{% endif %}>
+                    </form>                
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    </div>
+   
+    <div id="right_scrollbar_wrap">
+    <div id="results_right_div">
+        {% for course_id, result in results.items %}
+        <div class = "detail" id="detail_num_{{course_id}}">
+            <div class = "semester_menu"> 
+                <form class="term_selector">{% csrf_token %}
+                    <label>Select Semester:</label>
+                    <select name="semester" class="term_dropdown">
+                        {% for term, term_name in result.all_named_terms.items %}
+                           <option class="semester_{{course_id}}_{{term}}" value="{{term}}"> {{term_name}} </option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" name="course_id" value="{{course_id}}"></input>
+                </form>
+                <form class="reviews_form">{% csrf_token %}
+                  <input type="submit" value="See Reviews"></input>
+                  <input type="hidden" name="course_id" value="{{course_id}}"></input>
+                </form>
+            </div>
+            <div class = "semester_shown detail_sem_{{result.term}}">
+                {% include "semester.html" %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+</div>

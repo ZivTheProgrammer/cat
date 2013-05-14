@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CAT: Course Aggregation Tool</title>
+
+    <meta charset="UTF-8">
+    <meta name="author" content="Noah Apthorpe, Garrett Disco, Luke Paulsen, Jocelyn Tang, Natalie Weires">
+    <meta name="description" content="A website to allow easy and informative comparisons of courses offered at Princeton University">
+
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/index.css">
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery.jscrollpane.css">
+
+    <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
+    <script src="{{STATIC_URL}}js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script src="{{STATIC_URL}}js/index.js"></script>
+    <script src="{{STATIC_URL}}js/jquery.mousewheel.js"></script>
+    <script src="{{STATIC_URL}}js/jquery.jscrollpane.min.js"></script>
+    <script src="{{STATIC_URL}}js/spin.min.js"></script>
+    <script src="{{STATIC_URL}}js/jquery.flot.min.js"></script>
+    <script src="{{STATIC_URL}}js/jquery.flot.stack.min.js"></script>
+    <script src="{{STATIC_URL}}js/jquery.flot.canvas.min.js"></script>
+</head>
+
+<body>
+
+<div id="advanced_search_wrapper"></div>
+
+<div id="top_bar">
+   <label id="logo">Welcome to CAT!</label>
+   <label id="separator2">|</label>
+   <label id="show_tutorial"><a class="top_bar_link" href="/about/">About</a></label>
+   <label id="netid">{{ netid }}</label>
+   <label id="separator">|</label>
+   <label id="logout"><a class="top_bar_link" href="/logout/">Logout</a></button>
+</div>
+
+<div id="outside_div" class="container-fluid">
+
+        <div id="tutorial">
+          <label id="Welcome">Welcome to CAT</label>
+          <p>We provide you with tools that make looking for courses powerful and painless. Our smart search bar allows you to search for courses like you search for everything else, with Google-like queries. Each search result displays a colored circle that represents the course's overall SCORE rating over time, and you can sort search results by subject/number, professor, or overall rating. Once you find the result you're looking for, one click displays the Registrar's data in the same format you're used to reading on their site. You can also see data from past offerings of a course, and clicking "See Reviews" will bring you data from Princeton's required course evaluations, both graphs and written reviews.</p>
+          <p>A few tips to make the most of these tools:</p>
+          <ul>
+            <li class="instruction_item">To streamline your results, we hide courses from previous semesters by default. If you're looking for a course that might not be offered every semester, be sure to click the "View Previous Semesters" button next to the search bar. Courses from previous semesters will then show up as grey results.</li>
+            <li class="instruction_item">Our smart search bar is still learning! If you're not getting the results you expect, give "Advanced Search" a try, next to the search bar.</li>
+            <li class="instruction_item">If you want to save a course for future reference, click the cart icon in the results. We'll store it for you in your cart (at the bottom of the page) so you can find it quickly later, even if you log out.</li>
+          </ul>
+          <hr/>
+          <p>Meet the team!</p>
+          <ul>
+            <li class="instruction_item">Noah Apthorpe</br>
+              Noah was our go-to UI man. Most of the CAT's look comes from his hard work, including the current CSS skin and the graphs of course review data.</li>
+            <li class="instruction_item">Natalie Weires</br>
+              Natalie cranked out the core of our database code in a few days over Spring break. Her passion for hacking is unmatched, and she's a great sport when we blame anything that breaks on her.</li>
+            <li class="instruction_item">Luke Paulsen</br>
+              Luke was CAT's renaissance man. His mastery of Django from past projects proved invaluable in getting CAT's backbone set up, but he also wrote the search bar parser, and fixed the database frequently, and polished the UI...</li>
+            <li class="instruction_item">Jocelyn Tang</br>
+              Jocelyn's input was critical to building our database in the early stages, and she also wrote the code that lets you search by so many intuitive categories. She also has great taste in design, and picked our final background.</li>
+            <li class="instruction_item">Garrett Disco</br>
+              Garrett was our team leader, and kept the group focused while working closely with Noah to design and build CAT's user interface. He also liked to blame things on Natalie.</li>
+          </ul>
+	</div>
+
+	<div id = "advanced_search">
+        <button id = "hide_advanced"></button>
+        <h3>Advanced Search</h3>
+        <form id = "advanced_form" action="" method="post">
+			<span class="advanced_label">Subject:</span><input id = "advanced_subject" type="text" autofocus="autofocus"></input></br>
+			<span class="advanced_label">Course Number:</span><input id = "advanced_course_number" type="text"></input></br>
+			<span class="advanced_label">Level:</span><input class = "advanced_level_boxes " name="level" value="100" type="checkbox">100</input>
+			<input class = "advanced_level_boxes" name="level" value="200" type="checkbox">200</input>
+			<input class = "advanced_level_boxes" name="level" value="300" type="checkbox">300</input>
+			<input class = "advanced_level_boxes" name="level" value="400" type="checkbox">400</input>
+			<input class = "advanced_level_boxes" name="level" value="500" type="checkbox">500</input></br>
+			<span class="advanced_label">Instructor:</span><input class="" id = "advanced_instructor" type="text"></input></br>
+			<span class="advanced_label">Title:</span><input class="" id = "advanced_title" type="text"></input></br>
+			<span class="advanced_label">Day:</span><input class = "advanced_day_boxes" name="day" value="Mon" type="checkbox">Mon</input>
+			<input class = "advanced_day_boxes" name="day" value="Tue" type="checkbox">Tue</input>
+			<input class = "advanced_day_boxes" name="day" value="Wed" type="checkbox">Wed</input>
+			<input class = "advanced_day_boxes" name="day" value="Thurs" type="checkbox">Thurs</input>
+			<input class = "advanced_day_boxes" name="day" value="Fri" type="checkbox">Fri</input></br>
+			<span class="advanced_label">Start time:</span><input class = "advanced_time_boxes " name="time" value="8:00" type="checkbox">8:00</input>
+			<input class = "advanced_time_boxes" name="time" value="9:00" type="checkbox">9:00</input>
+			<input class = "advanced_time_boxes" name="time" value="10:00" type="checkbox">10:00</input>
+			<input class = "advanced_time_boxes" name="time" value="11:00" type="checkbox">11:00</input>
+			<input class = "advanced_time_boxes" name="time" value="12:30" type="checkbox">12:30</input></br>
+			<span class="advanced_label">&nbsp;</span>
+			<input class = "advanced_time_boxes" name="time" value="1:00" type="checkbox">1:00</input>
+			<input class = "advanced_time_boxes" name="time" value="2:00" type="checkbox">2:00</input>
+			<input class = "advanced_time_boxes" name="time" value="3:00" type="checkbox">3:00</input>
+			<input class = "advanced_time_boxes" name="time" value="4:00" type="checkbox">4:00</input>
+			<input class = "advanced_time_boxes" name="time" value="5:00" type="checkbox">5:00</input>
+			<input class = "advanced_time_boxes" name="time" value="6:00" type="checkbox">after 6:00</input></br>
+			<span class="advanced_label">Distribution:</span>
+			{% for d in distrib %} <input class = "advanced_dist_boxes " name="dist" value='{{ d }}' type="checkbox">{{ d }}</input>
+			{% endfor %} </br>
+			<span class="advanced_label">PDF Only:</span><input class = "advanced_pdf " name="pdfonly" value="pdfonly" type="checkbox"></input></br>
+            <span class="advanced_label">Keyword:</span><input id = "advanced_keyword" type="text" name="keyword"></input></br>
+            <input value="Search" type="submit"></input>
+            <input value="Reset" type="reset"></input>
+        </form>
+    </div>
+	
+<div id = "omnibar_div">   
+    <form id="omnibar_form" action="" method="post"> {% csrf_token %}
+        <input id="omnibar_input" type="text" name="text" placeholder="Search for Courses" autofocus="autofocus" maxlength="200"></input>
+        <input id="omnibar_submit" value="" type="submit"></input>
+        <span id="showold_span"><input id="omnibar_showold" type="checkbox"></input><label for="omnibar_showold">View Previous Semesters</label></span>
+    </form>
+    <button id="show_advanced"> Advanced Search </button>
+</div>
+
+<div id="results_div">
+    {% include "search_results.html" %}
+</div>
+
+<div id="cart_div">
+    <span id="cart_label">Cart:</span>
+    <ul id="cart_list">
+        {% for course_id, result in results.items %}
+            {% if result.source = "cart" %}
+                {% include "cart_course.html" with course_id=course_id course_subject=result.subject course_number=result.course_number%}
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <!--<button id="show_analytics"> Analyze! </button>-->
+</div>
+
+<!--
+<div id = "analytics">
+    <button id = "hide_analytics"> Close </button>
+</div>
+-->
+
+</div>
+</body>
+</html>
