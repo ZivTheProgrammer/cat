@@ -24,6 +24,12 @@ function toggleCartEmptyMessage() {
 
 // Helper function: displays a course in the detail view, no matter how it was clicked
 function display(course_id) {
+    /* Make sure we aren't trying to display the "show previous" entry */
+    if (course_id == "result") return;
+    
+    /* turn the right-hand pane dark */
+    $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
+
     /* highlight the course if it's in the search results */
     if ($("#result_num_"+course_id).attr('class') !=('course_shown')) {
         $(".course_shown").addClass("course").removeClass("course_shown");
@@ -48,14 +54,14 @@ function load_semester(params) {
     if ($(detail_id+">.detail_sem_"+params[2]).length == 0) {
         $.post("/semester/", $(detail_id+">.semester_menu>.term_selector").serialize(), function( data ) {
             $(detail_id).append(data);
-            $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //switchClass("semester_shown", "semester");
-            $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester"); //switchClass("semester", "semester_shown");
+            $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown");
+            $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester");
             $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
         });
     }
     else {
-        $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); //.switchClass("semester_shown", "semester");
-        $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester"); //.switchClass("semester", "semester_shown");
+        $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); 
+        $(detail_id+">.detail_sem_"+params[2]).addClass("semester_shown").removeClass("semester"); 
         $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
     }
 }
@@ -208,7 +214,6 @@ function sort_results(sortby) {
     
     /* make the course's data show up when it is clicked */
     $(".course").click(function() {
-        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
         var course_id = $(this).attr('id').split('_')[2];
         display(course_id);  
     });
@@ -244,17 +249,10 @@ var old_search = "";
 
 $(document).ready(function() {
 
-    /* Attach the logout handler */
-/*$('#logout').click(function() {
-       window.location = "/logout/";
-    });
-    */
-
     /* Enable showing cart courses */
     $(".coursecart").click(function(ev){
         if ($(ev.target).attr("type") == "submit") return;
         var course_id = this.id.split('_')[2];
-        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
         display(course_id);
     });
 
@@ -334,8 +332,8 @@ $(document).ready(function() {
 		$("#advanced_search").fadeOut();
     });
 
-    /* Show and hide the tutorial */
-/*    $("#show_tutorial").click(function(){
+    /* Show and hide the tutorial. CURRENTLY DISABLED 
+    $("#show_tutorial").click(function(){
         $("#advanced_search_wrapper").fadeIn();
         $("#tutorial").fadeIn(function() {
             $("#advanced_search_wrapper").click(function(ev) {
@@ -352,7 +350,7 @@ $(document).ready(function() {
 		$("#tutorial").fadeOut();
     });
 */    
-    /* Show and hide the analytics */
+    /* Show and hide the analytics. CURRENTLY DISABLED 
      $("#show_analytics").click(function(){
         $("#advanced_search_wrapper").fadeIn();
         $("#analytics").fadeIn(function(){
@@ -369,9 +367,9 @@ $(document).ready(function() {
         $("#advanced_search_wrapper").fadeOut();
         $("#analytics").fadeOut();
     });
-    
-    /* Set up the advanced search form */
-    /*$( "#advanced_num_slider" ).slider({
+*/    
+    /* Set up the advanced search form slider. CURRENTLY DISABLED
+    $( "#advanced_num_slider" ).slider({
       range: true,
       min: 100,
       max: 600,
@@ -529,7 +527,6 @@ $(document).ready(function() {
                 
                 /* make the course's data show up when it is clicked */
                 $(".course").click(function() {
-                    $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
                     var course_id = $(this).attr('id').split('_')[2];
                     display(course_id);  
                 });
@@ -562,7 +559,6 @@ $(document).ready(function() {
                         $(".coursecart").click(function(ev){
                             if ($(ev.target).attr("type") == "submit") return;
                             var course_id = this.id.split('_')[2];
-                            $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
                             display(course_id);
                         });
                         
@@ -594,7 +590,6 @@ $(document).ready(function() {
                 //if only one course is returned, display the information
                 if ($("#search_results_list li").length == 1) {
                     if (!$("#search_results_list li").hasClass("course_old") || $("#omnibar_showold").is(":checked")) {
-                        $("#right_scrollbar_wrap").css("background-color","rgba(0,0,0,0.8)");
                         var course_id = $("#search_results_list li").attr('id').split('_')[2];
                         display(course_id);
                     }                        
