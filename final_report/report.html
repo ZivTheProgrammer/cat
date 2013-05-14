@@ -35,7 +35,7 @@
 
 <p>Actual testing of our code was minimal and spotty. In general, if after creating a new feature we could do a run through of the basic use case (search for "COS", view registrar data for COS 126, see reviews, add to cart) and nothing broke, that was sufficient to push to master. We ended up introducing a lot of bugs this way, including some that have only recently been fixed (and possibly some that we have failed to detect).</p>
 
-<p>Eventually we started doing intentional testing of the app, but this mostly consisted of coming up with the strangest plausible queries we could think of and seeing if the app behaved in a way that was not an obvious catastrphic failure. We also tried searching for the entire text of Genesis 1 and 2, which causes the app to hang (go ahead, try it) but does not affect performance for other users, which we think is a reasonable response.</p> 
+<p>Eventually we started doing intentional testing of the app, but this mostly consisted of coming up with the strangest plausible queries we could think of and seeing if the app behaved in a way that was not an obvious catastrphic failure. We also tried searching for the entire text of Genesis 1 and 2, which caused the app to hang (go ahead, try it) but did not affect performance for other users, which we think is a reasonable response. However, to provide further protection, we later added a limit on the number of characters entered.</p> 
 
 <h2> What surprises, pleasant or otherwise, did you encounter on the way? </h2>
 <h3>Surprise #1: Unpleasant</h3>
