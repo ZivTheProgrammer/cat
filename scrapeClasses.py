@@ -59,8 +59,6 @@ for term in terms.iter(ns + 'term'):
     if action == 'add' and courseCol.find_one({'term':termCode}):
         continue
     print "term code: " + termCode
-    #if termCode != '1132':
-    #    continue
     # Get the data from each term, starting with list of subjects:
     try:
         fSub = urlopen(feed + '?term=' + termCode + "&subject=list")
@@ -74,8 +72,6 @@ for term in terms.iter(ns + 'term'):
     # Get data for each subject
     for sub in subjects.iter(ns + 'subject'):
         subCode = sub.find(ns + 'code').text
-        #if subCode != "COM":
-        #    continue
         # Get all the courses for each subject
         sleep(.5)
         try:
@@ -95,8 +91,6 @@ for term in terms.iter(ns + 'term'):
             # Find the subject code used for the primary listing (not necessarily
             # the subject we searched by
             # TODO: make sure we get the right subject- there may be multiple on the page
-            #entry['subject'] = courses.find('.//' + ns + 'subjects/' + ns
-            #        + 'subject/' + ns + 'code').text
             entry['subject'] = parent_map[parent_map[course]].find(ns + 'code').text
             catNum = course.findall(ns + 'catalog_number')
             if len(catNum) > 1:
@@ -104,10 +98,8 @@ for term in terms.iter(ns + 'term'):
             entry['course_number'] = catNum[0].text
             # Check whether we already added this class (e.g. if it was crosslisted)
             # Presumably the term, dept and number uniquely identify it
-            #print entry
             if courseCol.find_one(entry):
-                continue #TODO: put this back
-                #break
+                continue
             print entry['subject'], entry['course_number']
             
             entry['course_id'] = course.find(ns + 'course_id').text
@@ -151,7 +143,6 @@ for term in terms.iter(ns + 'term'):
                 print "***********Couldn't load registrar data for term %s, subject %s, number %s************" % (termCode, subCode, entry['course_number'])
                 continue
 
-            #print regData
             """
             if regData.get('prereqs', None):
                 entry['prereqs'] = regData['prereqs']
@@ -178,17 +169,11 @@ for term in terms.iter(ns + 'term'):
             entry['unique_course'] = entry['subject'] + entry['course_number']
             newId = courseCol.insert(entry)
             # Find in / add to the list of unique courses
-            #print entry
-            #print "New ID: ", newId
             uniqueCourseCol.update({'course':entry['unique_course']}, {'$push' : {'years': {'id': newId, 'term':entry['term'], 'instructors':entry['instructors']}}}, upsert=True)
-            #print uniqueCourseCol.find_one({'course' : entry['unique_course']})
-#            break
         
-#    break
 #for p in profCol.find():
 #    print p
 #for c in courseCol.find():
 #    print c
 print "Done! Uncomment the things before this print statement to see what's in the database."
-print "Comment the break statements to get more than one semester and more than one course per subject"
 

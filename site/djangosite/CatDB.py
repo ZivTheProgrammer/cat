@@ -15,7 +15,10 @@ CURRENT_SEMESTER = '1142'
 
 class CatDB:
 
-    words2ignore = ['the', 'be', 'to', 'of', u'and', 'a', 'in', 'that', 'have', 'i', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'there'];
+    words2ignore = ['the', 'be', 'to', 'of', u'and', 'a', 'in', 'that', 'have',
+            'i', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do',
+            'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say',
+            'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'there'];
 
     def __init__(self):
         self.connection = MongoClient()
@@ -113,16 +116,7 @@ class CatDB:
             # sleazy            
             totalscore = matchTitle*1000 + matchDesc*100 + totalcount
             course['score'] = totalscore; # dictionary of scores of courses
-            #print totalscore
-        # sort by score
-        #for c in sorted(scores, key = scores.get, reverse = True):
-            # Don't do this! The entries have been modified between getting them from the db
-            # and this ranking
-            #courses_ranked.append(self.courseCol.find_one({'course_id': c}));
-        #print '------------------------'
-        #print list_courses
         print '****************'
-        #print sorted(list_courses, key=lambda course: course['score'], reverse = True);
         
         list_courses = sorted(list_courses, key=lambda course: (course['subject'], course['course_number']))
         return sorted(list_courses, key=lambda course: course['score'], reverse = True);
@@ -184,7 +178,6 @@ class CatDB:
             course['term'] = CURRENT_SEMESTER
             match = { 
                 '$elemMatch': {
-                    #'section': {'$in': ['L01', 'C01', 'C02', 'C03', 'S01']}, # FIX
                     'section': re.compile('[LCS].*', re.I),
                     'days': re.compile(regex, re.IGNORECASE)  #{'$in': day}
                     }
@@ -281,7 +274,6 @@ class CatDB:
                 results_list.append(c)
 
         if not unique:
-            #return results_list
             return self.rank(results_list, keywords);
         # Get the most recent semester of each course
         unique_courses = set()
@@ -289,7 +281,6 @@ class CatDB:
             i = c.get('unique_course', None)
             if i:
                 unique_courses.add(i)
-        #print unique_courses
         courseIDs = []
         uniqueCourses = []
         for c in self.uniqueCourseCol.find({'course':{'$in' : list(unique_courses)}}):
@@ -303,25 +294,17 @@ class CatDB:
             i = bestYear.get('id', None)
             if i:
                 courseIDs.append(i)
-        #print 'ids:', courseIDs
         # Add a list of terms to each course
         results = self.courseCol.find({'_id': {'$in':courseIDs}})
         results_list = []
         for c in results:
             i = c['unique_course'];
             for d in uniqueCourses:
-                #print i, d['course']
                 if d['course'] == i:
                     c['all_terms'] = sorted([x['term'] for x in d['years']], reverse=True)
-            #print c
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
-        #if len(results_list) < 100: # Luke's hack to prevent returning every course in the DB. Need to improve.
         results_list = self.rank(results_list, keywords);
-        #print "returning lists of courses...", results_list
-        #pp = pprint.PrettyPrinter(indent=2)
-        #pp.pprint(results_list)        
-        #print results_list
         return results_list
 
         
@@ -343,7 +326,6 @@ class CatDB:
             semester = {}
             semester['term'] = i.get('term', []);
             semester['instructors'] = i.get('instructors', []);
-#            semester['reviews'] = i.get('reviews', []);
             semester['review_text'] = i.get('review_text', []);
             semester['review_Nums'] = i.get('review_Nums', []);
             reviews.append(semester)
