@@ -31,6 +31,8 @@
 <h2> What was your experience with design, interfaces, testing, etc.? </h2>
 <p> We started out design process early on, with the entire group present. We first identified the key features of our app (which ended up changing over time), and then split up into UI and Back-end teams to design (without implementing anything) how the architecture was going to work on both ends. After each team had come up with a design, we met together again to critique and finalize these designs, and also to come up with a great protocol for communication between the two sides. Specifically, we decided exactly when requests would be made and what the database would return at each step. Because we thought about this so far in advance, our final product is able to fetch most data well in advance of when the user actually needs it, thus making for a more seamless user experience.</p>
 
+<p> The design of our user interface changed a lot during the early stages of the project. Even though we ended up not using a lot of what we originally planned, it was tremendously helpful to work through different iterations of the ideas and mentally test how the user experience would feel. For example, the single webpage with a main unit for searching and viewing was part of our original plan; the course cart came in as part of a later plan that got scrapped, and the main course data area was originally supposed to be a preview of the course information until we realized that it could hold a lot of information.</p>
+
 <p>Actual testing of our code was minimal and spotty. In general, if after creating a new feature we could do a run through of the basic use case (search for "COS", view registrar data for COS 126, see reviews, add to cart) and nothing broke, that was sufficient to push to master. We ended up introducing a lot of bugs this way, including some that have only recently been fixed (and possibly some that we have failed to detect).</p>
 
 <p>Eventually we started doing intentional testing of the app, but this mostly consisted of coming up with the strangest plausible queries we could think of and seeing if the app behaved in a way that was not an obvious catastrphic failure. We also tried searching for the entire text of Genesis 1 and 2, which causes the app to hang (go ahead, try it) but does not affect performance for other users, which we think is a reasonable response.</p> 
@@ -51,7 +53,7 @@ Interpreting searches was not as easy or intuitive as we thought it would be. We
 <p>We weren't sure what was needed to get Mongo to work on the ec2 setup, but as it turned out it integrated naturally with Apache and caused no problems at all (except that we were confused when we tried to run it and saw that it was already being run automatically).</p>
 
 <h3>Surprise #5: Pleasant</h3>
-<p>jQuery ended up working out really well; every time we looked up a function, it was there (built-in) and named with something we expected it to be named. The intuitive nature of jQuery was pleasantly surprising. </p>
+<p>jQuery ended up working out really well; every time we wanted jQuery to do something, it existed as a built-in jQuery function and was named exactly as we expected it to be named. The intuitive nature of jQuery was pleasantly surprising. </p>
 
 <h2> What choices did you make that worked out well or badly? </h2>
 <p> We started our project early, getting the basic database built over spring break. This included defining an interface through which the database could be accessed, which let us start building the middle and front layers of the site while still making changes to how the database was structured and built. Similarly, we split up the various components of the project in a way that let us work indivually or in pairs on sections separately, but so that the pieces worked together well.</p>
@@ -71,7 +73,7 @@ Interpreting searches was not as easy or intuitive as we thought it would be. We
 
 <h2> What should next year's class learn from your experience? Imagine that you are writing this document for your (friendly!) boss or professor and want to explain what you learned that could be applied to the next project.</h2>
 <p> Get started early. That means both choosing a project and group early in the semester and actually starting to build things as soon as is reasonable. Have a clear idea of what you want your site/app/whatever to be able to do, and focus on getting the basic features implemented before trying to do fancy things. Likely, the basic functionality will take longer to implement than you expect. Have a clear division of labor, so everyone knows what they are responsible for and when they need to get it done. </p>
-<p> It's important to 
+<p> It's important to make good choices of what systems to use. There might be some approaches that would be good for a longer-term project but are not so good for a short project like this one. It's important to make sure that for every tool you use, there is at least someone in your group that understands it. We used a stack of Mongo, Django, custom CSS, and jQuery, which turned out to be powerful and flexible without requiring too much work to set up.</p>
 
 </body>
 </html>
