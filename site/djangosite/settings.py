@@ -3,6 +3,8 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+ALLOWED_HOSTS = ['localhost:8000', 'princetoncat.org', 'www.princetoncat.org', '54.214.3.204']
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
