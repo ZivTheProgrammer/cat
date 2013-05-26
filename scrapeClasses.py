@@ -9,7 +9,7 @@ from scraper import scraper
 if len(sys.argv) != 2 or sys.argv[1] not in ['build', 'update', 'add']:
     print "usage: scrapeClasses [build | update | add]"
     print "\tbuild: creates the database from scratch"
-    print "\tupdate: checks for and new data or data that has changed, adding it to"
+    print "\tupdate: updates information, without affecting reviews"
     print "\t\tthe database, without changing anything that hasn't changed"
     print "\t\t(even if that info is no longer posted)"
     print "\tadd: looks for any new semesters of data, and adds them to the database"
@@ -98,7 +98,7 @@ for term in terms.iter(ns + 'term'):
             entry['course_number'] = catNum[0].text
             # Check whether we already added this class (e.g. if it was crosslisted)
             # Presumably the term, dept and number uniquely identify it
-            if courseCol.find_one(entry):
+            if courseCol.find_one(entry) and action != 'update':
                 continue
             print entry['subject'], entry['course_number']
             
@@ -164,12 +164,22 @@ for term in terms.iter(ns + 'term'):
                 if key in ['prereqs', 'distribution', 'readings', 'grading','classes',
                         'pdf', 'assignments', 'other_reqs', 'other_info']:
                     entry[key] = regData[key]
+            for p in regData.get('profs', []):
+                if p.get('uid', '') in profs:
+                    profs.insert(0, profs.pop(profs.index(p.get('uid'))))
 
             # TODO: check for courses that have changed number, etc.
             entry['unique_course'] = entry['subject'] + entry['course_number']
-            newId = courseCol.insert(entry)
+            if action in ['build', 'add']:
+                newId = courseCol.insert(entry)
+            elif action == 'update':
+                courseCol.update({'term':entry.pop('term'), 'subject':entry.pop('subject'), 'course_number':entry.pop('course_number')}, {'$set': entry})
+                newId = None
+
+
             # Find in / add to the list of unique courses
-            uniqueCourseCol.update({'course':entry['unique_course']}, {'$push' : {'years': {'id': newId, 'term':entry['term'], 'instructors':entry['instructors']}}}, upsert=True)
+            if newId:
+                uniqueCourseCol.update({'course':entry['unique_course']}, {'$push' : {'years': {'id': newId, 'term':entry['term'], 'instructors':entry['instructors']}}}, upsert=True)
         
 #for p in profCol.find():
 #    print p
