@@ -280,14 +280,21 @@ def parse(db, text):
                 if t_last:
                     if letter == "H":
                         output['day'].append('TH')
+                        t_last = False
+                    elif letter == "T":
+                        output['day'].append('T')
+                        t_last = True
                     else:
                         output['day'].append('T')
-                    t_last = False
+                        t_last = False
                 else:
                     if letter == "T":
                         t_last = True
                     else:
                         output['day'].append(letter)
+                        t_last = False
+            if t_last:
+                output['day'].append('T')
         elif re.match('^(M|MO|MON|MONDAY)$', token):
             output['day'].append('M')
         elif re.match('^(T|TU|TUE|TUES|TUESDAY)$', token):

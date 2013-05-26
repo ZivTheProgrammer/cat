@@ -171,7 +171,7 @@ class CatDB:
             regex = '^('
             for d in day:
                 if (d == "t") or (d == "T"):
-                    regex = regex +  "(t[^h])|"
+                    regex = regex +  "(T)|"
                 else:
                     regex = regex + d + "|"
             regex = regex + "Z)*$"
