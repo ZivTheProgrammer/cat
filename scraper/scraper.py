@@ -56,10 +56,6 @@ def get_course_details(soup):
         pdf_options.append("npdf")
     if re.search("p/d/f only", pdf, re.I):
         pdf_options.append("pdfonly")
-    if pdf and not pdf_options:
-        print "**** another pdf option: ", pdf
-        print "\tPlease tell Natalie, so she can fix it!"
-        print "\t(Or just do it yourself, if you want.)"
 
     if re.match(r'^\((LA|SA|HA|EM|EC|QR|ST|STN|STL)\)$', area):
         area = area[1:-1]

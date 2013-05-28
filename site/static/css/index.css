@@ -759,6 +759,12 @@ color:white;
     width: 16px;
     border-radius: 9px;
     border: 1px solid black;
+    float:left;
+}
+
+.distribution_area{
+    float:left;
+    padding-left:10px;
 }
 
 .rating_box{

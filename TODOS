@@ -10,11 +10,7 @@ HUGE bug: remove commas from tokens!!
 **If you delete the text in the search field, stop the search?**
 
 **searching 'npdf' returns ART 260, which is not npdf**
-
-**ENG 201 has been offered in past semesters, not showing**
-
-** Hey Natalie, I really like how COM 318 looks, specially that little question mark in Bola?o that's in the
-database. Good job!**
+    it was in past semesters
 
 Fixed? **Scraping formats for distribution requirements and pdf stuff. So far, "na, npdf" doesn't seem to work.**
     Any specific examples?
@@ -30,11 +26,7 @@ top/bottom of scroll bar (are great!)
 
 shopping carts (are also nice...)
 
-Make the black less black.
-
 Make scrollbar present always.
-
-On the drop-down of semesters- make sure they are in chronological order. Most are now, I think since that's how they're in the database. (I can also make sure they stay sorted in the db, if that's
 
 /------Features--------/
 
@@ -43,8 +35,6 @@ Label ratings graphs with professors.
 Format reviews better (show/hide review text, get professor name from left side)
 
 Make the labels on the graph hyperlink to the reviews.
-
-Include class number. The thing you need to enter on SCORE to find the stupid course.
 
 What about this thing that appears on some courses?
      ENROLLMENT BY APPLICATION OR INTERVIEW. DEPARTMENTAL PERMISSION REQUIRED.
@@ -57,11 +47,9 @@ Should searching for "pdf" return pdf-only courses or all courses that are pdf-a
 Searching by time should work.  Question: If a user searches an hour, say "11:00" or "11am" or "11AM" or "11:00 am" etc., should the search should return all classes that start anytime within that hour, or only classes that start exactly at that time?
 --Any time within that hour. That's what the Registrar does.
 
-Distinguish between professors and preceptors. (This is a scraping issue first, then a display issue.)
-
 Seach by name of department (e.g. 'math' instead of 'MAT')
 
-Check that all searches are case-insensitive in the right ways
+If this is the first semester a course has been offered, the reviews page is completely empty
 
 /------Feepers---------/
 Need to format detail view and make it include:
@@ -81,3 +69,6 @@ Search by grading option
 Show crosslistings in results list
 When I remove a course from my cart, two remove requests are sent. What's up with that?
 **Put pdf options in Advanced Search**
+Include class number. The thing you need to enter on SCORE to find the stupid course.
+** Hey Natalie, I really like how COM 318 looks, specially that little question mark in Bola?o that's in the
+database. Good job!**

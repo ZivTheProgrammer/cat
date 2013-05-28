@@ -72,6 +72,9 @@ for term in terms.iter(ns + 'term'):
     # Get data for each subject
     for sub in subjects.iter(ns + 'subject'):
         subCode = sub.find(ns + 'code').text
+        print subCode
+        #if termCode >= u'1134':
+        #    continue
         # Get all the courses for each subject
         sleep(.5)
         try:
@@ -164,7 +167,7 @@ for term in terms.iter(ns + 'term'):
                 if key in ['prereqs', 'distribution', 'readings', 'grading','classes',
                         'pdf', 'assignments', 'other_reqs', 'other_info']:
                     entry[key] = regData[key]
-            for p in regData.get('profs', []):
+            for p in reversed(regData.get('profs', [])):
                 if p.get('uid', '') in profs:
                     profs.insert(0, profs.pop(profs.index(p.get('uid'))))
 
