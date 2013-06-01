@@ -57,6 +57,7 @@ class Curler:
     VERBOSE = False
     # because the review site is dumb and uses different semester numbers...
     term_dict = {
+            '140774':'1134', # spring 12-13
             '140773':'1132', # fall 12-13
             '140772':'1131', # summer 2012
             '140770':'1124', # spring 11-12
