@@ -148,6 +148,7 @@ class Parser:
 
         courseNumber = coursenum[4:]
         courseDept = coursenum[:3]
+        print 'Department: ', courseDept
 
         ratings = {}
         row = table.find_next("tr").find_next("tr").find_next("tr")
@@ -168,7 +169,12 @@ class Parser:
                     break
             if not question_name:
                 try:
-                    row = row.find_next_sibling("tr").find_next_sibling("tr")
+                    if courseDept == 'WRI':
+                        row = row.find_next_sibling("tr")
+                        if len(row.contents) == 1 and len(row.find_next_sibling("tr")) > 1:
+                            row = row.find_next_sibling("tr")
+                    else:
+                        row = row.find_next_sibling("tr").find_next_sibling("tr")
                 except:
                     row = None
                 continue
@@ -183,15 +189,18 @@ class Parser:
                 cell = cell.find_next_sibling("td")
             cell = cell.find_next_sibling("td")
             mean = cell.string.strip()
-            try:
-                row = row.find_next_sibling("tr").find_next_sibling("tr")
-            except:
-                row = None
+            if courseDept == 'WRI':
+                row = row.find_next_sibling("tr")
+                if len(row.contents) == 1 and len(row.find_next_sibling("tr")) > 1:
+                    row = row.find_next_sibling("tr")
+            else:
+                try:
+                    row = row.find_next_sibling("tr").find_next_sibling("tr")
+                except:
+                    row = None
 
-            #print numbers, mean
             ratings[question_name] = numbers
             ratings[question_name + '_mean'] = mean
-        #print ratings
 
 
         """overall_row = precepts_row.find_next("tr").find_next("tr")
