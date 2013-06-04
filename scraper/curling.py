@@ -367,6 +367,13 @@ class Curler:
             if option.name != 'option':
                 continue;
             # ignore those with values that begin with "All"
+            # note to self: this is how to skip to certain courses...
+            """if index == 2 and option.get('value') != 'WRI':
+                print 'skipping something that is not a writing sem...'
+                continue;
+            if index == 1 and option.get('value') != 'INTDS':
+                continue;"""
+
             if re.match("All[\s]?.*", option.get('value')):
                 continue;
             v( "setting %s = %s (value string %s)" % (nametext, option.get('value'), option.string))
