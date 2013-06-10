@@ -349,6 +349,7 @@ div{
 .coursecart{
     display:inline-block;
     margin-right: 4px;
+    margin-top: -6px;
 	z-index:0;
     min-width:90px;
 }
@@ -437,6 +438,22 @@ div{
     font-size: 14px;
     font-style: bold;
     color:white;
+    padding: 0px;
+    margin: 0px;
+}
+
+.removecourse_form>[type=submit] {
+    background:url(/static/ox.png);
+    background-size:100% 100%;
+    border:none;
+    width:17px;
+    height:17px;
+    top: 4px;
+    background-repeat:no-repeat;
+}
+
+.removecourse_form>label{
+    margin-left:4px;
 }
 
 #outside_div {
@@ -651,7 +668,7 @@ color:white;
     position:absolute;
     top:12px;
     height:20px;
-    width:180px;
+    width:144px;
     left:20px;
     font-size:12px;
     font-family:Verdana,sans-serif;
@@ -661,7 +678,7 @@ color:white;
 #showold_span>label {
     position: absolute;
     height: 19px;
-    width: 170px;
+    width: 134px;
     padding-left: 0px;
     padding-top: 3px;
     padding-right:12px;
@@ -693,20 +710,6 @@ color:white;
     margin-left:295px;
     margin-bottom:2px;
     border: 2px solid rgba(255, 255, 255, 0.0);
-}
-
-.removecourse_form>[type=submit] {
-    background:url(/static/ox.png);
-    background-size:contain;
-    border:none;
-    width:17px;
-    height:17px;
-    padding-left:1px;   
-    background-repeat:no-repeat;
-}
-
-.removecourse_form>label{
-    margin-left:4px;
 }
 
 #cart_list {
