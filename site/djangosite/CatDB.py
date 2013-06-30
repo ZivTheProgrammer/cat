@@ -1,3 +1,4 @@
+from datetime import datetime
 from pymongo import MongoClient
 import pymongo
 import re
@@ -27,14 +28,20 @@ class CatDB:
         self.profCol = self.db.instructors
         self.studentCol = self.db.students
         self.uniqueCourseCol = self.db.unique
+        self.analytics = self.db.analytics
+            # entries with types 'newUser', 'addClass', 'removeClass'
 
     def get_student(self, netID):
         course_list = self.studentCol.find_one({'netID': netID});
+        # Record that the student has visited
+        self.studentCol.update({'netID':netID}, {'$set': {'lastVisit' : datetime.now()}}, upsert=True)
         if not course_list:
+            self.analytics.insert({'type':'newUser', 'time':datetime.now()})
             course_list = {}
         return course_list
         
     def add_course(self, netID, courseList):
+        self.analytics.insert({'type':'addClass', 'time':datetime.now()})
         if (self.studentCol.find_one({'netID': netID}) is None):
             entry = {};
             entry['netID'] = netID;
@@ -42,9 +49,12 @@ class CatDB:
                 entry['courseList'] = courseList;
             else:
                 entry['courseList'] = [courseList];
+            entry['lastVisit'] = datetime.now()
             self.studentCol.insert(entry);
         else:
             entry = self.studentCol.find_one({'netID': netID});
+            if 'courseList' not in entry:
+                entry['courseList'] = []
             if isinstance(courseList, list):
                 for course in courseList:
                     if course not in entry['courseList']:
@@ -55,28 +65,31 @@ class CatDB:
             # put updated things back
             self.studentCol.update({'netID': netID},
                                    {
-                    '$set': {'courseList': entry['courseList']},
-                    })
+                    '$set': {'courseList': entry['courseList'],
+                        'lastVisit' : datetime.now()},
+                    },upsert=True)
         print 'Added a course to get list: ', entry.get('courseList', []);
 
     def remove_course(self, netID, courseList):
+        self.analytics.insert({'type':'removeClass', 'time':datetime.now()})
         print 'removing', courseList
         # check for if course is not there then you can't remove it
         if (self.studentCol.find_one({'netID': netID}) is None):
             sys.stderr.write('you tried to remove a course when the student has no courses!');
         else:
-            entry = self.studentCol.find_one({'netID': netID});
+            entry = self.studentCol.find_one({'netID': netID})
             if isinstance(courseList, list):
                 for course in courseList:
                     if course in entry['courseList']:
-                        entry['courseList'].remove(course);
+                        entry['courseList'].remove(course)
             else:
-                entry['courseList'].remove(courseList);
+                if courseList in entry['courseList']:
+                    entry['courseList'].remove(courseList)
             # put updated things back
             self.studentCol.update({'netID': netID},
-                                   {
-                    '$set': {'courseList': entry['courseList']},
-                    })
+                                   {'$set': {'courseList': entry['courseList'],
+                                             'lastVisit' : datetime.now()}
+                    },upsert=True)
         print 'Removed a course to get list: ', entry.get('courseList', []);
 
     # Returns a list of professors with matching id and name
