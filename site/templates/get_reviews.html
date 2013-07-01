@@ -13,23 +13,25 @@
     </div>
     <div class = "detail_all_the_things">
     {% for result in results %}
-        {% if result.term != current_semester %}
-        <div class = "detail_term"> {{ result.term_name }} </div>
-        <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
-        <div class = "detail_description">
-        {% for field, value in result.review_Nums.items %}
-            {{ field }}: {{ value }}<br>
-        {% empty %}
-            No data available for this semester.
-        {% endfor %}
+        <div class = "detail_semester">
+            {% if result.term != current_semester %}
+            <div class = "detail_term"> Reviews for {{ result.term_name }} <a href="#" class="toggle_reviews">Hide</a></div>
+            <div class = "detail_profs"> {% include "prof_snippet.html" %} </div>
+            <div class = "detail_description" style="display: none;">
+            {% for field, value in result.review_Nums.items %}
+                {{ field }}: {{ value }}<br>
+            {% empty %}
+                No data available for this semester.
+            {% endfor %}
+            </div>
+            <ul>
+            {% for entry in result.review_text %}
+                <li> {{ entry }} </li>
+            {% endfor %}
+            </ul>
+            <br>
+            {% endif %}
         </div>
-        <ul>
-        {% for entry in result.review_text %}
-            <li> {{ entry }} </li>
-        {% endfor %}
-        </ul>
-        <br>
-        {% endif %}
     {% endfor %}
     </div>
 </div>

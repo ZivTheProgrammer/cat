@@ -3,6 +3,8 @@ import pymongo
 import re
 import string
 import pprint
+import HTMLParser
+from collections import OrderedDict
 
 """ A class that provides functions to get information from our database
     of courses. To use, create a CatDB object:
@@ -11,7 +13,20 @@ import pprint
         db.getProfessorInfo(name='Kernighan')
 """
 
-CURRENT_SEMESTER = '1142'
+CURRENT_SEMESTER = '1142' # The most recent semester for which courses are posted. TODO: Make sure this isn't defined anywhere else.
+RATING_CATEGORIES = ['overall', 'lectures', 'precepts', 'classes', 'readings', 'assignments']
+DECAY_FACTOR = 0.33 # For averaging course ratings over multiple semesters
+STARTING_WEIGHT = 0.05 # Also for averaging course ratings. Increase or decrease to change strength of Bayesian ranking system.
+RATINGS_COLOR_SCALE = [0.0, 3.0, 3.2, 3.4, 3.6, 3.8, 4.0, 4.2, 4.4, 4.6] # Scale for determing rating colors
+
+# A helper function to define nice term names. Moved here from views
+def term_name(term_no):
+    if term_no % 10 == 4:
+        return "Spring {:d}".format(1900 + term_no / 10)
+    elif term_no % 10 == 2:
+        return "Fall {:d}".format(1899 + term_no / 10)
+    elif term_no % 10 == 1:
+        return "Summer {:d}".format(1899 + term_no / 10)
 
 class CatDB:
 
@@ -50,17 +65,14 @@ class CatDB:
                     if course not in entry['courseList']:
                         entry['courseList'].append(course);
             else:
-                print entry['courseList']
                 entry['courseList'].append(courseList);
             # put updated things back
             self.studentCol.update({'netID': netID},
                                    {
                     '$set': {'courseList': entry['courseList']},
                     })
-        print 'Added a course to get list: ', entry.get('courseList', []);
 
     def remove_course(self, netID, courseList):
-        print 'removing', courseList
         # check for if course is not there then you can't remove it
         if (self.studentCol.find_one({'netID': netID}) is None):
             sys.stderr.write('you tried to remove a course when the student has no courses!');
@@ -77,7 +89,6 @@ class CatDB:
                                    {
                     '$set': {'courseList': entry['courseList']},
                     })
-        print 'Removed a course to get list: ', entry.get('courseList', []);
 
     # Returns a list of professors with matching id and name
     # (name can be partial, id cannot)
@@ -115,9 +126,7 @@ class CatDB:
                     totalcount = totalcount + courseDesc.count(q)
             # sleazy            
             totalscore = matchTitle*1000 + matchDesc*100 + totalcount
-            course['score'] = totalscore; # dictionary of scores of courses
-        print '****************'
-        
+            course['score'] = totalscore; # dictionary of scores of courses        
         list_courses = sorted(list_courses, key=lambda course: (course['subject'], course['course_number']))
         return sorted(list_courses, key=lambda course: course['score'], reverse = True);
 
@@ -244,8 +253,6 @@ class CatDB:
             if '$or' not in course:
                 course['$or'] = []
             course['$or'].extend([{'description':course.pop('description')}, {'title':course.pop('title')}])
-            #print "regex: ", descRegex
-
         if pdf:
             course['pdf'] = {'$in':pdf if isinstance(pdf, list) else [pdf]}
             #course['term'] = CURRENT_SEMESTER
@@ -253,8 +260,6 @@ class CatDB:
             course['course_id'] = {'$in': course_id if isinstance(course_id, list) else [course_id]}
         if unique_course:
             course['unique_course'] = {'$in': unique_course if isinstance(unique_course, list) else [unique_course]}
-            
-        print "search query: ",  course
         if not course:
             return []
         results = self.courseCol.find(course)
@@ -274,7 +279,7 @@ class CatDB:
                 results_list.append(c)
 
         if not unique:
-            return self.rank(results_list, keywords);
+            return self.rank(results_list, keywords)
         # Get the most recent semester of each course
         unique_courses = set()
         for c in results_list:
@@ -284,7 +289,6 @@ class CatDB:
         courseIDs = []
         uniqueCourses = []
         for c in self.uniqueCourseCol.find({'course':{'$in' : list(unique_courses)}}):
-            #print c
             uniqueCourses.append(c)
             years = c.get('years', [])
             bestYear = {}
@@ -304,7 +308,7 @@ class CatDB:
                     c['all_terms'] = sorted([x['term'] for x in d['years']], reverse=True)
             results_list.append(c)
         # Do we want to return the whole thing, rather than the cursor?
-        results_list = self.rank(results_list, keywords);
+        results_list = self.rank(results_list, keywords)
         return results_list
 
         
@@ -331,3 +335,103 @@ class CatDB:
             reviews.append(semester)
 
         return reviews
+
+    # Function to return all courses in the database.
+    # For testing purposes-- probably should not be used.
+    def all_courses(self):
+        results = self.courseCol.find()
+        unique = []
+        for result in results:
+            if not 'primary_subject' in result:
+                unique.append(result)
+        return unique
+        
+    def annotate(self):
+        # Get all courses
+        results = self.courseCol.find()
+        # Filter out crosslistings
+        unique = []
+        for result in results:
+            if not 'primary_subject' in result:
+                unique.append(result)
+        # Set stuff up to deal with HTML tags
+        parser = HTMLParser.HTMLParser()
+        regex = re.compile(r'<.*?>')
+        # Annotate
+        for semester in unique:
+            # Unescape and de-tag HMTL
+            if 'description' in semester and semester['description']:
+                semester['description'] = parser.unescape(semester['description'])
+            if 'readings' in semester:
+                for reading in semester['readings']:
+                    for key in reading:
+                        reading[key] = parser.unescape(reading[key])
+            # Write professor names
+            if 'instructors' in semester:
+                semester['profs'] = []
+                for instructor in semester['instructors']:
+                    semester['profs'].append(self.get_professor(id_number=instructor)[0])
+            # Add nice semester names
+            if 'term' in semester:
+                term_no = int(semester['term'])
+                semester['term_name'] = term_name(term_no)
+            # Make the list of all terms
+            unique_course = self.uniqueCourseCol.find_one({'course': semester['unique_course']})
+            if unique_course:
+                semester['all_terms'] = sorted([x['term'] for x in unique_course['years']], reverse=True)
+            # Add more nice semester names
+            # Does nothing at the moment b/c all_terms is written by get_course. TODO: fix.
+            if 'all_terms' in semester:
+                # Add more nice semester names
+                all_named_terms = OrderedDict()
+                for term in semester['all_terms']:
+                    all_named_terms[term] = term_name(int(term))
+                semester['all_named_terms'] = all_named_terms
+            # Add aggregated review data
+            reviews = self.get_reviews(semester['unique_course'])
+            current_weight = STARTING_WEIGHT
+            total_weight = dict((category, 1.0) for category in RATING_CATEGORIES)
+            weighted_rating = dict((category, 3.8) for category in RATING_CATEGORIES)
+            seen_one = dict((category, False) for category in RATING_CATEGORIES) # To make sure we are getting some ratings
+            for review in reviews:
+                # Skip reviews for terms later than the one being viewed
+                if int(review['term']) > int(semester['term']):
+                    continue
+                # Skip terms that don't have any reviews
+                if not review['review_Nums']:
+                    continue
+                # Update weights
+                current_weight = current_weight * DECAY_FACTOR
+                # Add up ratings by category
+                for category in RATING_CATEGORIES:
+                    if category in review['review_Nums']:
+                        seen_one[category] = True
+                        for i, count in enumerate(review['review_Nums'][category]):
+                            weighted_rating[category] += current_weight * float(count) * (5 - i)
+                            total_weight[category] += current_weight * float(count)
+            for category in RATING_CATEGORIES:
+                if seen_one[category]:
+                    final_average = weighted_rating[category] / total_weight[category]
+                    semester[category + "_mean"] = "{0:.2f}".format(final_average)
+                    for i, cutoff in enumerate(RATINGS_COLOR_SCALE):
+                        if final_average > cutoff:
+                            semester[category + '_color'] = 'rating_color_%s' % i
+                    """if final_average > 4.6:
+                        semester[category + '_color'] = 'rating_color_1'
+                    elif final_average > 4.4:
+                        semester[category + '_color'] = 'rating_color_2'
+                    elif final_average > 4.2:
+                        semester[category + '_color'] = 'rating_color_3'
+                    elif final_average > 4.0:
+                        semester[category + '_color'] = 'rating_color_4'
+                    elif final_average > 3.8:
+                        semester[category + '_color'] = 'rating_color_5'
+                    elif final_average > 3.6:
+                        semester[category + '_color'] = 'rating_color_6'
+                    elif final_average > 3.4:
+                        semester[category + '_color'] = 'rating_color_7'
+                    elif final_average > 3.2:
+                        semester[category + '_color'] = 'rating_color_8'
+                    elif final_average > 0.0:
+                        semester[category + '_color'] = 'rating_color_9'"""
+            self.courseCol.save(semester)

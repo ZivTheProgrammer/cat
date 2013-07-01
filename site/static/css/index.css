@@ -1,16 +1,8 @@
+/* General */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    /*
-    background-image: -khtml-gradient(linear, left top, left bottom, from(#ffc579), to(#FFFFFF));
-    background-image: -moz-linear-gradient(top, #ffc579, #FFFFFF);
-    background-image: -ms-linear-gradient(top, #ffc579, #FFFFFF);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffc579), color-stop(100%, #FFFFFF));
-    background-image: -webkit-linear-gradient(top, #ffc579, #FFFFFF);
-    background-image: -o-linear-gradient(top, #ffc579, #FFFFFF);
-    background-image: linear-gradient(top, #ffc579, #FFFFFF);
-    */
     background-repeat:no-repeat;
     background-attachment:fixed;
     background-image:url('/static/Mahogany.jpg');
@@ -18,12 +10,13 @@ html, body {
     background-size:cover;
 }
 
-.instruction_item {
-    padding-bottom:10px;
-    position:relative;
-    left:-10px;
+div{
+    display:block;
+    margin:0px;
+    padding:0px;
 }
 
+/* Top bar */
 #top_bar {
     color:white;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#888888), to(#333333));
@@ -67,26 +60,151 @@ html, body {
     color: rgb(255, 100, 0);
 }
 
-.classes_table {
-    margin-bottom:30px;
+/* Advanced Search pop-up */
+#hide_advanced {
+	float:right;
+    background: url(/static/ox.png);
+    height: 24px;
+    width: 24px;
+    background-size: contain;
+    border: none;
 }
 
-.classes_table_header_cell {
-   padding:4px;
-   font-weight:bold;
+#hide_advanced:hover{
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-.classes_table_cell {
-   padding-right:3px;
+.advanced_label {
+	float: left;
+	width: 140px;
 }
 
-.instruction_text {
-   color:white;
-   font-family:Verdana, sans-serif;
+#advanced_search_wrapper{
+    display:none;
+    position:fixed;
+    width: 100%;
+    min-height: 100%;
+    background-color:rgba(0,0,0,0.5);
+    z-index: 10;
 }
 
-/* Black CSS triangles */
-/*---------------------*/
+/* Analytics pop-up (currently disabled) */
+#analytics{
+    display:none;
+    min-width: 700px;
+    max-width:700px;
+    height: 400px;
+    top: 80px;
+    position: absolute;
+    margin-left:auto;
+    margin-right:auto;
+    left:0;
+    right:0;
+    background-color: #333333;
+    border-radius: 6px;
+    padding: 10px;
+    font-family:"Verdana", Verdana, sans-serif;
+    color:white;
+    z-index:11;
+}
+
+/* Main unit superstructure */
+#outside_div {
+    width:1000px;
+    position:absolute;
+    left:0;
+    right:0;
+    top: 40px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#omnibar_div  {
+    position: absolute;
+    height:50px;
+    width: 100%;
+    top:5px;
+    z-index:0;
+}
+
+#omnibar_form, #cart_div{
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#888888), to(#333333));
+    background-image: -moz-linear-gradient(top, #888888, #333333);
+    background-image: -ms-linear-gradient(top, #888888, #333333);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #888888), color-stop(100%, #333333));
+    background-image: -webkit-linear-gradient(top, #888888, #333333);
+    background-image: -o-linear-gradient(top, #888888, #333333);
+    background-image: linear-gradient(top, #888888, #333333);
+    position:absolute;
+}
+
+#omnibar_form {
+    margin-left:auto;
+    margin-right:auto;
+    left:0;
+    right:0;
+    height:50px;
+    text-align:left;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+#cart_div {
+    top:537px;
+    width:100%;
+    min-height: 50px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+    
+#results_div{
+    width:100%;
+    position:absolute;
+    top:50px;
+    height:485px;
+    z-index:0;
+    margin-top:5px;
+}
+
+#results_left_div, #results_right_div{
+    position:absolute;
+    height:100%;
+    overflow:auto;
+    margin-left:15px;
+}
+
+#results_left_div{
+    width:365px;
+}
+
+#results_right_div{
+    width:565px;
+    color:white;
+}
+
+#left_scrollbar_wrap, #right_scrollbar_wrap{
+    background-color:rgba(0,0,0,0.5);
+    position:absolute;
+    height:100%;
+    /*border-radius:6px;
+    border:1px;
+    border-style:solid;
+    border-color:#0f0f0f;*/
+}  
+
+#left_scrollbar_wrap {
+    width:385px;
+    left:10px;
+}
+
+#right_scrollbar_wrap {
+    left:404px;
+    width:586px;
+}
+
+/* 3D look (Black CSS triangles) */
 #omnibar_div:before {
   content: '';
   position: absolute;
@@ -130,12 +248,46 @@ html, body {
   border-bottom: 12px solid black;
   border-right: 10px solid transparent;
 }
-/*-----------------------------------*/
+
+/* Instructions list */
+.instruction_item {
+    padding-bottom:10px;
+    position:relative;
+    left:-10px;
+}
+
+.instruction_text {
+   color:white;
+   font-family:Verdana, sans-serif;
+}
+
+/* Course navigation hide/display */
+.detail {
+    display:none;
+}
+
+.detail_shown {
+    display:block;
+}
+
+.semester {
+	display:none;
+}
+
+.semester_shown {
+    display:block;
+}
+
+/* Course navigation controls */
+.semester_menu{
+    display:inline;
+    background-color: #777777;
+}
 
 .reviews_form {
-  display:block;
-  margin-left:380px;
-  margin-top:5px;
+    display:block;
+    margin-left:380px;
+    margin-top:5px;
 }
 
 .reviews_form>[type=submit] {
@@ -146,7 +298,6 @@ html, body {
     padding-right: 4px;
     width: 120px;
     text-align: center;
-/*    box-shadow: 1px 1px 2px rgba(255, 49, 0, 0.7);*/
 }
 
 .sortby_option {
@@ -167,11 +318,12 @@ html, body {
 }
 
 .term_selector {
-  display:block;
-  float:left;
-  z-index: 100;
+    display:block;
+    float:left;
+    z-index: 100;
 }
 
+/* Course details */
 .detail_ratings_numbers {
     display:none;
 }
@@ -221,79 +373,59 @@ html, body {
     border-color:rgb(193,193,193);
 }
 
-#hide_advanced {
-	float:right;
-    background: url(/static/ox.png);
-    height: 24px;
-    width: 24px;
-    background-size: contain;
-    border: none;
+.classes_table {
+    margin-bottom:30px;
 }
 
-#hide_advanced:hover{
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 6px;
-    cursor: pointer;
+.classes_table_header_cell {
+   padding:4px;
+   font-weight:bold;
 }
 
-.advanced_label {
-	float: left;
-	width: 140px;
+.classes_table_cell {
+   padding-right:3px;
 }
 
-#advanced_search_wrapper{
-    display:none;
-    position:fixed;
-    width: 100%;
-    min-height: 100%;
-    background-color:rgba(0,0,0,0.5);
-    z-index: 10;
+/* Search results styling */
+#search_results_list{
+    margin: 0px;
+    padding:0px;
+    padding-bottom: 4px;
 }
 
-#analytics{
-display:none;
-min-width: 700px;
-max-width:700px;
-height: 400px;
-top: 80px;
-position: absolute;
-margin-left:auto;
-margin-right:auto;
-left:0;
-right:0;
-background-color: #333333;
-border-radius: 6px;
-padding: 10px;
-font-family:"Verdana", Verdana, sans-serif;
-color:white;
-z-index:11;
+#search_results_list>li{
+    margin-top:4px;
+    margin-bottom:4px;
+    margin-right:4px;
+    border-radius:3px;
+    color:white;
 }
 
+/* Course previews */
 .course {
-padding:5px;
-background-color:rgba(0,0,0,0.8);
-font-family:Verdana, sans-serif;
-font-size:80%;
+    padding:5px;
+    background-color:rgba(0,0,0,0.8);
+    font-family:Verdana, sans-serif;
+    font-size:80%;
 }
 
 .course.course_old{
-background-color:rgba(80, 80, 80, 0.8);
+    background-color:rgba(80, 80, 80, 0.8);
 }
 
 .course:hover{
-background-color:rgba(255, 100, 00, 0.7);
-cursor:pointer;
+    background-color:rgba(255, 100, 00, 0.7);
+    cursor:pointer;
 }
 
 .course_shown{
-background-color:rgba(255,100,00,0.9);
-cursor:default;
-padding:5px;
-font-family:Verdana, sans-serif;
-font-size:80%;
+    background-color:rgba(255,100,00,0.9);
+    cursor:default;
+    padding:5px;
+    font-family:Verdana, sans-serif;
+    font-size:80%;
 }
 
-/* Toggle professor name text color */
 .course>.sub_span {
     color: #FF6C00;
 }
@@ -306,54 +438,33 @@ font-size:80%;
     color:black;
 }
 
-.detail {
-    display:none;
-    /*height: 100%;
-    margin-left:10px;
-    margin-top:10px;
-    width:560px;*/
+.savecourse_form>[type=submit]{
+    background:url(/static/cart.png);
+    background-size:contain;
+    border:none;
+    background-repeat:no-repeat;
+    width:34px;
+    height:26px;
+    cursor:pointer;
+    margin-left:295px;
+    margin-bottom:2px;
+    border: 2px solid rgba(255, 255, 255, 0.0);
 }
 
-.detail_shown {
-    display:block;
-    /*background-color:#f0f0f0;
-    margin-left:10px;
-    margin-top:10px;
-    width:570px;*/
-}
-
-.semester {
-	display:none;
-}
-
-.semester_shown {
-    display:block;
-}
-
-.semester_menu{
-    /*position: absolute;
-    top: 4px;
-    right: 4px;
+/* Buttons - General*/
+.coursecart, #show_advanced, #show_analytics, #showold_span, .reviews_form>[type=submit], #advanced_form>[type="submit"], #advanced_form>[type="reset"]{ 
+    background-color:black;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#7d7e7d), to(#0e0e0e));
+    background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
+    background-image: -moz-linear-gradient(top, #7d7e7d, #0e0e0e);
+    background-image: -ms-linear-gradient(top, #7d7e7d, #0e0e0e);
+    background-image: -o-linear-gradient(top, #7d7e7d, #0e0e0e);
+    background-image: linear-gradient(to bottom, #7d7e7d, #0e0e0e);
+    border: 1px solid #bbbbbb;
     border-radius: 4px;
-    */
-    display:inline;
-    background-color: #777777;
 }
 
-div{
-    display:block;
-    margin:0px;
-    padding:0px;
-}
-
-.coursecart{
-    display:inline-block;
-    margin-right: 4px;
-    margin-top: -6px;
-	z-index:0;
-    min-width:90px;
-}
- 
+/* Buttons for pop-ups */
 #show_analytics, #show_advanced {
     position:absolute;
     color:white;
@@ -378,22 +489,26 @@ div{
     left:888px;
 }
 
-.coursecart, #show_advanced, #show_analytics, #showold_span, .reviews_form>[type=submit], #advanced_form>[type="submit"], #advanced_form>[type="reset"]{ 
-    background-color:black;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#7d7e7d), to(#0e0e0e));
-    background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
-    background-image: -moz-linear-gradient(top, #7d7e7d, #0e0e0e);
-    background-image: -ms-linear-gradient(top, #7d7e7d, #0e0e0e);
-    background-image: -o-linear-gradient(top, #7d7e7d, #0e0e0e);
-    background-image: linear-gradient(to bottom, #7d7e7d, #0e0e0e);
-    border: 1px solid #bbbbbb;
-    border-radius: 4px;
+/* Course cart */
+.coursecart{
+    display:inline-block;
+    margin-right: 4px;
+    margin-top: -6px;
+	z-index:0;
+    min-width:90px;
 }
 
-#advanced_form>[type="submit"], #advanced_form>[type="reset"] {
-    color:white;
-    padding:3px;
-    cursor:pointer;
+#cart_list {
+    width:800px;
+    padding-left:55px;
+}
+
+#cart_label {
+    color: white;
+    font-family: Verdana, sans-serif;
+    position: absolute;
+    margin-top: 15px;
+    padding-left: 8px;
 }
 
 .coursecart *:hover {
@@ -404,15 +519,9 @@ div{
     cursor:pointer;
 }
 
-#advanced_form>[type="submit"]:hover, #advanced_form>[type="reset"]:hover {
-    background-image:none;
-    background-color:rgba(255,100,0,0.5);
-    cursor:pointer;
-}
-
 .coursecart:hover,  #show_analytics:hover{
- background-image: none;
- background-color:rgba(255,100,0,0.5);
+    background-image: none;
+    background-color:rgba(255,100,0,0.5);
 }
 
 .coursecart.coursecart_selected{
@@ -456,166 +565,26 @@ div{
     margin-left:4px;
 }
 
-#outside_div {
-    width:1000px;
-    position:absolute;
+
+/* Advanced search controls */
+#advanced_search{
+    display:none;
+    min-width: 600px;
+    max-width:600px;
+    height: 340px;
+    top: 60px;
     left:0;
     right:0;
-    top: 40px;
+    position: absolute;
     margin-left:auto;
     margin-right:auto;
-}
-
-#omnibar_div  {
-    position: absolute;
-    height:50px;
-    width: 100%;
-    top:5px;
-    z-index:0;
-}
-
-#cart_label {
-    color: white;
-    font-family: Verdana, sans-serif;
-    position: absolute;
-    margin-top: 15px;
-    padding-left: 8px;
-}
-
-#cart_div {
-    background-image: -khtml-gradient(linear, left top, left bottom, from(#888888), to(#333333));
-    background-image: -moz-linear-gradient(top, #888888, #333333);
-    background-image: -ms-linear-gradient(top, #888888, #333333);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #888888), color-stop(100%, #333333));
-    background-image: -webkit-linear-gradient(top, #888888, #333333);
-    background-image: -o-linear-gradient(top, #888888, #333333);
-    background-image: linear-gradient(top, #888888, #333333);
-    position:absolute;
-    top:537px;
-    width:100%;
-    min-height: 50px;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-    
-#results_div{
-width:100%;
-position:absolute;
-top:50px;
-height:485px;
-z-index:0;
-margin-top:5px;
-}
-
-#results_left_div{
-position:absolute;
-width:365px;
-height:100%;
-overflow:auto;
-margin-left:15px;
-}
-
-#left_scrollbar_wrap{
-background-color:rgba(0,0,0,0.5);
-position:absolute;
-width:385px;
-height:100%;
-/*border-radius:6px;*/
-left:10px;
-/*border:1px;
-border-style:solid;
-border-color:#0f0f0f;*/
-}
-
-#right_scrollbar_wrap {
-background-color:rgba(0,0,0,0.5);
-position:absolute;
-left:404px;
-width:586px;
-height:100%;
-/*border-radius:6px;*/
-/*border:1px;
-border-style:solid;
-border-color:#0f0f0f;*/
-}
-
-#results_right_div{
-position:absolute;
-width:565px;
-height:100%;
-overflow:auto;
-margin-left:15px;
-color:white;
-}  
-
-#omnibar_form {
-background-image: -khtml-gradient(linear, left top, left bottom, from(#888888), to(#333333));
-background-image: -moz-linear-gradient(top, #888888, #333333);
-background-image: -ms-linear-gradient(top, #888888, #333333);
-background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #888888), color-stop(100%, #333333));
-background-image: -webkit-linear-gradient(top, #888888, #333333);
-background-image: -o-linear-gradient(top, #888888, #333333);
-background-image: linear-gradient(top, #888888, #333333);
-margin-left:auto;
-margin-right:auto;
-left:0;
-right:0;
-height:50px;
-position:absolute;
-text-align:left;
-border-top-left-radius: 12px;
-border-top-right-radius: 12px;
-}
-
-#omnibar_input {
--webkit-appearance:none;
-width:400px;
-margin-top:7px;
-font-size:1.2em;
-height:30px;
-font-family:Verdana,sans-serif;
-border-radius: 8px;
-margin-left:300px;
-}
-
-#tutorial{
-display:none;
-min-width: 600px;
-max-width:600px;
-height: 450px;
-top: 60px;
-left:0;
-right:0;
-position: absolute;
-margin-left:auto;
-margin-right:auto;
-background-color: white;
-border: 2px solid black;
-border-radius: 6px;
-padding: 10px;
-font-family:"Verdana", Verdana, sans-serif;
-color:black;
-z-index:11;
-}
-
-#advanced_search{
-display:none;
-min-width: 600px;
-max-width:600px;
-height: 340px;
-top: 60px;
-left:0;
-right:0;
-position: absolute;
-margin-left:auto;
-margin-right:auto;
-background-color: #333333;
-border: 2px solid black;
-border-radius: 6px;
-padding: 10px;
-font-family:"Verdana", Verdana, sans-serif;
-color:white;
-z-index:11;
+    background-color: #333333;
+    border: 2px solid black;
+    border-radius: 6px;
+    padding: 10px;
+    font-family:"Verdana", Verdana, sans-serif;
+    color:white;
+    z-index:11;
 }
 
 #advanced_search>[type="checkbox"] {
@@ -623,24 +592,28 @@ z-index:11;
 	height:20px;
 }
 
-#advanced_form>p{
-	/*margin-bottom:3px;*/
+#advanced_form>[type="submit"], #advanced_form>[type="reset"] {
+    color:white;
+    padding:3px;
+    cursor:pointer;
 }
 
-#search_results_list{
-margin: 0px;
-padding:0px;
-padding-bottom: 4px;
+#advanced_form>[type="submit"]:hover, #advanced_form>[type="reset"]:hover {
+    background-image:none;
+    background-color:rgba(255,100,0,0.5);
+    cursor:pointer;
 }
 
-
-#search_results_list>li{
-/*border-bottom: 2px solid black;*/
-margin-top:4px;
-margin-bottom:4px;
-margin-right:4px;
-border-radius:3px;
-color:white;
+/* Omnibar controls */
+#omnibar_input {
+    -webkit-appearance:none;
+    width:400px;
+    margin-top:7px;
+    font-size:1.2em;
+    height:30px;
+    font-family:Verdana,sans-serif;
+    border-radius: 8px;
+    margin-left:300px;
 }
 
 #omnibar_submit {
@@ -659,6 +632,7 @@ color:white;
     margin-bottom:auto;
 }
 
+/* Search results navigation */
 #omnibar_showold{
     display: none;
 }
@@ -699,24 +673,6 @@ color:white;
     cursor:pointer;
 }
 
-.savecourse_form>[type=submit]{
-    background:url(/static/cart.png);
-    background-size:contain;
-    border:none;
-    background-repeat:no-repeat;
-    width:34px;
-    height:26px;
-    cursor:pointer;
-    margin-left:295px;
-    margin-bottom:2px;
-    border: 2px solid rgba(255, 255, 255, 0.0);
-}
-
-#cart_list {
-    width:800px;
-    padding-left:55px;
-}
-
 #sortby_selector {
     display:none;
     margin-left:4px;
@@ -737,15 +693,13 @@ color:white;
     border-color:#888888;
 }
 
-
+/* Ratings display */
 .detail_ratings_plot {
-    /*position:absolute;*/
     width: 500px;
     margin-left:26px;
     margin-top:15px;
     margin-bottom:10px;
     height:250px;
-    /*background-color:white;*/
 }
 
 .relevance {
@@ -778,38 +732,69 @@ color:white;
     padding: 1px;
 }
 
-.rating_color_1{
-    background-color: #00FF00;
-}
-
-.rating_color_2{
-    background-color: #40FF00;
-}
-
-.rating_color_3{
-    background-color: #80FF00;
-}
-
-.rating_color_4{
-    background-color: #C0FF00;
-}
-
-.rating_color_5{
-    background-color: #FFFF00;
-}
-
-.rating_color_6{
-    background-color: #FFC000;
-}
-
-.rating_color_7{
-    background-color: #FF8000;
+.rating_color_9{
+    background-color: #00FF60;
 }
 
 .rating_color_8{
-    background-color: #FF4000;
+    background-color: #00FF20;
 }
 
-.rating_color_9{
+.rating_color_7{
+    background-color: #50FF00;
+}
+
+.rating_color_6{
+    background-color: #90FF00;
+}
+
+.rating_color_5{
+    background-color: #D0FF00;
+}
+
+.rating_color_4{
+    background-color: #FFFF00;
+}
+
+.rating_color_3{
+    background-color: #FFD000;
+}
+
+.rating_color_2{
+    background-color: #FF9000;
+}
+
+.rating_color_1{
+    background-color: #FF5000;
+}
+
+.rating_color_0{
     background-color: #FF0000;
+}
+
+a.toggle_reviews{
+    color: rgb(255, 100, 0);
+    position: absolute;
+    right: 10px;
+}
+
+/* Styles for tutorial page */
+#tutorial{
+    display:none;
+    min-width: 600px;
+    max-width:600px;
+    height: 450px;
+    top: 60px;
+    left:0;
+    right:0;
+    position: absolute;
+    margin-left:auto;
+    margin-right:auto;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 6px;
+    padding: 10px;
+    font-family:"Verdana", Verdana, sans-serif;
+    color:black;
+    z-index:11;
 }

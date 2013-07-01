@@ -74,26 +74,42 @@ function load_reviews(course_id) {
        $(detail_id+">.detail_sem_"+semester_id).addClass("semester_shown").removeClass("semester"); 
        $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Reviews");
     }
-    else {
-	
-    /* Hide / show selected semester */
-    if ($(detail_id+">.detail_reviews").length == 0) {
-        $.post("/reviews/", $(detail_id+">.semester_menu>.reviews_form").serialize(), function( data ) {
-            $(detail_id).append(data);
-            $(detail_id+">.detail_reviews").find(".detail_description").each(function() {
-                if ($(this).text().trim() != "No data available for this semester.") $(this).css("display","none");
+    else {      
+        /* Hide / show selected semester */
+        if ($(detail_id+">.detail_reviews").length == 0) {
+            $.post("/reviews/", $(detail_id+">.semester_menu>.reviews_form").serialize(), function( data ) {
+                $(detail_id).append(data);
+                $(detail_id+">.detail_reviews").find(".detail_semester").each(function() {
+                    if ($(this).find(".detail_description").text().trim() == "No data available for this semester.")
+                        $(this).css("display","none");
+                });
+                $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); 
+                $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); 
+                plot_review_data(course_id);
+                /* Enable show / hide review lists */
+                $(detail_id+">.detail_reviews").find(".toggle_reviews").click(function() {
+                    toggle_review_text($(this));
+                });
             });
+        }
+        else {
             $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); 
             $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); 
             plot_review_data(course_id);
-        });
+        }
+        $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Course Data");
+    }
+}
+
+/* Function to display or hide review text */
+function toggle_review_text(link) {
+    if (link.text().trim() == "Show") {
+        link.text("Hide");
+        link.parents(".detail_semester").find("ul").css("display", "block");
     }
     else {
-        $(detail_id+">.semester_shown").addClass("semester").removeClass("semester_shown"); 
-        $(detail_id+">.detail_reviews").addClass("semester_shown").removeClass("semester"); 
-        plot_review_data(course_id);
-    }
-    $(detail_id+">.semester_menu>.reviews_form>input[type=submit]").attr("value", "See Course Data");
+        link.text("Show");
+        link.parents(".detail_semester").find("ul").css("display", "none");
     }
 }
 
@@ -104,13 +120,14 @@ function plot_review_data(course_id) {
                 {label:"Assignments", data:[], color:"rgb(255,0,255)"},
                 {label:"Precepts", data:[], color:"rgb(0,150,0)"},
                 {label:"Lectures", data:[], color:"rgb(255,200,0)"},
+                {label:"Classes", data:[], color:"rgb(0, 150, 150)"},
                 {label:"Overall", data:[], color:"rgb(255,49,0)"}
                ];
     var xmapping = [];
     
     /* iterate through all the past semesters of ratings */
     var xval = 0;
-    var categories = {"overall_mean": 4, "lectures_mean":3, "precepts_mean":2, "assignments_mean":1, "readings_mean":0};
+    var categories = {"overall_mean": 5, "classes_mean": 4, "lectures_mean":3, "precepts_mean":2, "assignments_mean":1, "readings_mean":0};
     $(".detail_shown>.detail_reviews.semester_shown>.detail_ratings_numbers").children().each(function() {
         /* iterate through all the ratings for that semester */
         if ($(this).children().length <= 1) return;

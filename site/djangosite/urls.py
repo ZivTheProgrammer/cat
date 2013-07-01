@@ -15,6 +15,7 @@ urlpatterns = patterns('djangosite.views',
     url(r'^course/add/$', 'add_course_cart', name='add_course_cart'),
     url(r'^course/remove/$', 'remove_course_cart', name='remove_course_cart'),
     url(r'^reviews/$', 'get_reviews', name='get_reviews'),
+    url(r'^admin/$', 'admin', name='admin'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
