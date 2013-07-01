@@ -398,9 +398,9 @@ class CatDB:
             # Does nothing at the moment b/c all_terms is written by get_course. TODO: fix.
             if 'all_terms' in semester:
                 # Add more nice semester names
-                all_named_terms = OrderedDict()
+                all_named_terms = []
                 for term in semester['all_terms']:
-                    all_named_terms[term] = term_name(int(term))
+                    all_named_terms.append( ( term, term_name(int(term)) ) )
                 semester['all_named_terms'] = all_named_terms
             # Add aggregated review data
             reviews = self.get_reviews(semester['unique_course'])
