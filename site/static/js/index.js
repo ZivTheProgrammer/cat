@@ -500,7 +500,7 @@ $(document).ready(function() {
                     if ($("#search_results_list").children().length == $("#search_results_list>.course_old").length && !$("#omnibar_showold").is(":checked")) {
                         $("#results_left_div").append("<div class='instruction_text' id='prev_only_message'>\
                                                           <p> No results from most recent semester.</p>\
-                                                          <p>Select 'Show Previous Semesters' above to display courses taught in previous semesters.</p>\
+                                                          <p>Select 'View Older Courses' above to display courses taught in previous semesters.</p>\
                                                       </div>");
                     } /* Otherwise, if we have any old semester courses, append an extra result that reminds
                          people to show past results if they get to the end of the list and don't find what they want.*/

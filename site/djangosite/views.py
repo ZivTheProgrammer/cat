@@ -123,7 +123,7 @@ def add_course_cart(request):
 def remove_course_cart(request):
     db = CatDB()
     db.remove_course(request.session['netid'], request.POST['course_id'])
-    return HttpResponse("Success") #Shouldn't need to return anything
+    return HttpResponse("Success") # Shouldn't need to return anything
 
 # A temporary view to update annotations. To replace with a more complete admin page.
 def admin(request):

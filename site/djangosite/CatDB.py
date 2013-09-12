@@ -381,6 +381,8 @@ class CatDB:
                 for reading in semester['readings']:
                     for key in reading:
                         reading[key] = parser.unescape(reading[key])
+            if 'title' in semester:
+                semester['title'] = parser.unescape(semester['title'])
             # Write professor names
             if 'instructors' in semester:
                 semester['profs'] = []
@@ -431,22 +433,4 @@ class CatDB:
                     for i, cutoff in enumerate(RATINGS_COLOR_SCALE):
                         if final_average > cutoff:
                             semester[category + '_color'] = 'rating_color_%s' % i
-                    """if final_average > 4.6:
-                        semester[category + '_color'] = 'rating_color_1'
-                    elif final_average > 4.4:
-                        semester[category + '_color'] = 'rating_color_2'
-                    elif final_average > 4.2:
-                        semester[category + '_color'] = 'rating_color_3'
-                    elif final_average > 4.0:
-                        semester[category + '_color'] = 'rating_color_4'
-                    elif final_average > 3.8:
-                        semester[category + '_color'] = 'rating_color_5'
-                    elif final_average > 3.6:
-                        semester[category + '_color'] = 'rating_color_6'
-                    elif final_average > 3.4:
-                        semester[category + '_color'] = 'rating_color_7'
-                    elif final_average > 3.2:
-                        semester[category + '_color'] = 'rating_color_8'
-                    elif final_average > 0.0:
-                        semester[category + '_color'] = 'rating_color_9'"""
             self.courseCol.save(semester)
