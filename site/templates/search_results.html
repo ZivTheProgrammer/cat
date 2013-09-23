@@ -48,10 +48,15 @@
                     </select>
                     <input type="hidden" name="course_id" value="{{course_id}}"></input>
                 </form>
-                <form class="reviews_form">{% csrf_token %}
+                
+                {% if result.all_named_terms|length|get_digit:"-1" == 1 and result.all_named_terms.0.0 == current_semester %}
+                </br>
+                {% else %}
+                <form class="reviews_form"> {% csrf_token %}
                   <input type="submit" value="See Reviews"></input>
                   <input type="hidden" name="course_id" value="{{course_id}}"></input>
                 </form>
+                {% endif %}
             </div>
             <div class = "semester_shown detail_sem_{{result.term}}">
                 {% include "semester.html" %}

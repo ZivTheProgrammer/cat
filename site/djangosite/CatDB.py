@@ -348,7 +348,6 @@ class CatDB:
             semester['review_text'] = i.get('review_text', []);
             semester['review_Nums'] = i.get('review_Nums', []);
             reviews.append(semester)
-
         return reviews
 
     # Function to return all courses in the database.
