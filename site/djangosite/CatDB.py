@@ -14,7 +14,7 @@ from collections import OrderedDict
         db.getProfessorInfo(name='Kernighan')
 """
 
-CURRENT_SEMESTER = '1142' # The most recent semester for which courses are posted. TODO: Make sure this isn't defined anywhere else.
+CURRENT_SEMESTER = '1144' # The most recent semester for which courses are posted. TODO: Make sure this isn't defined anywhere else.
 RATING_CATEGORIES = ['overall', 'lectures', 'precepts', 'classes', 'readings', 'assignments']
 DECAY_FACTOR = 0.33 # For averaging course ratings over multiple semesters
 STARTING_WEIGHT = 0.05 # Also for averaging course ratings. Increase or decrease to change strength of Bayesian ranking system.
