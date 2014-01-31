@@ -75,6 +75,8 @@ for term in terms.iter(ns + 'term'):
         print subCode
         #if termCode >= u'1134':
         #    continue
+        #if subCode != 'WRI':
+        #    continue
         # Get all the courses for each subject
         sleep(.5)
         try:
@@ -164,7 +166,7 @@ for term in terms.iter(ns + 'term'):
             """
 
             for key in regData.keys():
-                if key in ['prereqs', 'distribution', 'readings', 'grading','classes',
+                if key in ['prereqs', 'distribution', 'readings', 'classes', 'grading'
                         'pdf', 'assignments', 'other_reqs', 'other_info']:
                     entry[key] = regData[key]
             for p in reversed(regData.get('profs', [])):
@@ -176,8 +178,11 @@ for term in terms.iter(ns + 'term'):
             if action in ['build', 'add']:
                 newId = courseCol.insert(entry)
             elif action == 'update':
-                courseCol.update({'term':entry.pop('term'), 'subject':entry.pop('subject'), 'course_number':entry.pop('course_number')}, {'$set': entry})
-                newId = None
+                if courseCol.find_one({'term':entry['term'], 'subject':entry['subject'], 'course_number':entry['course_number']}):
+                    courseCol.update({'term':entry.pop('term'), 'subject':entry.pop('subject'), 'course_number':entry.pop('course_number')}, {'$set': entry}, upsert=True)
+                    newId = None
+                else:
+                    newId = courseCol.insert(entry)
 
 
             # Find in / add to the list of unique courses
