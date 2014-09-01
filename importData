@@ -1,0 +1,4 @@
+mongoimport --db cat_database --collection courses --file courses.json --drop
+mongoimport --db cat_database --collection unique --file unique.json --drop
+mongoimport --db cat_database --collection instructors --file instructors.json --drop
+

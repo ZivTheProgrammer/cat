@@ -1,0 +1,4 @@
+mongoexport --db cat_database --collection courses --out courses.json
+mongoexport --db cat_database --collection unique --out unique.json
+mongoexport --db cat_database --collection instructors --out instructors.json
+
